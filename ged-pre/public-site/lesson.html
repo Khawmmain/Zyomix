@@ -20,6 +20,107 @@
     <script src="chapter-labels.js" defer></script>
     <script src="learning-path.js" defer></script>
     <style>
+        .lesson-course-layout {
+            display: grid;
+            grid-template-columns: minmax(230px, 270px) minmax(0, 800px);
+            justify-content: center;
+            align-items: start;
+            gap: 1.25rem;
+        }
+        .lesson-course-layout > .lesson-container {
+            width: 100%;
+            min-width: 0;
+            margin: 1.25rem 0 2.5rem;
+        }
+        .lesson-course-layout > .chapter-section-sidebar {
+            position: sticky;
+            top: 5.5rem;
+            max-height: calc(100vh - 6.5rem);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            padding: 1rem;
+            border: 1px solid #dbe3ec;
+            border-radius: 8px;
+            background: #ffffff;
+        }
+        .lesson-course-layout > .chapter-section-sidebar[hidden] { display: none; }
+        .lesson-course-layout .chapter-sidebar-title {
+            margin: 0;
+            color: #1e293b;
+            font-size: 1rem;
+        }
+        .lesson-course-layout .chapter-sidebar-description {
+            margin: 0.35rem 0 0.85rem;
+            color: #64748b;
+            font-size: 0.82rem;
+            line-height: 1.4;
+        }
+        .lesson-course-layout .chapter-sidebar-group { border-top: 1px solid #e2e8f0; }
+        .lesson-course-layout .chapter-sidebar-heading {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 0.5rem;
+            padding: 0.7rem 0;
+            color: #334155;
+            cursor: pointer;
+            font-size: 0.84rem;
+            font-weight: 750;
+            line-height: 1.35;
+            list-style: none;
+        }
+        .lesson-course-layout .chapter-sidebar-heading::-webkit-details-marker { display: none; }
+        .lesson-course-layout .chapter-sidebar-heading::before {
+            content: "+";
+            flex: 0 0 0.75rem;
+            color: #64748b;
+        }
+        .lesson-course-layout .chapter-sidebar-group[open] > .chapter-sidebar-heading::before { content: "−"; }
+        .lesson-course-layout .chapter-sidebar-heading > span:first-of-type { flex: 1; }
+        .lesson-course-layout .chapter-sidebar-count {
+            flex: 0 0 auto;
+            color: #64748b;
+            font-size: 0.72rem;
+            font-weight: 700;
+        }
+        .lesson-course-layout .chapter-sidebar-sections {
+            display: grid;
+            gap: 0.25rem;
+            margin: 0 0 0.75rem;
+            padding: 0 0 0 1rem;
+            list-style: none;
+        }
+        .lesson-course-layout .chapter-sidebar-link {
+            display: block;
+            padding: 0.42rem 0.5rem;
+            border-radius: 6px;
+            color: #475569;
+            font-size: 0.78rem;
+            line-height: 1.4;
+            text-decoration: none;
+        }
+        .lesson-course-layout .chapter-sidebar-link:hover,
+        .lesson-course-layout .chapter-sidebar-link:focus-visible { background: #eff6ff; color: #075985; }
+        .lesson-course-layout .chapter-sidebar-link[aria-current="page"] {
+            background: #dbeafe;
+            color: #075985;
+            font-weight: 750;
+        }
+        .lesson-course-layout .chapter-sidebar-link.is-completed::after {
+            content: " ✓";
+            color: #15803d;
+            font-weight: 800;
+        }
+
+        @media (max-width: 1050px) {
+            .lesson-course-layout { grid-template-columns: minmax(0, 800px); }
+            .lesson-course-layout > .chapter-section-sidebar {
+                top: 0.5rem;
+                max-height: 32vh;
+                z-index: 5;
+            }
+        }
+
         .lesson-container {
             max-width: 800px;
             margin: 2.5rem auto;
@@ -469,7 +570,8 @@
 
     <!-- Main Lesson Content -->
     <main class="main-content">
-        <div class="container">
+        <div class="container lesson-course-layout">
+            <aside id="chapterSectionSidebar" class="chapter-section-sidebar" aria-label="Course topics" hidden></aside>
             <div class="lesson-container">
                 <div class="lesson-header">
                     <span class="lesson-badge" id="lessonBadge">Step 1.1</span>
@@ -2816,6 +2918,10 @@
                 workedSteps: ["List the sample space for a six-sided die: {1, 2, 3, 4, 5, 6}. There are 6 possible outcomes.", "The even outcomes are {2, 4, 6}, so there are 3 favorable outcomes.", "Divide favorable outcomes by total outcomes: 3 ÷ 6 = 3/6.", "Simplify 3/6 to 1/2. There is a 1-in-2 chance of rolling an even number."],
                 lessonSections: [
                     {
+                        title: "Before Lesson 1.1: Why Learn Probability?",
+                        paragraphs: ["Probability is not just about coins and dice. It helps you make sense of uncertain things you meet every day: whether to carry an umbrella, how to understand a test result, whether a game is fair, or what a survey can tell you. Learning probability lets you replace a guess with a reasoned estimate.", "Probability cannot tell you exactly what will happen next. Its purpose is to help you understand the chances, compare possible outcomes, make better-informed decisions, and explain your reasoning. In this course, you will build those skills step by step for GED Math and everyday life."]
+                    },
+                    {
                         title: "What Is an Event?",
                         paragraphs: ["An event is something we are interested in happening. Rolling a die is the action; getting a 4 is the event. Tossing a coin and getting heads, picking a red ball, and choosing a number greater than 3 are also events."]
                     },
@@ -3608,7 +3714,7 @@
             "math-12-6": {
                 badge: "Mathematics · Chapter 12 · Section 1.6",
                 title: "Compound Probability: OR",
-                intro: "A game may award a point for drawing a red card or a king. To find the chance of either event, count the outcomes included in the union.",
+                intro: "Imagine entering a competition where you win a prize by getting first place in mathematics OR science. You need at least one result, and winning both also meets the OR condition. This lesson shows how to count those outcomes without counting an overlap twice.",
                 theory: "An OR event includes outcomes in A, in B, or in both. Add the probabilities, then subtract the overlap once so shared outcomes are not counted twice. If events cannot happen together, the overlap is zero.",
                 example: "From a standard 52-card deck, drawing a heart or a king has 13 hearts and 4 kings, with the king of hearts counted in both groups. There are 13 + 4 − 1 = 16 favorable cards, so the probability is 16/52 = 4/13.",
                 formula: "P(A or B) = P(A) + P(B) − P(A and B). For mutually exclusive events, P(A and B) = 0.",
@@ -3621,12 +3727,60 @@
                     { term: "Overlap", definition: "Outcomes that belong to both events." }
                 ],
                 pitfall: "Adding P(A) and P(B) without subtracting shared outcomes counts the overlap twice.",
-                gedConnection: "Look for “or,” “either,” or combined categories in word problems, tables, and two-way data displays."
+                gedConnection: "Look for “or,” “either,” or combined categories in word problems, tables, and two-way data displays.",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: What Does OR Mean?",
+                        paragraphs: ["In probability, OR usually means that at least one of the named events happens. The first event can happen, the second event can happen, or both can happen.", "For example, to win a school prize you might need first place in mathematics OR first place in science. You do not need to win both, but winning both still satisfies the condition."]
+                    },
+                    {
+                        title: "2. A Simple OR Example",
+                        paragraphs: ["Roll one normal six-sided die. The possible results are 1, 2, 3, 4, 5, and 6. The event “roll a 2 OR a 5” has two favorable outcomes: 2 and 5.", "There are 2 favorable outcomes out of 6 equally likely outcomes, so the probability is 2/6 = 1/3, or about 33.33%. Only one result is needed on this single roll."]
+                    },
+                    {
+                        title: "3. Adding Probabilities for Mutually Exclusive Events",
+                        paragraphs: ["Events are mutually exclusive when they cannot happen at the same time in one experiment. On one coin toss, heads and tails are mutually exclusive. On one die roll, rolling a 2 and rolling a 5 are mutually exclusive.", "For mutually exclusive events, there is no overlap to subtract: P(A OR B) = P(A) + P(B). A fair coin has P(heads) = 1/2 and P(tails) = 1/2, so P(heads OR tails) = 1/2 + 1/2 = 1. A normal coin must land heads or tails, so this event is certain."]
+                    },
+                    {
+                        title: "4. When Events Overlap",
+                        paragraphs: ["Roll a six-sided die and find the probability of an even number OR a number greater than 4. The even outcomes are 2, 4, and 6. The outcomes greater than 4 are 5 and 6.", "The combined favorable outcomes are 2, 4, 5, and 6, so the probability is 4/6 = 2/3, or about 66.67%. The outcome 6 belongs to both events, so the events overlap.", "If we simply add the probabilities, we get 3/6 + 2/6 = 5/6. That counts 6 twice even though a single die roll produces only one result. Subtract the overlap once: P(A OR B) = P(A) + P(B) − P(A AND B). Here that is 3/6 + 2/6 − 1/6 = 4/6 = 2/3."]
+                    },
+                    {
+                        title: "5. Example: A Red Card OR a King",
+                        paragraphs: ["A standard deck has 52 cards, including 26 red cards, 4 kings, and 2 red kings. For a red card OR a king, the red cards and kings overlap at the 2 red kings.", "P(red OR king) = 26/52 + 4/52 − 2/52 = 28/52 = 7/13, approximately 53.85%. Subtract the red kings once because they were counted in both groups."]
+                    },
+                    {
+                        title: "6. Choose the Correct OR Rule",
+                        table: {
+                            headers: ["Situation", "Can both happen?", "Method"],
+                            rows: [
+                                ["Heads OR tails on one coin toss", "No", "Add the probabilities."],
+                                ["A 2 OR a 5 on one die roll", "No", "Add the probabilities."],
+                                ["An even number OR greater than 4", "Yes; 6 is shared", "Add, then subtract the overlap."],
+                                ["A red card OR a king", "Yes; red kings are shared", "Add, then subtract the overlap."]
+                            ]
+                        },
+                        paragraphs: ["Before calculating an OR probability, ask whether one outcome can satisfy both events. Do not assume every OR question uses simple addition."]
+                    },
+                    {
+                        title: "7. Common Mistakes",
+                        bullets: ["OR means at least one event happens; both events happening is allowed.", "Do not add probabilities without checking for shared outcomes.", "When events overlap, subtract the shared probability once so each outcome is counted only once.", "Add directly only when the events are mutually exclusive."]
+                    },
+                    {
+                        title: "8. GED Math Connection",
+                        paragraphs: ["GED questions may ask you to combine outcomes, interpret the word OR, identify mutually exclusive events, or handle overlap in a probability table or real-world situation. List the favorable outcomes when the sample space is small, then count each outcome once."]
+                    },
+                    {
+                        title: "9. Lesson Summary",
+                        bullets: ["OR means at least one event occurs, including the possibility that both occur.", "For mutually exclusive events, add the probabilities.", "For overlapping events, add the probabilities and subtract the overlap once.", "Check the sample space to make sure no outcome is counted more than once."],
+                        paragraphs: ["Key formula: P(A OR B) = P(A) + P(B) − P(A AND B). If A and B are mutually exclusive, P(A AND B) = 0."]
+                    }
+                ]
             },
             "math-12-7": {
                 badge: "Mathematics · Chapter 12 · Section 1.7",
                 title: "Three-Event Probability",
-                intro: "A combination lock may require three correct digits in a row. Each step must be included to find the chance of the complete sequence.",
+                intro: "Imagine a game with three challenges: answer a math question correctly, land on blue on a spinner, and roll a number greater than 4. If all three are required to win, you need a method that includes every event.",
                 theory: "For three events that all must occur, extend the AND rule: multiply the probability of the first event by the probability of the second given the first, then by the probability of the third given the first two. If all are independent, use each event's original probability.",
                 example: "A fair coin is flipped three times. The probability of three heads is 1/2 × 1/2 × 1/2 = 1/8.",
                 formula: "P(A and B and C) = P(A) × P(B given A) × P(C given A and B). If independent: P(A) × P(B) × P(C).",
@@ -3638,12 +3792,67 @@
                     { term: "Independent trials", definition: "Repeated trials where earlier outcomes do not change later probabilities." }
                 ],
                 pitfall: "For a specified sequence, count order when order matters; “HHT” is one sequence, not all outcomes with two heads.",
-                gedConnection: "Multi-step chance problems often use a tree diagram or organized list to keep each stage and outcome clear."
+                gedConnection: "Multi-step chance problems often use a tree diagram or organized list to keep each stage and outcome clear.",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: When Three Things Must Happen",
+                        paragraphs: ["A competition might require three tasks: answer a mathematics question correctly, spin a wheel and land on blue, and roll a number greater than 4. If all three are required, completing only one or two is not enough.", "This is a three-event AND situation. The word ALL tells us that every required event must happen."]
+                    },
+                    {
+                        title: "2. Identify the Events",
+                        paragraphs: ["An event is a result we are interested in. If a coin is tossed three times, the events might be getting heads on the first toss, getting heads on the second toss, and getting heads on the third toss.", "A question asking for heads on all three tosses asks for all three events to occur together."]
+                    },
+                    {
+                        title: "3. The Rule for Three Independent Events",
+                        paragraphs: ["When three events are independent, multiply all three individual probabilities to find the probability that all three happen."],
+                        bullets: ["P(A AND B AND C) = P(A) × P(B) × P(C).", "A, B, and C name the three events.", "Check that earlier results do not change later probabilities before using the independent-events rule."]
+                    },
+                    {
+                        title: "4. Example: Three Coin Tosses",
+                        paragraphs: ["A fair coin is tossed three times. Each toss has a 1/2 probability of heads, and each toss is independent of the others.", "Multiply: 1/2 × 1/2 × 1/2 = 1/8 = 0.125 = 12.5%. The probability of heads on all three tosses is 12.5%."],
+                        table: {
+                            headers: ["First toss", "Second toss", "Third toss", "Sequence"],
+                            rows: [["H", "H", "H", "HHH"], ["H", "H", "T", "HHT"], ["H", "T", "H", "HTH"], ["H", "T", "T", "HTT"], ["T", "H", "H", "THH"], ["T", "H", "T", "THT"], ["T", "T", "H", "TTH"], ["T", "T", "T", "TTT"]]
+                        },
+                        paragraphs: ["There are 2 × 2 × 2 = 8 equally likely sequences. Only HHH has heads on all three tosses, so the probability is 1/8. This agrees with multiplying the three 1/2 probabilities."]
+                    },
+                    {
+                        title: "5. Example: Three Independent Challenges",
+                        paragraphs: ["A game gives a player a 50% chance of finding a key, a 40% chance of defeating a bonus enemy, and a 25% chance of opening a treasure chest. Assume the three outcomes are independent.", "Convert to decimals and multiply: 0.5 × 0.4 × 0.25 = 0.05 = 5%. The probability of completing all three challenges is 5%."]
+                    },
+                    {
+                        title: "6. Example: Three Competition Rounds",
+                        paragraphs: ["A student has independent chances of winning three rounds: 90%, 80%, and 50%. Convert to decimals and multiply: 0.9 × 0.8 × 0.5 = 0.36 = 36%. The chance of winning every round is 36%."]
+                    },
+                    {
+                        title: "7. Three Events Connected by OR",
+                        paragraphs: ["Three-event questions do not always use multiplication. Roll a six-sided die and find the probability of a 1 OR a 3 OR a 5. These outcomes are mutually exclusive on one roll, so add: 1/6 + 1/6 + 1/6 = 3/6 = 1/2 = 50%.", "If events overlap, list the possible outcomes and count every favorable outcome only once. Overlap makes a simple sum too large when shared outcomes are counted repeatedly."]
+                    },
+                    {
+                        title: "8. A Reliable Solving Order",
+                        bullets: ["Name each event and identify how many events the question includes.", "Look for ALL, BOTH, AND, OR, or AT LEAST ONE.", "Check whether the events are independent or dependent and whether any OR events overlap.", "Choose the operation that fits, calculate, and express the answer as a fraction, decimal, or percentage as requested."]
+                    },
+                    {
+                        title: "9. Common Mistakes and GED Connection",
+                        bullets: ["For three required independent events, include all three factors.", "Do not confuse AND (all required events) with OR (at least one event).", "Do not multiply automatically when events are dependent; use updated conditions.", "When events overlap, count each favorable outcome only once."],
+                        paragraphs: ["GED-style questions may use three coin tosses, multiple stages, independent challenges, outcome combinations, or conditions that must all be satisfied. A tree diagram or organized list can help keep each stage clear."]
+                    },
+                    {
+                        title: "10. Practice and Check Your Reasoning",
+                        bullets: ["Three fair coin tosses: the chance of tails on all three is 1/2 × 1/2 × 1/2 = 1/8 = 12.5%.", "Independent challenges with chances 50%, 80%, and 50%: 0.5 × 0.8 × 0.5 = 0.20 = 20%.", "On one die roll, a 2 OR 4 OR 6 has probability 3/6 = 1/2."],
+                        paragraphs: ["The examples show why the relationship between events matters: multiply all probabilities for independent AND events, while mutually exclusive OR outcomes can be added."]
+                    },
+                    {
+                        title: "11. Lesson Summary",
+                        bullets: ["Three-event probability combines three events in one question.", "For three independent events that must all happen, multiply all three probabilities.", "Each additional required independent event can lower the probability of the complete result.", "For OR events, include at least one event and avoid counting overlap twice."],
+                        paragraphs: ["For three independent events: P(A AND B AND C) = P(A) × P(B) × P(C)."]
+                    }
+                ]
             },
             "math-12-8": {
                 badge: "Mathematics · Chapter 12 · Section 1.8",
                 title: "Independent Events",
-                intro: "Flipping a coin twice gives the same chance of heads on the second flip regardless of the first result.",
+                intro: "Toss a coin and get heads. Then toss it again. The first result does not make heads more or less likely on the second toss: each toss still has a 50% chance of heads. This is independence.",
                 theory: "Two events are independent when knowing that one occurred does not change the probability of the other. Independent events satisfy P(B given A) = P(B), so the probability that both happen is the product of their individual probabilities.",
                 example: "A fair coin is flipped and a fair die is rolled. P(tails and a number greater than 4) = 1/2 × 2/6 = 1/6.",
                 formula: "A and B are independent when P(B given A) = P(B). For independent events, P(A and B) = P(A) × P(B).",
@@ -3655,12 +3864,72 @@
                     { term: "Given", definition: "A condition or information assumed to be true when calculating a probability." }
                 ],
                 pitfall: "Independent does not mean that outcomes cannot coincide; it means one outcome does not affect the other's probability.",
-                gedConnection: "Identify whether the first outcome changes the second probability before choosing a multiplication rule."
+                gedConnection: "Identify whether the first outcome changes the second probability before choosing a multiplication rule.",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: Does One Event Affect Another?",
+                        paragraphs: ["After a fair coin lands heads, toss it again. The second toss still has two possible results, heads and tails. The first result does not change the probability of the second result.", "Events with this property are called independent. The key question is whether knowing the first result changes the chance of the next event."]
+                    },
+                    {
+                        title: "2. What Are Independent Events?",
+                        paragraphs: ["Two or more events are independent when the occurrence or result of one event does not change the probability of another event. In simpler words, the first event does not affect the chance of the second."],
+                        bullets: ["Tossing a fair coin twice: the first toss does not change the second toss's 50% chance of heads.", "Rolling a die and tossing a coin: the die result does not affect the coin.", "Spinning a fair spinner twice: if each spin is unaffected by the previous spin, the probabilities stay the same."]
+                    },
+                    {
+                        title: "3. Why Independence Matters",
+                        paragraphs: ["Independence tells us when we can multiply probabilities directly. For two independent events, P(A AND B) = P(A) × P(B).", "For two fair coin tosses, P(heads on both) = 1/2 × 1/2 = 1/4 = 25%. The chance of heads on the second toss remains 1/2 regardless of what happened on the first toss."]
+                    },
+                    {
+                        title: "4. Independent Events Can Be Related",
+                        paragraphs: ["Events do not have to be unrelated in everyday life to be independent. What matters is whether one changes the probability of the other.", "For example, if a basketball player has an 80% chance of making each free throw and the first shot does not affect the second, the shots can be treated as independent: 0.8 × 0.8 = 0.64, or 64%. In real life, fatigue or confidence might affect the second shot, so use the independence assumption only when the problem states or supports it."]
+                    },
+                    {
+                        title: "5. Independent and Dependent Events",
+                        paragraphs: ["Dependent events occur when an earlier outcome changes a later probability. Drawing a card, returning it, and shuffling restores the original deck, so the next draw has the original probabilities. Keeping the card out changes the deck from 52 cards to 51 and may change the next probability.", "Replacement usually restores the original selection conditions and makes draws independent. Without replacement, the group changes and draws are usually dependent. The controlling question is whether the probability changes."]
+                    },
+                    {
+                        title: "6. How to Identify Independence",
+                        table: {
+                            headers: ["Situation", "Relationship", "Reason"],
+                            rows: [
+                                ["Tossing a coin twice", "Independent", "The first toss does not change the next toss."],
+                                ["Rolling a die and tossing a coin", "Independent", "The die does not affect the coin."],
+                                ["Drawing a card, replacing it, then drawing again", "Independent", "The original deck is restored and shuffled."],
+                                ["Drawing a card without replacement", "Dependent", "The remaining deck changes."],
+                                ["Selecting students without replacement", "Dependent", "The number of students remaining changes."]
+                            ]
+                        },
+                        paragraphs: ["Ask: Does the first event change the probability of the second? If no, the events are independent. If yes, they are dependent."]
+                    },
+                    {
+                        title: "7. Independent Is Not the Same as Mutually Exclusive",
+                        paragraphs: ["Independent events do not affect one another's probabilities, and they can happen together. Mutually exclusive events cannot happen at the same time in the same experiment. Heads on the first toss AND heads on the second toss can both happen; heads AND tails on one single toss cannot.", "If two events both have positive probabilities, they cannot be both independent and mutually exclusive. When mutually exclusive events occur, one happening makes the other impossible."]
+                    },
+                    {
+                        title: "8. Examples with Independent Events",
+                        paragraphs: ["Roll a normal die and toss a fair coin. The probability of rolling a 6 and getting heads is 1/6 × 1/2 = 1/12, because the two experiments do not affect each other.", "If each manufactured item independently has a 90% chance of passing inspection, the chance that two both pass is 0.9 × 0.9 = 0.81 = 81%."]
+                    },
+                    {
+                        title: "9. Common Mistakes and GED Connection",
+                        bullets: ["After several heads in a row, a fair coin still has a 50% chance of heads on the next independent toss.", "Independent events can happen together; independence does not mean mutually exclusive.", "Do not assume every real-world situation is independent. Check the stated conditions.", "Do not use the simple product of original probabilities when the first event changes the next probability."],
+                        paragraphs: ["GED questions may ask you to identify independent events, calculate an AND probability, interpret repeated trials, or recognize whether replacement changes the sample space. Look for an explicit independence assumption or determine whether the first outcome changes the next chance."]
+                    },
+                    {
+                        title: "10. Practice and Answer Check",
+                        bullets: ["A fair coin's first toss is tails. The probability of heads on the second toss is still 1/2 = 50%.", "Rolling an even number and getting heads: 3/6 × 1/2 = 1/4.", "Selecting two cards without replacement is dependent because the first card changes the remaining deck.", "After four heads in a row, the probability of heads on the fifth toss is still 50%."],
+                        paragraphs: ["These answers rely on the same test: an independent event keeps its probability even when another event has already occurred."]
+                    },
+                    {
+                        title: "11. Lesson Summary",
+                        bullets: ["Independent events do not change one another's probabilities.", "For independent events, multiply the individual probabilities to find the chance that both happen.", "Independent events can occur together and are different from mutually exclusive events.", "Replacement usually restores the original probabilities; removing an item can change them."],
+                        paragraphs: ["Remember to ask: Does the first event change the probability of the second? If no, the events are independent."]
+                    }
+                ]
             },
             "math-12-9": {
                 badge: "Mathematics · Chapter 12 · Section 1.9",
                 title: "Dependent Events",
-                intro: "If you take a marble from a bag and keep it, there is one fewer marble for the next draw. The first draw changes the second draw's probability.",
+                intro: "A bag contains 3 green balls and 2 yellow balls. If you take one green ball and keep it outside the bag, there are fewer green balls and fewer balls overall for the next draw. The first selection changes the next probability.",
                 theory: "Events are dependent when the outcome of one changes the probability of another. For dependent events, use the probability of the later event under the condition created by the earlier event.",
                 example: "A bag has 3 red and 2 blue marbles. Two are drawn without replacement. P(red then blue) = 3/5 × 2/4 = 3/10.",
                 formula: "P(A and B) = P(A) × P(B given A).",
@@ -3672,12 +3941,63 @@
                     { term: "Without replacement", definition: "An item is not returned before the next selection, changing what remains." }
                 ],
                 pitfall: "Do not reuse the original total for a second draw without replacement; the sample space has changed.",
-                gedConnection: "GED problems often reveal dependence through phrases such as “without replacement,” “keeps the item,” or “after the first selection.”"
+                gedConnection: "GED problems often reveal dependence through phrases such as “without replacement,” “keeps the item,” or “after the first selection.”",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: When One Event Changes Another",
+                        paragraphs: ["A bag contains 3 green balls and 2 yellow balls. You choose one green ball and keep it outside the bag. The bag now has 2 green and 2 yellow balls, 4 balls altogether.", "The chance of choosing another green ball has changed from 3/5 to 2/4. This is a dependent situation because the first selection changes the probability of the second."]
+                    },
+                    {
+                        title: "2. What Are Dependent Events?",
+                        paragraphs: ["Two or more events are dependent when the occurrence or result of one event changes the probability of another event. Independent events do not change one another's probabilities; dependent events do."],
+                        bullets: ["Tossing a coin twice is independent: the first result does not change the second toss.", "Selecting a ball and keeping it outside the bag before selecting again is dependent: the group changes."]
+                    },
+                    {
+                        title: "3. Example: Two Green Balls Without Replacement",
+                        paragraphs: ["A bag contains 3 green balls and 2 yellow balls. Find the probability of selecting green twice without putting the first ball back.", "First selection: 3 green out of 5 total, so P(green first) = 3/5 = 0.6. After a green ball is removed, 2 green and 2 yellow balls remain, 4 total. The second green probability is 2/4 = 0.5.", "Multiply the chance of the first required event by the updated chance of the second: 3/5 × 2/4 = 6/20 = 3/10 = 30%. The chance of two green balls in a row without replacement is 30%."]
+                    },
+                    {
+                        title: "4. Why We Multiply Dependent Probabilities",
+                        paragraphs: ["For dependent events, we also multiply to find the chance that both events happen. The important difference is that the later probability must use the conditions after the earlier event has happened.", "In the bag example, the first probability is 3/5. After taking a green ball, the second is 2/4, not 3/5. Thus 3/5 × 2/4 = 3/10. The second factor reflects what remains."]
+                    },
+                    {
+                        title: "5. Example: Drawing Two Aces",
+                        paragraphs: ["A standard deck has 52 cards and 4 aces. Draw two cards without replacement and find the probability that both are aces.", "The first card is an ace with probability 4/52 = 1/13. After it is kept outside the deck, 3 aces remain among 51 cards, so the second ace probability is 3/51 = 1/17.", "Multiply: 4/52 × 3/51 = 12/2652 = 1/221, approximately 0.45%. The first ace changes the second draw's probability."]
+                    },
+                    {
+                        title: "6. Comparing With and Without Replacement",
+                        paragraphs: ["Use the original bag with 3 green balls and 2 yellow balls. If the first green ball is returned and mixed into the bag, the next green chance remains 3/5. The chance of two green selections is 3/5 × 3/5 = 9/25 = 36%.", "Without replacement, the chance is 3/5 × 2/4 = 3/10 = 30%. With replacement restores the starting composition; without replacement changes the number and colors of the remaining balls."],
+                        table: {
+                            headers: ["Situation", "First green", "Second green", "Both green"],
+                            rows: [["With replacement", "3/5", "3/5", "9/25 = 36%"], ["Without replacement", "3/5", "2/4", "3/10 = 30%"]]
+                        }
+                    },
+                    {
+                        title: "7. Recognize Dependent Events",
+                        bullets: ["Drawing cards without replacement.", "Taking balls from a bag without returning them.", "Selecting people or objects from a limited group without replacement.", "Removing or keeping an item before the next selection."],
+                        paragraphs: ["Ask whether the first event changes what is available or changes the probability of the next event. If yes, the events are dependent."]
+                    },
+                    {
+                        title: "8. Common Mistakes and GED Connection",
+                        bullets: ["After an item is removed, update the favorable count and the total remaining.", "Do not use the original total for a second selection without replacement.", "Dependence does not always make the next probability smaller; it can increase or decrease depending on what was removed.", "Keep with-replacement and without-replacement conditions distinct."],
+                        paragraphs: ["GED questions may involve cards, objects from bags, people in a group, or several selections. Phrases such as “without replacement,” “after removing one,” “keeping the first item,” and “the first item is not returned” signal that the later probability may change."]
+                    },
+                    {
+                        title: "9. Practice and Answer Check",
+                        bullets: ["A bag has 4 red and 6 blue balls. After one red ball is kept out, the chance of another red is 3/9 = 1/3.", "Two aces from a 52-card deck without replacement: 4/52 × 3/51 = 1/221.", "A green ball is returned to a bag with 3 green and 2 yellow balls. The chance of two green selections is 3/5 × 3/5 = 9/25."],
+                        paragraphs: ["For each answer, update the group only when the item is not returned."]
+                    },
+                    {
+                        title: "10. Lesson Summary",
+                        bullets: ["Dependent events occur when one event changes the probability of another.", "After an item is removed, recalculate both the favorable count and total remaining.", "For a sequence of required events, multiply using the correct probability at each stage.", "Returning an item restores the original selection conditions; keeping it out changes them."],
+                        paragraphs: ["Calculate the next probability after considering what has already happened, then multiply the probabilities of the required events."]
+                    }
+                ]
             },
             "math-12-10": {
                 badge: "Mathematics · Chapter 12 · Section 1.10",
                 title: "Conditional Probability",
-                intro: "If you know a selected student is in a particular grade, the chance that the student rides the bus should be calculated only among students in that grade.",
+                intro: "A school has 40 students. If you are told that a selected student is a girl, you are no longer choosing from all 40 students. The question becomes: among the girls, what is the chance that the student plays football?",
                 theory: "Conditional probability is the chance of event B when event A is already known to have occurred. The condition narrows the sample space to outcomes in A. In a table, use the row or column total matching the condition as the denominator.",
                 example: "In a group of 20 students, 8 ride the bus and 5 of those 8 are in grade 10. Given that a student rides the bus, the probability they are in grade 10 is 5/8.",
                 formula: "P(B given A) = P(A and B) ÷ P(A), provided P(A) is not 0.",
@@ -3689,12 +4009,91 @@
                     { term: "Given", definition: "The condition that limits the outcomes considered." }
                 ],
                 pitfall: "Do not divide by the entire population when the question says “given that”; use the conditioned group.",
-                gedConnection: "Look for “given,” “among those,” or two-way tables, then choose the denominator that matches the condition."
+                gedConnection: "Look for “given,” “among those,” or two-way tables, then choose the denominator that matches the condition.",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: What If We Already Know Something?",
+                        paragraphs: ["A school has 40 students. Suppose you are told that a randomly selected student is a girl. If asked whether the student plays football, consider only the girls, not all 40 students.", "The given information narrows the group of possible outcomes. This is the basic idea of conditional probability."]
+                    },
+                    {
+                        title: "2. What Is Conditional Probability?",
+                        paragraphs: ["Conditional probability is the probability of an event happening when another event is already known to have happened. It is the chance of something happening under a given condition. The phrase “given that” signals that some information is already known and changes the group you consider."],
+                        bullets: ["The probability of heads, given that the first toss was tails.", "The probability that a student plays football, given that the student is a girl.", "The probability of selecting a king, given that the selected card is red."],
+                    },
+                    {
+                        title: "3. Example: A Two-Way Student Table",
+                        paragraphs: ["A school has 40 students. The table shows football participation."],
+                        table: {
+                            headers: ["Group", "Plays football", "Does not play", "Total"],
+                            rows: [["Girls", "14", "6", "20"], ["Boys", "10", "10", "20"], ["Total", "24", "16", "40"]]
+                        },
+                        subsections: [
+                            {
+                                title: "Given that the student is a girl, what is the probability that the student plays football?",
+                                paragraphs: ["The condition is that the selected student is a girl, so the new total group is the 20 girls. Fourteen of those girls play football. The conditional probability is 14/20 = 0.7 = 70%.", "Do not divide by 40. The condition already rules out the boys, so the denominator is 20 girls."]
+                            }
+                        ]
+                    },
+                    {
+                        title: "4. The Conditional Probability Formula",
+                        paragraphs: ["The probability of A given B is the probability that both A and B happen divided by the probability of B. A is the event we want; B is the condition already known. The condition determines the new group and therefore the denominator."],
+                        bullets: ["P(A given B) = P(A AND B) ÷ P(B), provided P(B) is not 0.", "In the school table, A is “plays football,” B is “is a girl,” and A AND B is “is a girl who plays football.”", "There are 14 girls who play football out of 20 girls: 14/20 = 70%."]
+                    },
+                    {
+                        title: "5. Example: A Red Playing Card",
+                        paragraphs: ["A standard deck has 52 cards, including 26 red cards and 2 red kings. You are told that the selected card is red. Among those 26 red cards, 2 are kings.", "The probability of a king given that the card is red is 2/26 = 1/13, approximately 7.69%. The condition makes 26 red cards the relevant total, not all 52 cards."]
+                    },
+                    {
+                        title: "6. Example: Two Types of Employee Training",
+                        paragraphs: ["A company has 100 employees. The table shows completion of computer and communication training."],
+                        table: {
+                            headers: ["Communication training", "Completed computer", "Did not complete computer", "Total"],
+                            rows: [["Completed", "30", "20", "50"], ["Did not complete", "10", "40", "50"], ["Total", "40", "60", "100"]]
+                        },
+                        subsections: [
+                            {
+                                title: "Given communication training, what is the probability of computer training?",
+                                paragraphs: ["The condition limits the group to the 50 employees who completed communication training. Of those, 30 also completed computer training. The probability is 30/50 = 0.6 = 60%."]
+                            }
+                        ]
+                    },
+                    {
+                        title: "7. Conditional Probability and Dependent Events",
+                        paragraphs: ["Dependent events describe a relationship: one event changes another event's probability. Conditional probability calculates an event's probability when another event is known to have happened. The ideas are related, but they are not the same.", "If a bag has 3 green and 2 yellow balls and a green ball is removed, the probability of another green ball given that the first was green is 2/4 = 50%. Conditional probability can also apply to independent events: knowing one fair coin toss was heads does not change the chance of heads on the next toss."]
+                    },
+                    {
+                        title: "8. Ordinary Probability Compared with Conditional Probability",
+                        table: {
+                            headers: ["Question", "Calculation", "Answer"],
+                            rows: [["Probability a randomly selected student plays football", "24 ÷ 40", "60%"], ["Probability a student plays football, given that the student is a girl", "14 ÷ 20", "70%"]]
+                        },
+                        paragraphs: ["The first calculation uses all students. The second uses only girls because that condition is known. A condition changes the group being considered."]
+                    },
+                    {
+                        title: "9. Recognize the Condition",
+                        bullets: ["Given that.", "If we know that.", "Among those who.", "Assuming that.", "Knowing that.", "From the group that."],
+                        paragraphs: ["Ask what information is already known. The group that satisfies that condition becomes the new total."]
+                    },
+                    {
+                        title: "10. Common Mistakes and GED Connection",
+                        bullets: ["Do not use the original total when the condition restricts the group.", "Do not ignore the given information; it changes the sample space.", "Separate the event being calculated from the condition that defines the group.", "Conditional probability is not always dependent probability; the condition can describe independent events too."],
+                        paragraphs: ["GED questions may use two-way tables, surveys, student groups, cards, or information about an earlier event. Find the row, column, or group that matches “given that,” then use that group as the denominator."]
+                    },
+                    {
+                        title: "11. Practice and Answer Check",
+                        bullets: ["Among 30 girls, 18 play football: given that the student is a girl, the probability is 18/30 = 60%.", "Given that a selected card is black, the chance of a king is 2/26 = 1/13.", "After removing one red ball from 5 red and 3 blue balls, the chance of another red is 4/7.", "Among 24 students who study mathematics, 10 also study physics: the conditional probability is 10/24 = 5/12, about 41.67%."]
+                    },
+                    {
+                        title: "12. Lesson Summary",
+                        bullets: ["Conditional probability uses information that is already known.", "The phrase “given that” introduces the condition.", "Use the group that meets the condition as the new total.", "Conditional probability is related to dependence but can also describe independent events."],
+                        paragraphs: ["First identify the conditional group; then divide the favorable outcomes in that group by its total."]
+                    }
+                ]
             },
             "math-12-11": {
                 badge: "Mathematics · Chapter 12 · Section 1.11",
                 title: "With and Without Replacement",
-                intro: "Drawing a card, putting it back, and drawing again differs from keeping the card: returning it restores the original mix.",
+                intro: "A bag has 4 red balls and 6 blue balls. After drawing one red ball, you can return it before drawing again or keep it out. Those two choices change what is possible on the second draw.",
                 theory: "With replacement means the selected item is returned before the next selection, so counts and probabilities reset (assuming it is thoroughly mixed). Without replacement means it is not returned, so the total and possibly favorable count change. This determines whether repeated draws are independent or dependent.",
                 example: "A bag has 3 red and 2 blue marbles. P(red twice with replacement) = 3/5 × 3/5 = 9/25. Without replacement, P(red twice) = 3/5 × 2/4 = 3/10.",
                 formula: "With replacement: multiply using the original probabilities each time. Without replacement: multiply using updated probabilities after every draw.",
@@ -3706,12 +4105,69 @@
                     { term: "Without replacement", definition: "The selected item stays out before the next selection." }
                 ],
                 pitfall: "A return restores the count, not the particular outcome: the second draw is still random.",
-                gedConnection: "Questions commonly test replacement by describing whether an item is returned, kept, or removed before another draw."
+                gedConnection: "Questions commonly test replacement by describing whether an item is returned, kept, or removed before another draw.",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: Does Returning an Item Change the Probability?",
+                        paragraphs: ["A bag contains 4 red balls and 6 blue balls, 10 altogether. After selecting a red ball, either return it before the next selection or keep it outside the bag.", "Returning restores the original group. Keeping the ball out changes the number of items and may change the probability of the next selection."]
+                    },
+                    {
+                        title: "2. What Is Replacement?",
+                        bullets: ["With replacement: select an item, return it to the group, and then select again. The total and composition return to their starting values.", "Without replacement: select an item and do not return it before selecting again. The total decreases, and the number of favorable items may also change."],
+                        paragraphs: ["With replacement means the item is returned. Without replacement means it stays outside the group."]
+                    },
+                    {
+                        title: "3. Two Red Balls With Replacement",
+                        paragraphs: ["A bag has 4 red and 6 blue balls. Select a red ball, return it, and select again. The first red probability is 4/10 = 0.4. Returning the ball restores 4 red and 6 blue balls, 10 total, so the second red probability is also 4/10 = 0.4.", "Multiply: 0.4 × 0.4 = 0.16 = 16%. The probability of two red selections with replacement is 16%."]
+                    },
+                    {
+                        title: "4. Two Red Balls Without Replacement",
+                        paragraphs: ["Use the same bag, but keep the first red ball outside. The first red probability is 4/10 = 0.4. Now 3 red and 6 blue balls remain, 9 total, so the second red probability is 3/9 = 1/3.", "Multiply: 4/10 × 3/9 = 12/90 = 2/15, approximately 13.33%. The probability is lower here because one red ball was removed."]
+                    },
+                    {
+                        title: "5. Compare the Two Situations",
+                        table: {
+                            headers: ["Situation", "First selection", "Second selection", "Two reds"],
+                            rows: [["With replacement", "4/10", "4/10", "16%"], ["Without replacement", "4/10", "3/9", "about 13.33%"]]
+                        },
+                        paragraphs: ["With replacement returns the group to its original condition. Without replacement removes an item, changing the group and the next probability."]
+                    },
+                    {
+                        title: "6. Example: Two Aces from a Deck",
+                        paragraphs: ["A standard deck has 52 cards and 4 aces. With replacement, each draw has probability 4/52 of an ace, so the probability of two aces is 4/52 × 4/52 = 1/169, about 0.59%.", "Without replacement, after the first ace is kept out, 3 aces remain among 51 cards. The probability of two aces is 4/52 × 3/51 = 1/221, about 0.45%. The second probability changes because the first ace was removed."]
+                    },
+                    {
+                        title: "7. Connect Replacement to Independence and Dependence",
+                        table: {
+                            headers: ["Selection condition", "What happens to the group?", "Usual relationship"],
+                            rows: [["With replacement", "Original composition is restored", "Usually independent"], ["Without replacement", "An item stays out and the group changes", "Usually dependent"]]
+                        },
+                        paragraphs: ["The important question is whether the next probability changes. Returning and mixing an item usually restores the original probabilities; removing it usually changes them."]
+                    },
+                    {
+                        title: "8. Recognize Replacement Questions",
+                        bullets: ["With replacement: return the item, put it back, replace the selected card, or mix again before selecting.", "Without replacement: do not return the item, keep it outside, remove the first item, or select from those remaining."]
+                    },
+                    {
+                        title: "9. Common Mistakes and GED Connection",
+                        bullets: ["If the item is returned, use the restored counts for the next selection.", "If the item is not returned, reduce the total remaining and update the favorable count when needed.", "Do not confuse an item's return with a guaranteed result; each new selection is still random.", "Read the replacement condition before calculating a multi-selection probability."],
+                        paragraphs: ["GED questions may involve cards, colored balls, objects, people, or multiple selections. Whether the first item is returned can change the entire calculation."]
+                    },
+                    {
+                        title: "10. Practice and Answer Check",
+                        bullets: ["Five red and five blue balls, two red draws with replacement: 5/10 × 5/10 = 1/4.", "Four green and six yellow balls, one green kept out: another green is 3/9.", "Four aces, two draws with replacement: 4/52 × 4/52 = 1/169.", "Selecting two cards without replacement is usually dependent.", "With 3 red and 2 blue balls, two reds have probability 3/5 × 3/5 = 9/25 = 36% with replacement."]
+                    },
+                    {
+                        title: "11. Lesson Summary",
+                        bullets: ["Replacement means returning an item before selecting again.", "With replacement, the original conditions are restored; without replacement, an item is removed.", "With replacement usually gives independent selections; without replacement usually gives dependent selections.", "For multiple required selections, multiply using the correct probabilities at each stage."],
+                        paragraphs: ["Before calculating, ask: Is the first item returned or kept outside the group?"]
+                    }
+                ]
             },
             "math-12-12": {
                 badge: "Mathematics · Chapter 12 · Section 1.12",
                 title: "Real-World Probability Applications",
-                intro: "Probability helps people make decisions about weather, games, quality checks, and everyday risks, but a probability describes a chance rather than a promise.",
+                intro: "Probability is useful outside a math lesson: weather forecasts, sports results, business decisions, factory quality checks, surveys, and games all involve uncertainty. It helps people estimate what may happen, but it does not promise a particular result.",
                 theory: "To solve an applied probability problem, define the event, identify the possible outcomes or observed data, choose the correct probability rule, and interpret the result in context. A probability can inform a decision without guaranteeing an individual outcome.",
                 example: "A clinic schedules 40 appointments. Based on past records, 10% are missed. The expected number of missed appointments is 0.10 × 40 = 4; this is an estimate, not a guarantee that exactly four will be missed.",
                 formula: "Expected count = probability of event × number of trials, when the same probability applies to each trial.",
@@ -3723,17 +4179,110 @@
                     { term: "Interpret", definition: "Explain what a calculated value means in the situation described." }
                 ],
                 pitfall: "An expected count is an average prediction, not a guarantee for one particular set of trials.",
-                gedConnection: "GED applications may involve interpreting percentages, tables, surveys, or expected outcomes in a practical context."
+                gedConnection: "GED applications may involve interpreting percentages, tables, surveys, or expected outcomes in a practical context.",
+                lessonSections: [
+                    {
+                        title: "1. Introduction: Why Do We Use Probability?",
+                        paragraphs: ["Probability helps us understand uncertainty and make informed decisions. Weather forecasts estimate rain, sports statistics summarize past results, businesses estimate sales, games describe random outcomes, and factories estimate product defects.", "The useful question is: How likely is something to happen? Probability gives an estimate, not a guarantee."]
+                    },
+                    {
+                        title: "2. Weather Forecasts",
+                        paragraphs: ["A forecast of a 70% chance of rain means rain is assigned a probability of 70% under the predicted conditions. It does not mean rain will fall for 70% of the day, over exactly 70% of the city, or that rain is guaranteed.", "If rain and no rain are the two outcomes, the chance of no rain is 100% − 70% = 30%. When planning an outdoor event, a high chance of rain may make an indoor backup useful. Probability informs preparation; it does not tell exactly what will happen."]
+                    },
+                    {
+                        title: "3. Sports and Games",
+                        paragraphs: ["A basketball player makes 8 free throws in 10 attempts. The experimental probability of making a shot, based on those attempts, is 8/10 = 0.8 = 80%. A football player scores 18 penalties in 20 attempts, giving an experimental probability of 18/20 = 0.9 = 90%.", "These results describe past performance and can help estimate future chances, but they do not guarantee that the next shot or penalty will succeed."]
+                    },
+                    {
+                        title: "4. Business and Shopping Decisions",
+                        paragraphs: ["A shop has 100 customers in one day, and 30 buy a particular product. The experimental probability that a customer buys it, based on that day, is 30/100 = 0.3 = 30%.", "The shop might use this information to estimate stock, judge product popularity, or consider a price or promotion. Future customers may behave differently, so the observed 30% is evidence for an estimate, not a promise."]
+                    },
+                    {
+                        title: "5. Quality Control in Factories",
+                        paragraphs: ["A factory inspects 200 light bulbs and finds 10 defective bulbs. The experimental probability of a defect in the inspected group is 10/200 = 0.05 = 5%.", "If a future batch contains 1,000 bulbs and the same defect rate continues, the estimate is 1,000 × 0.05 = 50 defective bulbs. This is a forecast based on the assumption that the rate remains similar, not a guaranteed count."]
+                    },
+                    {
+                        title: "6. Surveys and Statistics",
+                        paragraphs: ["A school surveys 100 students about their favorite subject. The results are shown below."],
+                        table: {
+                            headers: ["Subject", "Number of students"],
+                            rows: [["Mathematics", "40"], ["Science", "30"], ["English", "20"], ["History", "10"], ["Total", "100"]]
+                        },
+                        subsections: [
+                            {
+                                title: "Probability from the survey",
+                                paragraphs: ["The probability that a randomly selected surveyed student prefers science is 30/100 = 0.3 = 30%.", "If another table says 12 of 20 surveyed girls prefer science, then given that the selected student is a girl, the probability of preferring science is 12/20 = 0.6 = 60%. The condition changes the group used as the denominator."]
+                            }
+                        ]
+                    },
+                    {
+                        title: "7. Games and Random Outcomes",
+                        paragraphs: ["A fair six-sided die has the outcomes 1, 2, 3, 4, 5, and 6. The even outcomes are 2, 4, and 6, so the probability of an even number is 3/6 = 1/2 = 50%.", "If the die is rolled twice, the rolls are independent. The probability of an even number on both rolls is 3/6 × 3/6 = 9/36 = 1/4 = 25%. The first roll does not change the die or the second roll's probability."]
+                    },
+                    {
+                        title: "8. Making Decisions with Probability",
+                        paragraphs: ["A school event has a 20% chance of rain. That information alone does not determine whether the event should be cancelled. Consider the chance of rain, the cost of moving indoors, whether a backup space is available, how important the event is, and whether a backup plan is practical.", "A high probability does not guarantee an event, and a low probability does not mean it is impossible. A 90% chance is likely but not certain; 50% means equal chances; 10% is unlikely but possible; 0% is impossible within the stated model; and 100% is certain within that model."]
+                    },
+                    {
+                        title: "9. Probability Is Not a Guarantee",
+                        paragraphs: ["A game may give a 1-in-10, or 10%, chance of winning on one play. This does not mean you will win exactly once in every 10 plays. You could win on the first play, on the tenth, more than once, or not at all in 10 plays.", "Probability describes how likely an outcome is, not exactly when it will occur. A small number of trials can differ greatly from the expected chance. Repeating an experiment under the same conditions many times can make the observed proportion more useful for understanding long-term patterns, but does not guarantee an exact result in a particular group."]
+                    },
+                    {
+                        title: "10. Theoretical and Experimental Probability in Real Life",
+                        table: {
+                            headers: ["Type", "Based on", "Example"],
+                            rows: [["Theoretical", "Possible equally likely outcomes", "A fair coin has a 1/2 = 50% chance of heads."], ["Experimental", "Observed results", "12 heads in 20 tosses gives 12/20 = 60%. "]]
+                        },
+                        paragraphs: ["The two probabilities can differ, especially over a small number of trials. A fair coin's theoretical chance of heads is 50%, while 12 heads in 20 actual tosses gives an experimental probability of 60%. Actual results do not have to match the theoretical probability exactly."]
+                    },
+                    {
+                        title: "11. GED Math Connection",
+                        bullets: ["Read information from tables and surveys.", "Calculate percentages and experimental probabilities.", "Interpret sports statistics, quality data, or everyday decisions.", "Compare possible outcomes and use expected counts carefully."],
+                        paragraphs: ["A reliable approach is to read the situation, identify the event, count favorable outcomes or observed successes, find the correct total, divide, convert to a percentage if needed, and explain what the result means in context."]
+                    },
+                    {
+                        title: "12. Practice and Answer Check",
+                        bullets: ["A 35% chance of rain means a 65% chance of no rain, assuming the two outcomes cover all possibilities.", "A player makes 24 of 30 shots: 24/30 = 80% experimental probability.", "50 of 200 customers buy a product: 50/200 = 25%.", "15 of 500 inspected products are defective: 15/500 = 3%.", "A die roll greater than 4 has outcomes 5 and 6: 2/6 = 1/3.", "24 of 80 students prefer science: 24/80 = 30%.", "A 10% chance on each independent play means a 10% chance on each play; it does not guarantee one win in 10 plays.", "26 heads in 40 tosses gives experimental probability 26/40 = 65%."]
+                    },
+                    {
+                        title: "13. Lesson Summary",
+                        bullets: ["Probability helps us reason about uncertainty in weather, sports, business, quality control, surveys, and games.", "Experimental probability uses observed results; theoretical probability uses possible outcomes in a model.", "A probability can inform a decision without guaranteeing an individual result or exact count.", "Use the correct total and interpret the answer in the situation described."],
+                        paragraphs: ["Probability helps estimate what might happen. It does not promise exactly what will happen."]
+                    }
+                ]
             },
             "math-12-13": {
                 badge: "Mathematics · Chapter 12 · Section 1.13",
                 title: "Probability Assessment",
-                intro: "This final lesson brings the chapter together: identify the event, determine the sample space, and choose a rule that matches the situation.",
-                theory: "Review simple probability, experimental results, complements, AND and OR events, independence, dependence, conditional probability, and replacement. The key is to translate words into a clear event and use the correct denominator and operation.",
+                intro: "This 20-question final assessment checks whether you can choose and apply the right probability ideas across the full section.",
+                theory: "The assessment covers Lessons 1.1–1.12, including simple, theoretical, and experimental probability; the probability scale; complements; compound AND and OR; independent and dependent events; conditional probability; replacement; and real-world applications. You have 20 minutes, with one point per question. A passing score is at least 18 correct answers out of 20 (90%); scores are not rounded up.",
                 example: "A bag has 4 red and 3 blue counters. Two counters are drawn without replacement. The chance of two red counters is 4/7 × 3/6 = 2/7 because the second draw is dependent.",
                 formula: "Review: P(E) = favorable/total; P(not A) = 1 − P(A); independent AND = product; OR = P(A) + P(B) − P(A and B); conditional P(B given A) = P(A and B)/P(A).",
-                rules: "Read the question twice, mark words such as “and,” “or,” “given,” and “without replacement,” then check that the answer is between 0 and 1.",
+                rules: "Complete all 20 questions independently without notes or outside help. Read each question carefully, show calculations on separate paper, and select all correct answers when asked. You need at least 18 correct answers to pass.",
                 workedSteps: ["There are 4 red counters among 7, so the first red probability is 4/7.", "Without replacement, 3 red counters remain among 6 total: 3/6.", "Multiply: 4/7 × 3/6 = 12/42 = 2/7."],
+                lessonSections: [
+                    {
+                        title: "Assessment Format",
+                        paragraphs: ["This final examination contains 20 questions worth one point each. The time limit is 20 minutes. A score of 18/20 (90%) or higher is a pass; a score below 90% is not rounded up.", "The questions review all 12 probability lessons. Read the wording closely and decide whether the problem asks for an event, its complement, an AND or OR, a conditional probability, or a probability that changes after a selection."]
+                    },
+                    {
+                        title: "Assessment Conditions",
+                        bullets: ["Complete the assessment independently, without lesson notes or outside assistance.", "Answer all 20 questions and select every correct statement when a question asks for all that apply.", "Show calculations on separate paper and focus on explaining the method, not memorizing answers."],
+                        paragraphs: ["A score of 18–20 correct answers is a pass. A score of 0–17 is not a pass."]
+                    },
+                    {
+                        title: "Review and Retake",
+                        paragraphs: ["If you do not pass, review the lessons connected to the questions you missed before trying again. Rework the underlying ideas and understand why an answer is correct rather than memorizing the answer key.", "The goal is to demonstrate understanding of probability before moving forward."]
+                    },
+                    {
+                        title: "Score and Review Guide",
+                        table: {
+                            headers: ["Correct answers", "Score", "Result"],
+                            rows: [["20/20", "100%", "PASS"], ["19/20", "95%", "PASS"], ["18/20", "90%", "PASS"], ["17/20", "85%", "FAIL"], ["16/20", "80%", "FAIL"], ["15/20", "75%", "FAIL"], ["14/20", "70%", "FAIL"], ["13/20", "65%", "FAIL"], ["12/20", "60%", "FAIL"], ["11/20", "55%", "FAIL"], ["10/20", "50%", "FAIL"], ["0–9/20", "0–45%", "FAIL"]]
+                        },
+                        paragraphs: ["Use missed question numbers to choose what to review: Question 1 -> Lesson 1.1; 2 -> 1.2; 3 -> 1.3; 4 -> 1.4; 5 -> 1.5; 6 -> 1.7; 7–8 -> 1.6; 9 -> 1.8; 10 -> 1.9; 11–12 -> 1.10; 13–14 -> 1.11; 15–17 -> 1.12; and 18–20 -> review the related concepts in their explanations.", "Students who score below 90% should review weak concepts, understand their mistakes, and retake the assessment. Do not lower the passing requirement because the examination is difficult; understanding comes before progression."]
+                    }
+                ],
                 recall: { prompt: "A bag has 3 red and 2 blue counters. Two are drawn without replacement. What is the probability both are red?", options: ["3/10", "1/2", "9/25", "2/5"], correct: 0, explanation: "P(red then red) = 3/5 × 2/4 = 6/20 = 3/10." },
                 glossary: [
                     { term: "Favorable outcomes", definition: "Outcomes that satisfy the event in the question." },
@@ -3938,6 +4487,12 @@
             example: "Review the formula or rule carefully, substitute the given values step-by-step, and check your calculations.",
             rules: "Always double-check your signs, units, and arithmetic before selecting your final answer."
         };
+        const courseSubject = stepId.match(/^([a-z]+)-/)?.[1] || 'math';
+        ['backToConceptsLink', 'returnToChapterLink'].forEach(linkId => {
+            const link = document.getElementById(linkId);
+            if (link) link.href = `concept.html?subject=${encodeURIComponent(courseSubject)}`;
+        });
+        document.addEventListener('DOMContentLoaded', () => window.renderChapterSidebar?.(courseSubject));
         const catalogSectionTitle = scienceSection?.[0] || socialSection?.[0] || rlaSectionTitle;
         if (catalogSectionTitle && !rlaLesson) currentLesson.title = catalogSectionTitle;
 
@@ -4035,7 +4590,26 @@
         document.getElementById('lessonTitle').innerText = currentLesson.title;
         document.getElementById('lessonIntro').innerText = currentLesson.intro || currentLesson.theory;
         const introQuestion = document.getElementById('lessonIntroQuestion');
-        if (scienceSection || socialSection || rlaSectionTitle) {
+        const probabilityLessonMatch = stepId.match(/^math-12-(\d+)$/);
+        const probabilityIntroPrompts = {
+            1: "Start with a question: A bag has 3 red balls and 2 blue balls. What information would you need to find the chance of choosing red?",
+            2: "Start with a question: A fair coin is tossed 10 times. Must it land heads exactly 5 times?",
+            3: "Start with a question: What does a 0%, 50%, or 100% chance tell you about whether rain will happen?",
+            4: "Start with a question: If an event has a 10% chance, what is the chance that it does not happen?",
+            5: "Start with a question: If a player has an 80% chance of making each free throw, what must be true for the player to make both?",
+            6: "Start with a question: On one die roll, can an outcome belong to both the even-number group and the numbers greater than 4?",
+            7: "Start with a question: If three independent challenges must all succeed, should you include every challenge's probability?",
+            8: "Start with a question: Does getting heads on one fair coin toss change the chance of heads on the next toss?",
+            9: "Start with a question: After one green ball is removed from a bag, what changes before the next selection?",
+            10: "Start with a question: If you know a selected student is a girl, should you still count all students as the possible group?",
+            11: "Start with a question: How does returning a selected ball before drawing again affect the next probability?",
+            12: "Start with a question: What does a 70% chance of rain tell you, and what does it not guarantee?",
+            13: "Start with a question: How will you decide which probability rule fits a question you have not seen before?"
+        };
+        if (probabilityLessonMatch) {
+            introQuestion.textContent = probabilityIntroPrompts[Number(probabilityLessonMatch[1])];
+            introQuestion.hidden = false;
+        } else if (scienceSection || socialSection || rlaSectionTitle) {
             introQuestion.textContent = scienceSection
                 ? `Start with a question: How could “${catalogSectionTitle}” help you explain something you observe in an investigation or in everyday life?`
                 : socialSection

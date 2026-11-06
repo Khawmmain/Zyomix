@@ -287,8 +287,10 @@
         const currentStep = urlParams.get('step') || 'math-1-1';
         const modeParam = urlParams.get('mode');
         const isExamMode = modeParam === 'exam';
+        const isProbabilityAssessment = modeParam === 'probability-assessment' && currentStep === 'math-12-13';
+        const isAssessmentMode = isExamMode || isProbabilityAssessment;
         const isTimedMode = modeParam === 'timed-practice';
-        const modeLabel = isExamMode ? 'GED Exam Simulator' : isTimedMode ? 'Timed Practice' : 'Practice';
+        const modeLabel = isProbabilityAssessment ? 'Probability Assessment' : isExamMode ? 'GED Exam Simulator' : isTimedMode ? 'Timed Practice' : 'Practice';
 
         const catalogMatch = currentStep.match(/^(science|social)-(\d+)-(\d+)$/);
         const sectionCatalog = catalogMatch?.[1] === 'science'
@@ -595,33 +597,75 @@
             ],
             "math-12-7": [
                 { title: "A fair coin is flipped three times. What is the probability of getting tails on all three flips?", options: ["1/4", "1/6", "1/8", "3/8"], correct: 2, explanation: "Each flip has a 1/2 chance of tails and the flips are independent: (1/2)³ = 1/8." },
-                { title: "A fair six-sided die is rolled twice. What is the probability of rolling an odd number both times?", options: ["1/6", "1/4", "1/3", "1/2"], correct: 1, explanation: "There are 3 odd numbers out of 6 on each roll. The rolls are independent: 1/2 × 1/2 = 1/4." }
+                { title: "A fair six-sided die is rolled twice. What is the probability of rolling an odd number both times?", options: ["1/6", "1/4", "1/3", "1/2"], correct: 1, explanation: "There are 3 odd numbers out of 6 on each roll. The rolls are independent: 1/2 × 1/2 = 1/4." },
+                { title: "A player has a 50% chance of passing the first challenge, an 80% chance of passing the second, and a 50% chance of passing the third. Assuming independence, what is the probability of passing all three?", options: ["10%", "20%", "40%", "80%"], correct: 1, explanation: "Multiply the independent probabilities: 0.5 × 0.8 × 0.5 = 0.2 = 20%." },
+                { title: "A normal six-sided die is rolled once. What is the probability of rolling a 2 OR a 4 OR a 6?", options: ["1/6", "1/3", "1/2", "2/3"], correct: 2, explanation: "The favorable outcomes are 2, 4, and 6: 3/6 = 1/2." }
             ],
             "math-12-8": [
                 { title: "Which pair of events is independent?", options: ["Drawing two cards without replacement", "Drawing two marbles and keeping the first out", "Flipping a coin, then flipping it again", "Selecting two students without returning the first"], correct: 2, explanation: "The result of the first coin flip does not change the probability of the second flip." },
-                { title: "A coin is flipped and a die is rolled. What is the probability of heads and an even number?", options: ["1/6", "1/4", "1/3", "1/2"], correct: 1, explanation: "The events are independent: P(heads) × P(even) = 1/2 × 3/6 = 1/4." }
+                { title: "A coin is flipped and a die is rolled. What is the probability of heads and an even number?", options: ["1/6", "1/4", "1/3", "1/2"], correct: 1, explanation: "The events are independent: P(heads) × P(even) = 1/2 × 3/6 = 1/4." },
+                { title: "A fair coin is tossed twice. The first toss is tails. What is the probability of heads on the second toss?", options: ["0%", "25%", "50%", "100%"], correct: 2, explanation: "The tosses are independent. The first result does not change the second toss: P(heads) = 1/2 = 50%." },
+                { title: "A fair die is rolled and a fair coin is tossed. What is the probability of rolling an even number AND getting heads?", options: ["1/12", "1/6", "1/4", "1/2"], correct: 2, explanation: "P(even) = 3/6 = 1/2 and P(heads) = 1/2. Multiply: 1/2 × 1/2 = 1/4." },
+                { title: "You select one card, keep it outside the deck, and select another card. Are the selections independent or dependent?", options: ["Independent; every card has an equal chance", "Dependent; the first card changes the remaining deck", "Independent; the cards are shuffled", "Neither independent nor dependent"], correct: 1, explanation: "The first card is not returned, so the deck's composition and the next probabilities change." },
+                { title: "A fair coin lands heads four times in a row. What is the probability of heads on the fifth toss?", options: ["0%", "20%", "50%", "100%"], correct: 2, explanation: "Each toss is independent. The probability of heads remains 50%, regardless of previous tosses." }
             ],
             "math-12-9": [
                 { title: "A bag has 3 red and 2 blue marbles. Two are drawn without replacement. What is the probability of red first, then blue?", options: ["1/5", "3/10", "2/5", "3/5"], correct: 1, explanation: "After a red is drawn, 2 blue remain among 4 marbles. Multiply 3/5 × 2/4 = 3/10." },
-                { title: "A box has 4 green and 1 yellow tile. A green tile is drawn and kept. What is the probability the next tile is yellow?", options: ["1/5", "1/4", "1/2", "4/5"], correct: 1, explanation: "After removing a green tile, 4 tiles remain, including 1 yellow, so the probability is 1/4." }
+                { title: "A box has 4 green and 1 yellow tile. A green tile is drawn and kept. What is the probability the next tile is yellow?", options: ["1/5", "1/4", "1/2", "4/5"], correct: 1, explanation: "After removing a green tile, 4 tiles remain, including 1 yellow, so the probability is 1/4." },
+                { title: "A bag contains 4 red and 6 blue balls. One red ball is selected and kept outside the bag. What is the probability of selecting another red ball?", options: ["4/10", "3/9", "4/9", "3/10"], correct: 1, explanation: "After one red is removed, 3 red balls remain among 9 total: 3/9." },
+                { title: "A standard deck has 52 cards and 4 aces. Two cards are selected without replacement. What is the probability that both are aces?", options: ["1/169", "1/221", "1/52", "1/13"], correct: 1, explanation: "The probability is 4/52 × 3/51 = 12/2652 = 1/221." },
+                { title: "A bag contains 3 green and 2 yellow balls. A green ball is selected, returned, and then another ball is selected. What is the probability both selections are green?", options: ["9/25", "3/10", "6/25", "3/5"], correct: 0, explanation: "With replacement, the green chance is 3/5 on both selections: 3/5 × 3/5 = 9/25." }
             ],
             "math-12-10": [
                 { title: "In a group of 20 students, 8 ride the bus and 5 of those bus riders are in grade 10. Given that a student rides the bus, what is the probability the student is in grade 10?", options: ["1/4", "5/8", "5/20", "8/20"], correct: 1, explanation: "The condition limits the sample space to 8 bus riders; 5 of them are in grade 10, so the probability is 5/8." },
-                { title: "Of 12 students who play a sport, 7 also play an instrument. Given that a student plays a sport, what is the probability they play an instrument?", options: ["7/12", "7/20", "12/7", "5/12"], correct: 0, explanation: "Among the 12 students who play a sport, 7 play an instrument. The conditional probability is 7/12." }
+                { title: "Of 12 students who play a sport, 7 also play an instrument. Given that a student plays a sport, what is the probability they play an instrument?", options: ["7/12", "7/20", "12/7", "5/12"], correct: 0, explanation: "Among the 12 students who play a sport, 7 play an instrument. The conditional probability is 7/12." },
+                { title: "A school has 50 students: 30 girls and 20 boys. Eighteen girls play football. Given that a selected student is a girl, what is the probability the student plays football?", options: ["18/50", "18/30", "18/20", "30/50"], correct: 1, explanation: "The condition limits the group to 30 girls. Eighteen play football, so the probability is 18/30 = 60%." },
+                { title: "A card is selected from a standard deck. Given that it is black, what is the probability that it is a king? There are 26 black cards and 2 black kings.", options: ["2/52", "2/26", "4/52", "26/52"], correct: 1, explanation: "Use the 26 black cards as the conditional group. Two are kings, so the probability is 2/26 = 1/13." },
+                { title: "A bag contains 5 red and 3 blue balls. One red ball is selected and kept outside. Given that the first ball was red, what is the probability of selecting another red?", options: ["5/8", "4/7", "4/8", "5/7"], correct: 1, explanation: "After removing one red, 4 red balls remain out of 7 total: 4/7." },
+                { title: "A class has 40 students. Twenty-four study mathematics, and 10 of those students also study physics. Given that a student studies mathematics, what is the probability the student studies physics?", options: ["10/40", "10/24", "24/40", "10/16"], correct: 1, explanation: "The condition makes the 24 mathematics students the total group. Ten also study physics, so the probability is 10/24 = 5/12." }
             ],
             "math-12-11": [
                 { title: "A bag has 2 red and 3 blue counters. One is drawn, returned, and another is drawn. What is the probability both are red?", options: ["2/5", "4/25", "1/5", "2/25"], correct: 1, explanation: "With replacement, the red probability remains 2/5 on both draws: 2/5 × 2/5 = 4/25." },
-                { title: "A bag has 3 red and 2 blue counters. Two counters are drawn without replacement. What is the probability both are red?", options: ["3/10", "9/25", "1/2", "2/5"], correct: 0, explanation: "Without replacement, the second red chance is 2/4: 3/5 × 2/4 = 3/10." }
+                { title: "A bag has 3 red and 2 blue counters. Two counters are drawn without replacement. What is the probability both are red?", options: ["3/10", "9/25", "1/2", "2/5"], correct: 0, explanation: "Without replacement, the second red chance is 2/4: 3/5 × 2/4 = 3/10." },
+                { title: "A bag contains 5 red and 5 blue balls. One red ball is selected, returned, and then another ball is selected. What is the probability both are red?", options: ["1/4", "1/5", "1/2", "1/10"], correct: 0, explanation: "The red chance is 5/10 on each draw because the ball is returned: 5/10 × 5/10 = 1/4." },
+                { title: "A bag contains 4 green and 6 yellow balls. One green ball is selected and kept outside. What is the probability of selecting another green ball?", options: ["4/10", "3/9", "4/9", "3/10"], correct: 1, explanation: "After removing one green, 3 green balls remain among 9 total: 3/9." },
+                { title: "A standard deck has 52 cards and 4 aces. A card is selected, returned, and the deck is shuffled before a second selection. What is the probability both cards are aces?", options: ["1/221", "1/169", "1/52", "1/13"], correct: 1, explanation: "With replacement, the probability is 4/52 × 4/52 = 1/169." },
+                { title: "Which situation usually involves dependent events?", options: ["Tossing a coin twice", "Rolling a die twice", "Selecting two cards without replacement", "Selecting a ball, returning it, and selecting again"], correct: 2, explanation: "Without replacement, the first card changes the number and composition of cards remaining." },
+                { title: "A bag contains 3 red and 2 blue balls. Which situation gives a 36% probability of selecting two red balls?", options: ["Without replacement", "With replacement", "Both situations", "Neither situation"], correct: 1, explanation: "With replacement, 3/5 × 3/5 = 9/25 = 0.36 = 36%." }
             ],
             "math-12-12": [
                 { title: "A factory expects 2% of its items to need repair. About how many items would be expected to need repair in a batch of 250?", options: ["2", "5", "25", "50"], correct: 1, explanation: "Convert 2% to 0.02 and multiply: 0.02 × 250 = 5 expected items." },
-                { title: "A weather report gives a 30% chance of rain. What does this probability mean?", options: ["It will rain for exactly 30% of the day", "Rain is impossible", "Rain is possible, but not certain", "It will definitely rain"], correct: 2, explanation: "A 30% probability describes the chance of rain; it does not guarantee whether or how long it will rain." }
+                { title: "A weather report gives a 30% chance of rain. What does this probability mean?", options: ["It will rain for exactly 30% of the day", "Rain is impossible", "Rain is possible, but not certain", "It will definitely rain"], correct: 2, explanation: "A 30% probability describes the chance of rain; it does not guarantee whether or how long it will rain." },
+                { title: "A weather forecast estimates a 35% chance of rain. What is the probability it will not rain, assuming rain and no rain are the only two outcomes?", options: ["35%", "50%", "65%", "75%"], correct: 2, explanation: "The complementary probability is 100% − 35% = 65%." },
+                { title: "A basketball player makes 24 successful shots out of 30 attempts. What is the experimental probability of making a shot?", options: ["60%", "70%", "80%", "90%"], correct: 2, explanation: "24 ÷ 30 = 0.8 = 80%." },
+                { title: "A shop has 200 customers in one day. Fifty buy a particular product. What percentage of customers bought the product?", options: ["15%", "20%", "25%", "30%"], correct: 2, explanation: "50 ÷ 200 = 0.25 = 25%." },
+                { title: "A factory inspects 500 products and finds 15 defective products. What is the experimental probability of selecting a defective product?", options: ["2%", "3%", "5%", "15%"], correct: 1, explanation: "15 ÷ 500 = 0.03 = 3%." },
+                { title: "A fair six-sided die is rolled once. What is the probability of rolling a number greater than 4?", options: ["1/6", "1/3", "1/2", "2/3"], correct: 1, explanation: "The favorable outcomes are 5 and 6, so the probability is 2/6 = 1/3." },
+                { title: "A school surveys 80 students: 32 prefer mathematics, 24 science, 16 English, and 8 history. What is the probability that a randomly selected student prefers science?", options: ["20%", "25%", "30%", "40%"], correct: 2, explanation: "24 ÷ 80 = 0.3 = 30%." },
+                { title: "A game gives a player a 10% chance of winning on each independent play. What does this mean?", options: ["The player will definitely win after 10 plays.", "The player has a 10% chance of winning on each play.", "The player cannot win on the first play.", "The player will win exactly once in every 10 plays."], correct: 1, explanation: "The probability applies to each play; it does not guarantee when or how often a win will occur." },
+                { title: "A fair coin is tossed 40 times and lands on heads 26 times. What is the experimental probability of heads?", options: ["40%", "50%", "60%", "65%"], correct: 3, explanation: "26 ÷ 40 = 0.65 = 65%." }
             ],
             "math-12-13": [
-                { title: "A fair die is rolled. What is the probability of not rolling a 6?", options: ["1/6", "1/3", "5/6", "1"], correct: 2, explanation: "Five of the six outcomes are not 6, so the probability is 5/6." },
-                { title: "A fair coin is flipped and a fair die is rolled. What is the probability of heads and a number greater than 4?", options: ["1/12", "1/6", "1/3", "1/2"], correct: 1, explanation: "The events are independent. P(heads) × P(5 or 6) = 1/2 × 2/6 = 1/6." },
-                { title: "A bag has 3 red and 2 blue counters. Two are drawn without replacement. What is the probability of two red counters?", options: ["1/5", "3/10", "2/5", "9/25"], correct: 1, explanation: "The draws are dependent: 3/5 × 2/4 = 6/20 = 3/10." },
-                { title: "A number from 1 through 10 is chosen. What is the probability it is even or greater than 8?", options: ["2/5", "1/2", "3/5", "7/10"], correct: 2, explanation: "The outcomes are {2, 4, 6, 8, 9, 10}: 6 of 10, which simplifies to 3/5." }
+                { title: "A box contains 5 white balls and 3 black balls. One ball is selected randomly. What is the probability of selecting a black ball?", options: ["3/5", "3/8", "5/8", "1/3"], correct: 1, explanation: "There are 3 black balls out of 8 total balls, so the probability is 3/8." },
+                { title: "A fair coin is tossed 50 times and lands on heads 31 times. What is the experimental probability of heads?", options: ["50%", "31%", "62%", "69%"], correct: 2, explanation: "Experimental probability uses actual results: 31 ÷ 50 = 0.62 = 62%." },
+                { title: "An event has a probability of 0.08. Which interpretation is most accurate?", options: ["The event is impossible.", "The event is certain.", "The event is unlikely but possible.", "The event is equally likely to happen or not happen."], correct: 2, explanation: "0.08 is greater than 0, so the event is possible, but it is close to 0 and therefore unlikely." },
+                { title: "The probability that a delivery arrives late is 0.27. Assuming it either arrives late or does not arrive late, what is the probability that it arrives on time?", options: ["0.27", "0.63", "0.73", "1.27"], correct: 2, explanation: "The event and its complement add to 1: 1 − 0.27 = 0.73." },
+                { title: "A fair six-sided die is rolled and a fair coin is tossed. What is the probability of rolling a number greater than 4 AND getting tails?", options: ["1/12", "1/6", "1/3", "1/2"], correct: 1, explanation: "P(number greater than 4) = 2/6 = 1/3 and P(tails) = 1/2. The events are independent, so 1/3 × 1/2 = 1/6." },
+                { title: "Three independent fair coins are tossed. What is the probability of getting exactly two heads?", options: ["1/8", "3/8", "1/2", "5/8"], correct: 1, explanation: "The sequences with exactly two heads are HHT, HTH, and THH: 3 favorable outcomes out of 8, so the probability is 3/8." },
+                { title: "A fair six-sided die is rolled once. What is the probability of rolling a 1 OR a 4?", options: ["1/6", "1/3", "1/2", "2/3"], correct: 1, explanation: "The mutually exclusive favorable outcomes are 1 and 4: 2/6 = 1/3." },
+                { title: "A fair six-sided die is rolled once. What is the probability of getting an even number OR a number greater than 3?", options: ["1/2", "2/3", "5/6", "1"], correct: 1, explanation: "The combined outcomes are 2, 4, 5, and 6. Count the shared outcomes 4 and 6 only once: 4/6 = 2/3." },
+                { title: "A fair coin is tossed and a fair die is rolled. Which statement correctly describes these events?", options: ["They are dependent because both are random.", "They are mutually exclusive because they happen at the same time.", "They are independent because one result does not change the probability of the other.", "They are conditional because two objects are involved."], correct: 2, explanation: "The coin result does not change the probability of any die result, so the events are independent." },
+                { title: "A bag contains 5 red balls and 4 blue balls. Two balls are selected one after another without replacement. What is the probability that both balls are blue?", options: ["1/9", "1/6", "4/9", "2/9"], correct: 1, explanation: "The first blue probability is 4/9. After removing one blue, the next is 3/8. Multiply: 4/9 × 3/8 = 1/6." },
+                { title: "A school surveys 60 students. Thirty-six study science, and 24 of those science students also study mathematics. Given that a selected student studies science, what is the probability the student also studies mathematics?", options: ["24/60 = 40%", "36/60 = 60%", "24/36 = 66.67%", "36/24 = 150%"], correct: 2, explanation: "The condition limits the group to 36 science students. Of those, 24 also study mathematics: 24/36 = 2/3, or about 66.67%." },
+                { title: "A standard deck has 52 cards, including 26 red cards and 2 red kings. Given that a selected card is red, what is the probability that it is a king?", options: ["2/52", "2/26", "4/52", "26/52"], correct: 1, explanation: "Given that the card is red, use the 26 red cards as the sample space. Two are kings, so the probability is 2/26." },
+                { title: "A bag contains 3 green balls and 2 yellow balls. One ball is selected, returned, and the bag is mixed. What is the probability that both selections are green?", options: ["3/10", "9/25", "3/5", "6/25"], correct: 1, explanation: "With replacement, each green probability is 3/5. Multiply: 3/5 × 3/5 = 9/25." },
+                { title: "A bag contains 4 red balls and 6 blue balls. Two balls are selected with replacement. What is the probability of getting exactly one red ball?", options: ["4/25", "12/25", "16/25", "3/5"], correct: 1, explanation: "Exactly one red can occur as red then blue or blue then red. Each order has probability 4/10 × 6/10 = 24/100; together, 48/100 = 12/25." },
+                { title: "A basketball player makes 17 shots out of 25 attempts. Based on these results, what is the experimental probability of making a shot?", options: ["58%", "62%", "68%", "72%"], correct: 2, explanation: "17 ÷ 25 = 0.68 = 68%." },
+                { title: "A factory finds that 2.5% of its inspected products are defective. If the same defect rate applies to a new batch of 800 products, how many defective products should the factory estimate?", options: ["10", "20", "25", "32"], correct: 1, explanation: "Convert 2.5% to 0.025 and multiply: 800 × 0.025 = 20." },
+                { title: "A game gives a player a 5% chance of winning on each independent play. The player loses 20 times in a row. What is the probability of winning on the next play?", options: ["100%", "0%", "5%", "50%"], correct: 2, explanation: "The plays are independent, so previous losses do not change the chance on the next play. It remains 5%." },
+                { title: "For three independent events, the probability that all three happen is found by multiplying their three individual probabilities. True or false?", options: ["True", "False"], correct: 0, explanation: "For independent events, multiply their individual probabilities to find the probability that all of them occur." },
+                { title: "Which option lists all the correct statements? A: Independent events do not change one another's probabilities. B: Mutually exclusive events with positive probabilities are always independent. C: Returning and mixing an item restores the original group composition. D: An event with probability 0.4 is certain to happen after three attempts.", options: ["A and C only", "A and B only", "B and D only", "A, C, and D only"], correct: 0, explanation: "A and C are correct. B is false because mutually exclusive events with positive probabilities are dependent. D is false because probability does not guarantee an event within a fixed number of attempts." },
+                { title: "If two mutually exclusive events both have positive probabilities, they are independent events. True or false?", options: ["True", "False"], correct: 1, explanation: "False. Mutually exclusive events cannot happen together. When both have positive probabilities, the occurrence of one makes the other impossible, so they are not independent." }
             ]
         };
 
@@ -641,7 +685,7 @@
         ];
 
         const catalogPracticeUnavailable = Boolean(catalogMatch) &&
-            !isExamMode &&
+            !isAssessmentMode &&
             !window.hasTopicPractice(currentStep);
         if (catalogPracticeUnavailable) {
             const notice = document.createElement('section');
@@ -683,7 +727,7 @@
         let currentIndex = 0;
         let score = 0;
         let answered = false;
-        let remainingSeconds = isExamMode ? 20 * 60 : 5 * 60;
+        let remainingSeconds = isAssessmentMode ? 20 * 60 : 5 * 60;
         let timerInterval;
         let finished = false;
         const selectedAnswers = [];
@@ -772,17 +816,18 @@
         }
 
         function startTimer() {
-            if (!isExamMode && !isTimedMode) return;
+            if (!isAssessmentMode && !isTimedMode) return;
             const timer = document.getElementById('timerDisplay');
             timer.style.display = 'inline';
             const updateTimer = () => {
                 const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
                 const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
-                timer.textContent = `${isExamMode ? 'Exam' : 'Practice'} time ${minutes}:${seconds}`;
+                const timerLabel = isProbabilityAssessment ? 'Assessment' : isExamMode ? 'Exam' : 'Practice';
+                timer.textContent = `${timerLabel} time ${minutes}:${seconds}`;
                 timer.classList.toggle('is-warning', remainingSeconds <= 60);
                 timer.setAttribute('aria-label', remainingSeconds <= 60
-                    ? `Warning: ${isExamMode ? 'exam' : 'practice'} time remaining ${minutes}:${seconds}`
-                    : `${isExamMode ? 'Exam' : 'Practice'} time remaining ${minutes}:${seconds}`);
+                    ? `Warning: ${timerLabel.toLowerCase()} time remaining ${minutes}:${seconds}`
+                    : `${timerLabel} time remaining ${minutes}:${seconds}`);
                 if (remainingSeconds <= 0) {
                     clearInterval(timerInterval);
                     finishQuiz(true);
@@ -837,8 +882,10 @@
             }
 
             const actionButton = document.getElementById('actionBtn');
-            if (isExamMode) {
-                actionButton.textContent = currentIndex === questions.length - 1 ? 'Finish Exam' : 'Save & Continue →';
+            if (isAssessmentMode) {
+                actionButton.textContent = currentIndex === questions.length - 1
+                    ? isProbabilityAssessment ? 'Finish Assessment' : 'Finish Exam'
+                    : 'Save & Continue →';
             } else if (answered) {
                 actionButton.textContent = currentIndex === questions.length - 1 ? 'Complete Practice →' : 'Next Question →';
             } else {
@@ -850,7 +897,7 @@
             reviewButton.setAttribute('aria-pressed', String(isFlagged));
             reviewButton.textContent = isFlagged ? 'Marked for review ★' : 'Mark for review';
             const skipButton = document.getElementById('skipQuestionButton');
-            skipButton.hidden = isExamMode || answered;
+            skipButton.hidden = isAssessmentMode || answered;
             skipButton.textContent = currentIndex === questions.length - 1 ? 'Finish Practice →' : 'Next Question →';
             renderQuestionNavigator();
             currentQuestionStartedAt = Date.now();
@@ -862,7 +909,11 @@
 
             if (selected) selectedAnswers[currentIndex] = Number(selected.value);
 
-            if (isExamMode) {
+            if (isAssessmentMode) {
+                if (isProbabilityAssessment && selectedAnswers[currentIndex] === undefined) {
+                    alert('Please select an answer before continuing.');
+                    return;
+                }
                 recordQuestionTime();
                 if (currentIndex === questions.length - 1) {
                     finishQuiz();
@@ -947,7 +998,7 @@
             const token = localStorage.getItem('zyomix_token');
             const durationSeconds = Math.max(0, Math.round((Date.now() - startedAt) / 1000));
 
-            if (!isExamMode) {
+            if (!isAssessmentMode) {
                 const savedProgress = JSON.parse(localStorage.getItem("zyomix_practice_progress") || '{}');
                 savedProgress[currentStep] = { completed: true, score: finalPercentage, timestamp: new Date().toISOString() };
                 localStorage.setItem("zyomix_practice_progress", JSON.stringify(savedProgress));
@@ -1020,10 +1071,15 @@
             }
 
             document.getElementById('quiz-content').style.display = 'none';
-            const modeText = isExamMode ? 'Exam simulator' : isTimedMode ? 'Timed practice' : 'Practice session';
+            const modeText = isProbabilityAssessment ? 'Probability assessment' : isExamMode ? 'Exam simulator' : isTimedMode ? 'Timed practice' : 'Practice session';
             document.querySelector('#resultBox h3').textContent = timeExpired ? 'Time is up' : `${modeText} complete`;
             document.getElementById('finalScoreText').textContent = `You scored ${score} out of ${questions.length} (${finalPercentage}%).`;
             document.getElementById('resultSaveStatus').textContent = saveStatus;
+            if (isProbabilityAssessment) {
+                document.getElementById('resultRecommendation').textContent = score >= 18
+                    ? 'PASS. You met the required score of 18 out of 20 (90%).'
+                    : 'NOT PASSED. Review the lessons connected to the questions you missed before retaking the assessment.';
+            }
 
             const subjectResults = new Map();
             questions.forEach((question, index) => {
@@ -1047,16 +1103,20 @@
                 : finalPercentage >= 50
                     ? `Good start. Review the explanations, then try this ${subjectName} practice again.`
                     : `Review ${subjectName} concepts before your next practice attempt.`;
-            document.getElementById('resultRecommendation').textContent = recommendation;
+            document.getElementById('resultRecommendation').textContent = isProbabilityAssessment
+                ? score >= 18
+                    ? 'PASS. You met the required score of 18 out of 20 (90%).'
+                    : 'NOT PASSED. Review the lessons connected to the questions you missed before retaking the assessment.'
+                : recommendation;
 
             const retryButton = document.getElementById('resultRetryButton');
             retryButton.href = window.location.href;
-            retryButton.textContent = isExamMode ? 'Retry exam' : 'Retry practice';
+            retryButton.textContent = isAssessmentMode ? 'Retry assessment' : 'Retry practice';
             const reviewButton = document.getElementById('resultReviewButton');
             reviewButton.href = isExamMode
                 ? `concept.html?subject=${encodeURIComponent(targetSubject)}`
                 : `lesson.html?step=${encodeURIComponent(currentStep)}`;
-            reviewButton.textContent = isExamMode ? `Review ${subjectName} concepts` : 'Review this concept';
+            reviewButton.textContent = isExamMode ? `Review ${subjectName} concepts` : isProbabilityAssessment ? 'Review probability lessons' : 'Review this concept';
 
             const examReview = document.getElementById('examReview');
             const quizSubjectNames = {

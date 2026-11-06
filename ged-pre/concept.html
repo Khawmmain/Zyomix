@@ -566,7 +566,7 @@
             if (subjectId === 'all') {
                 overviewWrapper.style.display = 'grid';
                 detailedWrapper.style.display = 'none';
-                catalogLayout.classList.remove('has-chapter-sidebar');
+                catalogLayout.classList.add('has-chapter-sidebar');
                 detailBlocks.forEach(block => block.style.display = 'none');
             } else {
                 overviewWrapper.style.display = 'none';
@@ -616,7 +616,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const subject = new URLSearchParams(window.location.search).get('subject');
             const subjectButton = subject && document.querySelector(`.tab-${subject}`);
-            if (subjectButton) showSubject(subject, subjectButton);
+            showSubject(subjectButton ? subject : 'all', subjectButton || document.querySelector('.tab-all'));
         });
     </script>
 </body>
