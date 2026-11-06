@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Concept Handbook</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+    <script src="chapter-labels.js" defer></script>
+    <style>
+        .concept-subject-section {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            margin-bottom: 2.5rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .concept-banner-header {
+            height: 140px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .concept-banner-overlay {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.7) 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 2.5rem;
+        }
+
+        .concept-banner-overlay h3 {
+            color: #ffffff;
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 0.25rem;
+        }
+
+        .concept-banner-overlay p {
+            color: #cbd5e0;
+            font-size: 0.95rem;
+            margin: 0;
+        }
+
+        .math-bg { background-image: url('assets/math.jpg'); }
+        .science-bg { background-image: url('assets/science.jpg'); }
+        .rla-bg { background-image: url('assets/rla.jpeg'); }
+        .social-bg { background-image: url('assets/social.jpg'); }
+
+        .concept-body-padding {
+            padding: 2rem 2.5rem;
+        }
+
+        .toc-chapter-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2.25rem;
+            margin-bottom: 0.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        .toc-chapter-title:first-of-type {
+            margin-top: 0;
+        }
+
+        .concept-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-pill-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 1.15rem 1.25rem;
+            text-decoration: none;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .step-pill-card:hover {
+            background: #ffffff;
+            border-color: #3182ce;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(49, 130, 206, 0.1);
+        }
+
+        .step-badge-tag {
+            align-self: flex-start;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 4px;
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .step-pill-card h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .step-pill-card span.arrow {
+            position: absolute;
+            top: 1.15rem;
+            right: 1.25rem;
+            color: #94a3b8;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+
+        .step-pill-card:hover span.arrow {
+            color: #3182ce;
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group" style="text-decoration: none;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="account.html" class="nav-btn">Account</a>
+                <a href="concept.html" class="nav-btn active">Concept</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="hero concept-page-hero">
+            <div class="container">
+                <h2 class="hero-title">Interactive Concept Handbook</h2>
+                <p class="hero-subtitle">Explore core chapters and study guides designed for clarity and active mastery.</p>
+
+                <!-- Search Bar -->
+                <div style="max-width: 550px; margin: 1.5rem auto 0 auto;">
+                    <input type="text" id="conceptSearchInput" placeholder="🔍 Search topics, steps, or formulas..." onkeyup="filterConceptCards()" style="width: 100%; padding: 0.75rem 1.15rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; outline: none; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+                </div>
+
+                <!-- Subject Tabs -->
+                <div class="concept-nav-tabs" style="margin-top: 1.25rem;">
+                    <button class="tab-btn active" onclick="showSubject('all', this)">All Subjects</button>
+                    <button class="tab-btn math-tab" onclick="showSubject('math', this)">Mathematics</button>
+                    <button class="tab-btn science-tab" onclick="showSubject('science', this)">Science</button>
+                    <button class="tab-btn rla-tab" onclick="showSubject('rla', this)">RLA</button>
+                    <button class="tab-btn social-tab" onclick="showSubject('social', this)">Social Studies</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Syllabus Cards Content -->
+        <section class="concepts-content-section" style="margin-top: 2rem;">
+            <div class="container" style="padding-bottom: 3.5rem;">
+                
+                <!-- MATHEMATICS SYLLABUS (12 Sections) -->
+                <div class="concept-subject-section subject-card-block" id="math-block" style="border-left: 5px solid #2b6cb0;">
+                    <div class="concept-banner-header math-bg">
+                        <div class="concept-banner-overlay">
+                            <div>
+                                <h3>Mathematics Syllabus Index</h3>
+                                <p>Complete GED Mathematics curriculum spanning 12 structured sections.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="concept-body-padding">
+                        
+                        <!-- SECTION 1 -->
+                        <div class="toc-chapter-title" style="margin-top: 0;">1. Basic Math & Number Operations</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-1-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.1</span><h4>Whole Numbers</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.2</span><h4>Integers (Positive & Negative)</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.3</span><h4>Number Line and Absolute Value</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.4</span><h4>Comparing and Ordering Numbers</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.5</span><h4>Rounding and Estimation</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.6</span><h4>Addition, Subtraction, Multiplication and Division</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.7</span><h4>Order of Operations (PEMDAS)</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.8</span><h4>Factors and Multiples</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.9</span><h4>Prime and Composite Numbers</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.10</span><h4>Greatest Common Factor (GCF)</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-11" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.11</span><h4>Least Common Multiple (LCM)</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-1-12" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.12</span><h4>Divisibility Rules</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 2 -->
+                        <div class="toc-chapter-title">2. Fractions, Decimals & Percentages</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-2-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.1</span><h4>Types of Fractions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.2</span><h4>Equivalent Fractions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.3</span><h4>Simplifying Fractions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.4</span><h4>Comparing and Ordering Fractions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.5</span><h4>Mixed Numbers and Improper Fractions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.6</span><h4>Fraction Operations</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.7</span><h4>Decimal Place Value</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.8</span><h4>Comparing and Rounding Decimals</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.9</span><h4>Decimal Operations</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.10</span><h4>Fraction–Decimal–Percentage Conversions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-11" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.11</span><h4>Percentage Calculations</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-12" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.12</span><h4>Percentage Increase and Decrease</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-13" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.13</span><h4>Discounts, Taxes and Tips</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-2-14" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.14</span><h4>Simple Interest</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 3 -->
+                        <div class="toc-chapter-title">3. Ratios, Proportions & Rates</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-3-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.1</span><h4>Understanding Ratios</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.2</span><h4>Equivalent Ratios</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.3</span><h4>Simplifying Ratios</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.4</span><h4>Part-to-Part and Part-to-Whole Ratios</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.5</span><h4>Unit Rates</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.6</span><h4>Proportions & Solving Proportions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.7</span><h4>Direct Proportions</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.8</span><h4>Scale Factors and Scale Drawings</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.9</span><h4>Speed, Distance and Time</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-3-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.10</span><h4>Real-World Ratio and Rate Problems</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 4 -->
+                        <div class="toc-chapter-title">4. Exponents, Roots & Scientific Notation</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-4-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.1</span><h4>Understanding Exponents & Powers/Bases</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-4-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.2</span><h4>Laws of Exponents</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-4-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.3</span><h4>Zero and Negative Exponents</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-4-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.4</span><h4>Square Roots and Cube Roots</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-4-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.5</span><h4>Simplifying Radicals & Estimating Roots</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-4-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.6</span><h4>Scientific Notation & Operations</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 5 -->
+                        <div class="toc-chapter-title">5. Geometry & Measurement</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-5-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.1</span><h4>Points, Lines, Angles & Relationships</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.2</span><h4>Triangles, Quadrilaterals & Polygons</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.3</span><h4>Perimeter and Area of 2D Shapes</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.4</span><h4>Composite Figures</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.5</span><h4>Circles: Radius, Diameter & Area</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.6</span><h4>Pythagorean Theorem & Coordinate Geometry</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.7</span><h4>3D Shapes: Surface Area and Volume</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-5-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.8</span><h4>Measurement, Unit Conversions & Scale Drawings</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 6 -->
+                        <div class="toc-chapter-title">6. Algebraic Expressions & Equations</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-6-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.1</span><h4>Variables, Constants and Coefficients</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-6-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.2</span><h4>Evaluating Expressions & Like Terms</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-6-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.3</span><h4>Distributive Property & Simplifying</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-6-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.4</span><h4>Writing Expressions from Word Problems</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-6-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.5</span><h4>One-Step, Two-Step & Multi-Step Equations</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-6-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.6</span><h4>Equations with Fractions, Decimals & Both Sides</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-6-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.7</span><h4>Translating Word Problems & Rearranging Formulas</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 7 -->
+                        <div class="toc-chapter-title">7. Inequalities & Systems of Equations</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-7-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.1</span><h4>Inequality Symbols & Multi-Step Solving</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-7-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.2</span><h4>Graphing Inequalities & Compound Inequalities</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-7-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.3</span><h4>Systems of Linear Equations (Graphing & Substitution)</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-7-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.4</span><h4>Systems by Elimination & Real-World Applications</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 8 -->
+                        <div class="toc-chapter-title">8. Polynomials & Quadratic Equations</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-8-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.1</span><h4>Polynomial Types, Degrees & Operations</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-8-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.2</span><h4>Factoring Polynomials & Difference of Squares</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-8-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.3</span><h4>Quadratic Equations & Solving by Factoring</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-8-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.4</span><h4>Quadratic Formula, Discriminant & Applications</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 9 -->
+                        <div class="toc-chapter-title">9. Graphs & Coordinate Geometry</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-9-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.1</span><h4>Coordinate Plane, Ordered Pairs & Graph Interpretation</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-9-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.2</span><h4>Slope, Rate of Change & Intercepts</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-9-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.3</span><h4>Slope-Intercept & Standard Form Equations</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-9-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.4</span><h4>Distance, Midpoint, Parallel & Perpendicular Lines</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-9-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.5</span><h4>Scatter Plots and Trends</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 10 -->
+                        <div class="toc-chapter-title">10. Functions</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-10-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 10.1</span><h4>Understanding Functions & Notation f(x)</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-10-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 10.2</span><h4>Evaluating Functions, Tables & Domain/Range</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-10-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 10.3</span><h4>Linear & Quadratic Functions, Graphs & Applications</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 11 -->
+                        <div class="toc-chapter-title">11. Statistics & Data Analysis</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#math-11-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.1</span><h4>Data Tables, Bar, Line & Pie Graphs</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-11-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.2</span><h4>Histograms, Dot Plots & Box Plots</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-11-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.3</span><h4>Mean, Median, Mode, Range & Weighted Average</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#math-11-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.4</span><h4>Data Interpretation, Predictions & Correlation</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                        <!-- SECTION 12 -->
+                        <div class="toc-chapter-title">12. Probability</div>
+                        <div class="concept-steps-grid">
+                            <a href="practice.html#prob-step1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.1</span><h4>Introduction & Theoretical Probability</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#prob-step2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.2</span><h4>Probability Scale & Complementary Events</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#prob-step3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.3</span><h4>Compound Probability: AND & OR</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#prob-step4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.4</span><h4>Three-Event Probability & Mutually Exclusive</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#prob-step5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.5</span><h4>Independent & Dependent Events</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#prob-step6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.6</span><h4>Conditional Probability & Replacement Rules</h4><span class="arrow">&rarr;</span></a>
+                            <a href="practice.html#prob-step7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 12.7</span><h4>Real-World Applications & Assessment</h4><span class="arrow">&rarr;</span></a>
+                        </div>
+
+                    </div>
+                </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">
+                GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. Independent educational project[cite: 2].
+            </p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Filter Scripts -->
+    <script>
+        function showSubject(subjectId, element) {
+            const blocks = document.querySelectorAll('.subject-card-block');
+            const buttons = document.querySelectorAll('.tab-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            blocks.forEach(block => {
+                if (subjectId === 'all') {
+                    block.style.display = 'block';
+                } else if (block.id === subjectId + '-block') {
+                    block.style.display = 'block';
+                } else {
+                    block.style.display = 'none';
+                }
+            });
+
+            element.classList.add('active');
+        }
+
+        function filterConceptCards() {
+            const query = document.getElementById('conceptSearchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.searchable-card');
+
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

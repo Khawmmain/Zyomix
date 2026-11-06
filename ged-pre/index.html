@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Independent GED Prep</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+    <script src="home-search.js" defer></script>
+    <script src="home-continue.js" defer></script>
+</head>
+<body class="home-page">
+
+    <!-- Header / Nav Shell -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn active">Home</a>
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="account.html" class="nav-btn">Account</a>
+                <a href="concept.html" class="nav-btn">Concept</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+                <a href="about.html" class="nav-btn">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Shell -->
+    <main class="main-content">
+        <section class="hero">
+            <div class="container">
+                <h2 class="hero-title">Your Independent Pathway to GED Success</h2>
+                <p class="hero-subtitle">Access high-value practice materials, open-source resources, and structured learning modules.</p>
+                
+                <!-- Hero Action Buttons -->
+                <div class="hero-actions">
+                    <a href="#modules" class="btn-hero-primary">Get Started</a>
+                    <a href="concept.html" class="btn-hero-secondary">Explore Concepts</a>
+                </div>
+
+                <div id="homeAuthStatus" style="margin: 0 auto 1.25rem auto; max-width: 680px; color: #e2e8f0; font-weight: 600; font-size: 0.9rem; background: rgba(15, 23, 42, 0.55); border: 1px solid rgba(148, 163, 184, 0.18); border-radius: 999px; padding: 0.7rem 1rem;">
+                    Browse as a guest or <a href="account.html">sign in to save your progress</a>.
+                </div>
+
+                <!-- Interactive Search & Filter Bar -->
+                <div class="container" style="margin-top: 1.5rem; margin-bottom: 2rem; max-width: 750px;">
+                    <div style="background: #ffffff; border: 1px solid #cbd5e1; border-radius: 10px; padding: 0.85rem 1.15rem; box-shadow: 0 2px 6px rgba(0,0,0,0.03); display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                        <input type="search" id="homeSearchInput" placeholder="Search subjects, concepts, or practice steps..." aria-label="Search subjects, concepts, or practice steps" style="flex: 1; min-width: 220px; padding: 0.6rem 0.85rem; border: 1px solid #cbd5e1; border-radius: 6px; font-size: 0.9rem; outline: none;">
+                        <div class="home-category-filters">
+                            <button type="button" class="home-category-filter is-active" data-category="all" aria-pressed="true">All</button>
+                            <button type="button" class="home-category-filter" data-category="math" aria-pressed="false">Math</button>
+                            <button type="button" class="home-category-filter" data-category="science" aria-pressed="false">Science</button>
+                            <button type="button" class="home-category-filter" data-category="rla" aria-pressed="false">RLA</button>
+                            <button type="button" class="home-category-filter" data-category="social" aria-pressed="false">Social</button>
+                        </div>
+                    </div>
+                    <p id="homeSearchStatus" role="status" aria-live="polite" style="margin: 0.5rem 0 0; color: #334155; font-size: 0.85rem;"></p>
+                    <div id="homeSearchMatches" class="home-search-matches" aria-label="Matching concepts"></div>
+                </div>
+
+                <!-- Featured Concept Spotlight -->
+                <div class="container" style="margin-bottom: 2.5rem; max-width: 1050px;">
+                    <div class="concept-spotlight-panel">
+                        <div class="spotlight-copy">
+                            <span class="spotlight-label">Featured concept</span>
+                            <h3>Slope-intercept form</h3>
+                            <p>Use this form to see a line’s slope and y-intercept at a glance.</p>
+                        </div>
+                        <div class="spotlight-equation" aria-label="y equals m x plus b">
+                            <span class="spotlight-formula">y = <i>m</i>x + <i>b</i></span>
+                            <span><i>m</i> = slope <span aria-hidden="true">·</span> <i>b</i> = y-intercept</span>
+                        </div>
+                        <p class="spotlight-example"><strong>Example:</strong> In y = 2x + 3, the slope is 2 and the y-intercept is 3.</p>
+                        <a href="math_concept.html#math-block" class="spotlight-link">Explore math concepts <span aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Quick-Resume Progress Tracker -->
+                <div class="container home-continue-wrap">
+                    <div class="home-continue-card" aria-live="polite">
+                        <div class="home-continue-copy">
+                            <span class="home-continue-eyebrow" id="homeContinueEyebrow">YOUR NEXT STEP</span>
+                            <h3 id="homeContinueTitle">Choose a subject to get started</h3>
+                            <p id="homeContinueDescription">Browse a concept or begin practice in any GED subject.</p>
+                        </div>
+                        <div class="home-continue-actions">
+                            <a id="homeContinuePrimary" href="#modules" class="home-continue-primary">Choose a subject</a>
+                            <a id="homeContinueSecondary" href="concept.html" class="home-continue-secondary">Explore concepts</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature Chips -->
+                <div class="feature-chips">
+                    <span class="chip">📚 4 Core Subjects</span>
+                    <span class="chip">✍️ Step-by-Step Practice</span>
+                    <span class="chip">📖 Concept Handbook</span>
+                    <span class="chip">📈 Progress Tracking</span>
+                </div>
+
+                <!-- Why Students Choose Zyomix -->
+                <section class="platform-highlights">
+                    <div class="section-header text-center">
+                        <h3>Why learners choose Zyomix</h3>
+                        <p>Built for independent GED prep with focused learning, immediate practice, and measurable progress.</p>
+                    </div>
+                    <div class="value-grid">
+                        <div class="value-card blue">
+                            <div class="value-icon">🎯</div>
+                            <h4>Focused study paths</h4>
+                            <p>Follow a simple, structured pathway for each GED subject without feeling overwhelmed.</p>
+                        </div>
+                        <div class="value-card green">
+                            <div class="value-icon">🧠</div>
+                            <h4>Concept-first learning</h4>
+                            <p>Strengthen the underlying idea before jumping into timed questions and exam-style drills.</p>
+                        </div>
+                        <div class="value-card red">
+                            <div class="value-icon">✅</div>
+                            <h4>Immediate feedback</h4>
+                            <p>Review answers with explanations so learners understand both the process and the result.</p>
+                        </div>
+                        <div class="value-card amber">
+                            <div class="value-icon">📊</div>
+                            <h4>Progress visibility</h4>
+                            <p>Keep track of completion, mastery, and the next strongest area to study.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Student Learning Flow -->
+                <section class="learning-system">
+                    <div class="section-header text-center">
+                        <h3>How the learning flow works</h3>
+                        <p>A clear system designed to help students build confidence step by step.</p>
+                    </div>
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <span class="step-number">01</span>
+                            <h4>Select a subject</h4>
+                            <p>Choose a domain like Math, Science, RLA, or Social Studies based on your current needs.</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-number">02</span>
+                            <h4>Review the concept</h4>
+                            <p>Read the lesson summary, examples, formulas, and common mistakes before practicing.</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-number">03</span>
+                            <h4>Practice deliberately</h4>
+                            <p>Solve realistic GED-style questions and learn from the explanation after each answer.</p>
+                        </div>
+                        <div class="step-card">
+                            <span class="step-number">04</span>
+                            <h4>Track momentum</h4>
+                            <p>See your progress grow as you complete lessons, quizzes, and skill-building challenges.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subject Learning Modules Section -->
+                <div class="quick-start container" id="modules" style="max-width: 1050px;">
+                    <div class="section-header">
+                        <h3>Choose Your Study Pathway</h3>
+                        <p>Select a subject below to dive into core concept handbooks or start active practice questions.</p>
+                    </div>
+
+                    <div class="module-grid">
+                        <!-- Math Card -->
+                        <div class="module-card math-card">
+                            <div class="card-content">
+                                <h3>Math Module</h3>
+                                <p>Master linear equations, algebra, and geometry.</p>
+                                <div class="card-actions">
+                                    <a href="concept.html#math-block" class="btn-card-secondary">Concept</a>
+                                    <a href="practice.html?subject=math" class="btn-card-primary">Practice</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Science Card -->
+                        <div class="module-card science-card">
+                            <div class="card-content">
+                                <h3>Science Module</h3>
+                                <p>Explore scientific reasoning and data analysis.</p>
+                                <div class="card-actions">
+                                    <a href="concept.html#science-block" class="btn-card-secondary">Concept</a>
+                                    <a href="practice.html?subject=science" class="btn-card-primary">Practice</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- RLA Card -->
+                        <div class="module-card rla-card">
+                            <div class="card-content">
+                                <h3>RLA Module</h3>
+                                <p>Enhance reading comprehension and argument analysis.</p>
+                                <div class="card-actions">
+                                    <a href="concept.html#rla-block" class="btn-card-secondary">Concept</a>
+                                    <a href="practice.html?subject=rla" class="btn-card-primary">Practice</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Social Studies Card -->
+                        <div class="module-card social-card">
+                            <div class="card-content">
+                                <h3>Social Studies Module</h3>
+                                <p>Review civics, history, and constitutional documents.</p>
+                                <div class="card-actions">
+                                    <a href="concept.html#social-block" class="btn-card-secondary">Concept</a>
+                                    <a href="practice.html?subject=social" class="btn-card-primary">Practice</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Weekly Study Roadmap -->
+                <section class="roadmap-section">
+                    <div class="section-header text-center">
+                        <h3>Suggested 7-day study roadmap</h3>
+                        <p>A practical weekly rhythm that keeps learning consistent and sustainable.</p>
+                    </div>
+                    <div class="roadmap-grid">
+                        <div class="roadmap-card">
+                            <span class="roadmap-day">Day 1</span>
+                            <h4>Math foundations</h4>
+                            <p>Review equations, terms, and algebraic structure.</p>
+                        </div>
+                        <div class="roadmap-card">
+                            <span class="roadmap-day">Day 2</span>
+                            <h4>Science reasoning</h4>
+                            <p>Analyze graphs, data, and cause-and-effect relationships.</p>
+                        </div>
+                        <div class="roadmap-card">
+                            <span class="roadmap-day">Day 3</span>
+                            <h4>Reading strategies</h4>
+                            <p>Practice main idea, inference, and evidence-based reading.</p>
+                        </div>
+                        <div class="roadmap-card">
+                            <span class="roadmap-day">Day 4</span>
+                            <h4>Math practice set</h4>
+                            <p>Complete a short timed quiz and review explanations.</p>
+                        </div>
+                        <div class="roadmap-card">
+                            <span class="roadmap-day">Day 5</span>
+                            <h4>Social studies review</h4>
+                            <p>Study civics, historical events, and constitutional concepts.</p>
+                        </div>
+                        <div class="roadmap-card">
+                            <span class="roadmap-day">Day 6</span>
+                            <h4>Mixed practice</h4>
+                            <p>Rotate through a mini review of the weak areas you missed.</p>
+                        </div>
+                        <div class="roadmap-card accent">
+                            <span class="roadmap-day">Day 7</span>
+                            <h4>Confidence check</h4>
+                            <p>Take a mini diagnostic challenge and identify your next focus.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Subject Mastery Progress Overview -->
+                <div class="container" style="margin-top: 3.5rem; text-align: left; max-width: 1050px;">
+                    <div class="section-header" style="margin-bottom: 1.5rem;">
+                        <h3>Your Subject Mastery Progress</h3>
+                        <p>Track your completion across all four GED test domains.</p>
+                    </div>
+
+                    <div style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); display: flex; flex-direction: column; gap: 1.5rem;">
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; color: #1a202c;">
+                                <span>Mathematics (Algebra & Geometry)</span>
+                                <span style="color: #3182ce;">50% Completed</span>
+                            </div>
+                            <div style="background: #edf2f7; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div style="background: #3182ce; width: 50%; height: 100%; border-radius: 5px;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; color: #1a202c;">
+                                <span>Science (Experimental Reasoning)</span>
+                                <span style="color: #276749;">25% Completed</span>
+                            </div>
+                            <div style="background: #edf2f7; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div style="background: #276749; width: 25%; height: 100%; border-radius: 5px;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; color: #1a202c;">
+                                <span>Reasoning Through Language Arts (RLA)</span>
+                                <span style="color: #9b2c2c;">10% Completed</span>
+                            </div>
+                            <div style="background: #edf2f7; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div style="background: #9b2c2c; width: 10%; height: 100%; border-radius: 5px;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-weight: 600; font-size: 0.9rem; margin-bottom: 0.35rem; color: #1a202c;">
+                                <span>Social Studies (Civics & Government)</span>
+                                <span style="color: #d69e2e;">0% Completed</span>
+                            </div>
+                            <div style="background: #edf2f7; height: 10px; border-radius: 5px; overflow: hidden;">
+                                <div style="background: #d69e2e; width: 0%; height: 100%; border-radius: 5px;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Centralized Concept Hub Banner -->
+                <div class="concept-section">
+                    <div class="concept-banner">
+                        <div class="concept-info">
+                            <h3>Core Subject Concepts Hub</h3>
+                            <p>Study essential formulas, vocabulary terms, and reading rules in one place before testing your knowledge.</p>
+                        </div>
+                        <a href="concept.html" class="btn-concept-main">Explore All Concepts</a>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">
+                GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. This website is an independent educational project and is not endorsed, sponsored, or affiliated with GED Testing Service or ACE.
+            </p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        async function loadHomeMeta() {
+            const token = localStorage.getItem('zyomix_token');
+            const status = document.getElementById('homeAuthStatus');
+
+            if (!token) {
+                status.textContent = 'Guest mode active — log in to save progress.';
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/me', { headers: { Authorization: `Bearer ${token}` } });
+                if (response.status === 401) {
+                    localStorage.removeItem('zyomix_token');
+                    status.textContent = 'Session expired — log in again to save progress.';
+                    return;
+                }
+                if (!response.ok) throw new Error(`Account request failed: ${response.status}`);
+
+                const data = await response.json();
+                status.textContent = `Welcome back, ${data.user.name}! Your progress is being saved automatically.`;
+            } catch (error) {
+                status.textContent = 'Progress syncing is temporarily unavailable.';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadHomeMeta);
+    </script>
+</body>
+</html>

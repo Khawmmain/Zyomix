@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Student Profile & Progress</title>
+    <script>
+        if (['localhost', '127.0.0.1'].includes(window.location.hostname) && window.location.port !== '3000') {
+            const appUrl = new URL(window.location.href);
+            appUrl.port = '3000';
+            window.location.replace(appUrl.href);
+        }
+    </script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Smooth Entrance & Card Layout */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .account-container {
+            animation: fadeInUp 0.4s ease-out forwards;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+            max-width: 1080px;
+            margin: 2.5rem auto;
+            text-align: left;
+            overflow: hidden;
+        }
+
+        .account-header-banner {
+            background: linear-gradient(120deg, #102b46 0%, #1d4e75 58%, #256b87 100%);
+            color: #ffffff;
+            padding: clamp(1.5rem, 4vw, 2.75rem);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .profile-info {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+        }
+
+        .profile-avatar {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            border: 3px solid #93d5f5;
+            object-fit: cover;
+        }
+
+        .streak-badge {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            color: #e0f2fe;
+            padding: 0.6rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .account-body-padding {
+            padding: clamp(1rem, 3.5vw, 2.5rem);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 1.25rem;
+            text-align: center;
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+        }
+
+        .stat-card h4 {
+            font-size: 1.5rem;
+            color: #3182ce;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-card p {
+            font-size: 0.85rem;
+            color: #64748b;
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .progress-bar-container {
+            background: #e2e8f0;
+            height: 11px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-top: 0.4rem;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+        }
+
+        .feature-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: clamp(1rem, 2.5vw, 1.5rem);
+            box-shadow: 0 3px 12px rgba(15, 23, 42, 0.035);
+        }
+
+        .account-section-heading {
+            margin: 0 0 0.35rem;
+            color: #0f172a;
+            font-size: 1.2rem;
+        }
+
+        .account-section-copy {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin: 0 0 1.1rem;
+            line-height: 1.55;
+        }
+
+        .account-feature-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 1rem;
+        }
+
+        .account-feature-grid .feature-box { min-width: 0; }
+
+        .goal-controls {
+            display: flex;
+            gap: 0.65rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .account-input {
+            min-height: 42px;
+            padding: 0.55rem 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: #ffffff;
+            color: #0f172a;
+            font: inherit;
+        }
+
+        .goal-status {
+            display: block;
+            min-height: 1.3rem;
+            margin-top: 0.65rem;
+            color: #166534;
+            font-size: 0.88rem;
+            font-weight: 650;
+        }
+
+        .study-link-list,
+        .exam-history-list {
+            display: grid;
+            gap: 0.65rem;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .study-link-list li,
+        .exam-history-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 0.85rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .study-link-list a {
+            color: #1d4e75;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .study-link-list a:hover { text-decoration: underline; }
+
+        .account-muted {
+            color: #64748b;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .goal-progress-label {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin: 1rem 0 0.3rem;
+            color: #334155;
+            font-size: 0.9rem;
+            font-weight: 700;
+        }
+
+        .account-mastery {
+            padding: 1.35rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            background: #ffffff;
+        }
+
+        .account-mastery h3 {
+            margin: 0 0 1.1rem;
+            color: #0f172a;
+        }
+
+        .account-message {
+            padding: 0.7rem 0.85rem;
+            border-radius: 8px;
+            color: #7f1d1d;
+            background: #fef2f2;
+        }
+
+        @media (max-width: 640px) {
+            .account-container { margin: 1rem auto; }
+            .account-header-banner { align-items: flex-start; }
+            .profile-info { align-items: flex-start; }
+            .profile-avatar { width: 58px; height: 58px; }
+            .account-feature-grid { grid-template-columns: 1fr; }
+            .stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .stat-card:last-child { grid-column: 1 / -1; }
+            .study-link-list li,
+            .exam-history-list li { align-items: flex-start; flex-direction: column; gap: 0.3rem; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .account-container { animation: none; }
+            .btn-action-primary { transition: none; }
+        }
+
+        .btn-action-primary {
+            background: #3182ce;
+            color: #ffffff;
+            border: none;
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        .btn-action-primary:hover {
+            background: #2b6cb0;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(49, 130, 206, 0.2);
+        }
+
+        .btn-action-secondary {
+            background: #ffffff;
+            color: #475569;
+            border: 1px solid #cbd5e1;
+            padding: 0.65rem 1.25rem;
+            border-radius: 8px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 0.9rem;
+        }
+
+        .btn-action-secondary:hover {
+            background: #f1f5f9;
+            border-color: #94a3b8;
+        }
+    </style>
+    <link rel="stylesheet" href="course-ui.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="account.css">
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+</head>
+<body class="account-page">
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group" style="text-decoration: none;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="account.html" class="nav-btn active">Account</a>
+                <a href="concept.html" class="nav-btn">Concept</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="account-container">
+                
+                <!-- Profile Banner Header -->
+                <div class="account-header-banner">
+                    <div class="profile-info">
+                        <img src="assets/logo.jpg" alt="User Profile" class="profile-avatar">
+                        <div>
+                            <span style="background: #3182ce; color: #fff; font-size: 0.72rem; font-weight: 700; padding: 0.2rem 0.6rem; border-radius: 4px; text-transform: uppercase;">Independent Learner</span>
+                            <h2 id="accountName" style="font-size: 1.5rem; margin: 0.3rem 0 0.2rem 0;">Learner account</h2>
+                            <p style="color: #cbd5e0; font-size: 0.88rem; margin: 0;">GED Complete Curriculum Track (2026)</p>
+                        </div>
+                    </div>
+                    <div class="streak-badge">
+                        🔥 Active Study Streak<br>
+                        <strong id="accountStreak" style="font-size: 1.2rem; color: #fff;">0 Days Active</strong>
+                    </div>
+                </div>
+
+                <!-- Account Body Content -->
+                <div class="account-body-padding">
+                    
+                    <div id="authPanel" class="feature-box" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem;">
+                        <div id="loginBox" class="feature-box">
+                            <h3 class="account-section-heading">Log in</h3>
+                            <form id="loginForm">
+                                <label for="loginEmail" class="account-muted">Email address</label>
+                                <input type="email" id="loginEmail" autocomplete="email" required class="account-input" style="width:100%; margin:0.35rem 0 0.75rem;">
+                                <label for="loginPassword" class="account-muted">Password</label>
+                                <div class="password-field">
+                                    <input type="password" id="loginPassword" autocomplete="current-password" required class="account-input">
+                                    <button type="button" class="password-visibility-toggle" data-password-target="loginPassword" aria-label="Show password" aria-pressed="false">
+                                        <svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </button>
+                                </div>
+                                <button type="submit" class="btn-action-primary" style="width:100%;">Log in</button>
+                            </form>
+                        </div>
+
+                        <div id="signupBox" class="feature-box">
+                            <h3 class="account-section-heading">Create account</h3>
+                            <form id="signupForm">
+                                <label for="signupName" class="account-muted">Full name</label>
+                                <input type="text" id="signupName" autocomplete="name" required class="account-input" style="width:100%; margin:0.35rem 0 0.75rem;">
+                                <label for="signupEmail" class="account-muted">Email address</label>
+                                <input type="email" id="signupEmail" autocomplete="email" required class="account-input" style="width:100%; margin:0.35rem 0 0.75rem;">
+                                <label for="signupPassword" class="account-muted">Password</label>
+                                <div class="password-field">
+                                    <input type="password" id="signupPassword" autocomplete="new-password" minlength="8" required class="account-input">
+                                    <button type="button" class="password-visibility-toggle" data-password-target="signupPassword" aria-label="Show password" aria-pressed="false">
+                                        <svg class="password-eye-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+                                    </button>
+                                </div>
+                                <button type="submit" class="btn-action-secondary" style="width:100%;">Create account</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div id="userSummary" class="feature-box" style="display:none;">
+                        <h3 class="account-section-heading">Welcome back</h3>
+                        <p id="userNameText" style="margin:0 0 0.8rem 0; color:#475569; font-weight:700;"></p>
+                        <a href="dashboard.html" class="btn-action-primary" style="margin-right:.5rem;">Open Course Dashboard</a>
+                        <button id="logoutButton" class="btn-action-secondary">Log out</button>
+                    </div>
+
+                    <!-- Quick Stats Grid -->
+                    <div class="stat-grid">
+                        <div class="stat-card">
+                            <h4 id="subjectCount">4</h4>
+                            <p>Core Subjects</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 id="completedCount">0</h4>
+                            <p>Lessons Completed</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4 id="avgScoreValue">0%</h4>
+                            <p>Average Quiz Score</p>
+                        </div>
+                    </div>
+
+                    <section class="account-feature-grid" aria-label="Study plan and shortcuts">
+                        <div class="feature-box">
+                            <h3 class="account-section-heading">🎯 Exam date</h3>
+                            <p class="account-section-copy">Choose your target date and see how much time you have to prepare.</p>
+                            <div class="goal-controls">
+                                <label class="account-muted" for="targetExamDate">Target date</label>
+                                <input type="date" id="targetExamDate" class="account-input">
+                                <button type="button" id="saveExamGoalButton" class="btn-action-primary">Save date</button>
+                            </div>
+                            <p id="examCountdown" class="account-muted" aria-live="polite">No exam date set yet.</p>
+                            <span id="goalMessage" class="goal-status" role="status" aria-live="polite"></span>
+                        </div>
+
+                        <div class="feature-box">
+                            <h3 class="account-section-heading">📚 Weekly lesson goal</h3>
+                            <p class="account-section-copy">Pick a realistic target. Completed lessons from the past seven days count toward it.</p>
+                            <div class="goal-controls">
+                                <label class="account-muted" for="weeklyLessonGoal">Lessons each week</label>
+                                <select id="weeklyLessonGoal" class="account-input">
+                                    <option value="3">3 lessons</option>
+                                    <option value="5">5 lessons</option>
+                                    <option value="7">7 lessons</option>
+                                    <option value="10">10 lessons</option>
+                                </select>
+                                <button type="button" id="saveWeeklyGoalButton" class="btn-action-primary">Save goal</button>
+                            </div>
+                            <div class="goal-progress-label">
+                                <span>This week</span>
+                                <span id="weeklyGoalLabel">0 of 5 lessons</span>
+                            </div>
+                            <div class="progress-bar-container" role="progressbar" id="weeklyGoalProgress" aria-label="Weekly lesson goal progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
+                                <div id="weeklyGoalBar" class="progress-fill" style="width:0%; background:#0f766e;"></div>
+                            </div>
+                            <span id="weeklyGoalMessage" class="goal-status" role="status" aria-live="polite"></span>
+                        </div>
+                    </section>
+
+                    <section class="account-feature-grid" aria-label="Learning shortcuts and exam history">
+                        <div class="feature-box">
+                            <h3 class="account-section-heading">▶ Continue learning</h3>
+                            <p class="account-section-copy">Jump back to your most recently opened topic.</p>
+                            <div id="continueLearningContent" class="account-muted">Your recent topic will appear here when you open a lesson.</div>
+                        </div>
+                        <div class="feature-box">
+                            <h3 class="account-section-heading">★ Saved concepts</h3>
+                            <p class="account-section-copy">Your bookmarked lessons are saved on this browser.</p>
+                            <ul id="accountSavedTopics" class="study-link-list"></ul>
+                            <p id="savedTopicsEmpty" class="account-muted">No saved concepts yet. Bookmark a lesson to add it here.</p>
+                        </div>
+                        <div class="feature-box">
+                            <h3 class="account-section-heading">📝 Recent exam practice</h3>
+                            <p class="account-section-copy">Your latest timed practices and exam simulations.</p>
+                            <ul id="accountExamHistory" class="exam-history-list"></ul>
+                            <p id="examHistoryEmpty" class="account-muted">Log in to see exam history saved to your account.</p>
+                        </div>
+                        <div class="feature-box">
+                            <h3 class="account-section-heading">🚀 Quick links</h3>
+                            <p class="account-section-copy">Go directly to the areas you use most.</p>
+                            <div class="goal-controls">
+                                <a href="dashboard.html" class="btn-action-primary">Dashboard</a>
+                                <a href="practice.html" class="btn-action-secondary">Practice</a>
+                                <a href="concept.html" class="btn-action-secondary">Concepts</a>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Subject Mastery Progress -->
+                    <div class="account-mastery">
+                        <h3>Subject Mastery Progress</h3>
+                        
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: #334155;">
+                                <span>Mathematics (Algebra & Geometry)</span>
+                                <span id="mathMasteryLabel" style="color: #2b6cb0;">0%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div id="mathMasteryBar" class="progress-fill" style="width: 0%; background: #2b6cb0;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: #334155;">
+                                <span>Science (Experimental Design)</span>
+                                <span id="scienceMasteryLabel" style="color: #276749;">0%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div id="scienceMasteryBar" class="progress-fill" style="width: 0%; background: #276749;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: #334155;">
+                                <span>Reasoning Through Language Arts (RLA)</span>
+                                <span id="rlaMasteryLabel" style="color: #9b2c2c;">0%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div id="rlaMasteryBar" class="progress-fill" style="width: 0%; background: #9b2c2c;"></div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div style="display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: 600; color: #334155;">
+                                <span>Social Studies (Civics & Government)</span>
+                                <span id="socialMasteryLabel" style="color: #d69e2e;">0%</span>
+                            </div>
+                            <div class="progress-bar-container">
+                                <div id="socialMasteryBar" class="progress-fill" style="width: 0%; background: #d69e2e;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Offline Storage Management -->
+                    <div style="border-top: 1px solid #e2e8f0; padding-top: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+                        <div>
+                            <h4 style="font-size: 1rem; color: #1e293b; margin-bottom: 0.2rem;">Saved Progress</h4>
+                            <p style="font-size: 0.85rem; color: #64748b; margin: 0;">Lesson progress and exam results sync to your account when you are logged in. Study goals and saved concepts stay on this browser.</p>
+                        </div>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                            <a href="dashboard.html" class="btn-action-primary">Open Course Dashboard</a>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">
+                GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. Independent educational project[cite: 2].
+            </p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Script for Exam Date Goal Persistence -->
+    <script>
+        let accountProgress = [];
+
+        function setAuthState(user) {
+            const authPanel = document.getElementById('authPanel');
+            const userSummary = document.getElementById('userSummary');
+
+            if (user) {
+                authPanel.style.display = 'none';
+                userSummary.style.display = 'block';
+                document.getElementById('accountName').textContent = user.name;
+                document.getElementById('userNameText').textContent = `${user.name} • ${user.email}`;
+            } else {
+                authPanel.style.display = 'grid';
+                userSummary.style.display = 'none';
+            }
+        }
+
+        function renderExamCountdown() {
+            const dateInput = document.getElementById('targetExamDate');
+            const countdown = document.getElementById('examCountdown');
+            if (!dateInput.value) {
+                countdown.textContent = 'No exam date set yet.';
+                return;
+            }
+
+            const target = new Date(`${dateInput.value}T00:00:00`);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const days = Math.round((target.getTime() - today.getTime()) / 86400000);
+            countdown.textContent = days > 0
+                ? `${days} days until your target exam date.`
+                : days === 0
+                    ? 'Your target exam date is today. You’ve got this!'
+                    : `That target date was ${Math.abs(days)} days ago. Choose a new date to keep your plan current.`;
+        }
+
+        function getWeeklyGoal() {
+            const allowedGoals = ['3', '5', '7', '10'];
+            const savedGoal = localStorage.getItem('zyomix_weekly_lesson_goal') || '5';
+            return allowedGoals.includes(savedGoal) ? savedGoal : '5';
+        }
+
+        function updateWeeklyGoal(progress = accountProgress) {
+            const goal = Number(getWeeklyGoal());
+            const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+            const lessonsThisWeek = progress.filter(item => {
+                if (!item.completed || !item.updated_at) return false;
+                const timestamp = Date.parse(`${item.updated_at.replace(' ', 'T')}Z`);
+                return Number.isFinite(timestamp) && timestamp >= weekAgo;
+            }).length;
+            const percent = Math.min(100, Math.round((lessonsThisWeek / goal) * 100));
+            const progressBar = document.getElementById('weeklyGoalProgress');
+            document.getElementById('weeklyGoalLabel').textContent = `${lessonsThisWeek} of ${goal} lessons`;
+            document.getElementById('weeklyGoalBar').style.width = `${percent}%`;
+            progressBar.setAttribute('aria-valuemax', String(goal));
+            progressBar.setAttribute('aria-valuenow', String(Math.min(lessonsThisWeek, goal)));
+            document.getElementById('weeklyGoalMessage').textContent = lessonsThisWeek >= goal
+                ? 'Weekly goal reached. Great work!'
+                : `${goal - lessonsThisWeek} more ${goal - lessonsThisWeek === 1 ? 'lesson' : 'lessons'} to reach this week’s goal.`;
+        }
+
+        function renderContinueLearning() {
+            const container = document.getElementById('continueLearningContent');
+            try {
+                const lastLesson = JSON.parse(localStorage.getItem('zyomix_last_lesson') || 'null');
+                if (!lastLesson?.step) {
+                    container.textContent = 'Open a lesson to create a shortcut here.';
+                    return;
+                }
+
+                const link = document.createElement('a');
+                link.className = 'btn-action-primary';
+                link.href = `lesson.html?step=${encodeURIComponent(lastLesson.step)}`;
+                link.textContent = `Continue: ${lastLesson.title || lastLesson.step.toUpperCase()}`;
+                container.replaceChildren(link);
+                if (lastLesson.updatedAt) {
+                    const date = new Date(lastLesson.updatedAt);
+                    if (!Number.isNaN(date.getTime())) {
+                        const detail = document.createElement('p');
+                        detail.className = 'account-muted';
+                        detail.textContent = `Last opened ${date.toLocaleDateString()}`;
+                        container.append(detail);
+                    }
+                }
+            } catch (error) {
+                console.warn('Unable to read the recent lesson shortcut:', error);
+                container.textContent = 'Recent lesson data could not be read.';
+            }
+        }
+
+        function renderSavedTopics() {
+            const list = document.getElementById('accountSavedTopics');
+            const emptyMessage = document.getElementById('savedTopicsEmpty');
+            try {
+                const topics = JSON.parse(localStorage.getItem('zyomix_saved_concepts') || '[]');
+                if (!Array.isArray(topics)) throw new TypeError('Saved concepts are not a list.');
+                const entries = topics.filter(topic => topic && typeof topic.step === 'string').slice(0, 5);
+                list.replaceChildren(...entries.map(topic => {
+                    const item = document.createElement('li');
+                    const link = document.createElement('a');
+                    link.href = `lesson.html?step=${encodeURIComponent(topic.step)}`;
+                    link.textContent = topic.title || topic.step.toUpperCase();
+                    item.append(link);
+                    return item;
+                }));
+                emptyMessage.hidden = entries.length > 0;
+            } catch (error) {
+                console.warn('Unable to read saved concepts:', error);
+                list.replaceChildren();
+                emptyMessage.hidden = false;
+                emptyMessage.textContent = 'Saved concept data could not be read.';
+            }
+        }
+
+        function renderExamHistory(attempts) {
+            const list = document.getElementById('accountExamHistory');
+            const emptyMessage = document.getElementById('examHistoryEmpty');
+            const entries = Array.isArray(attempts) ? attempts.slice(0, 5) : [];
+            list.replaceChildren(...entries.map(attempt => {
+                const item = document.createElement('li');
+                const label = document.createElement('span');
+                label.textContent = attempt.mode === 'exam-simulator' ? 'GED Exam Simulator' : 'Timed Practice';
+                const score = document.createElement('strong');
+                const percentage = attempt.total > 0 ? Math.round((attempt.score / attempt.total) * 100) : 0;
+                score.textContent = `${attempt.score}/${attempt.total} · ${percentage}%`;
+                item.append(label, score);
+                return item;
+            }));
+            emptyMessage.hidden = entries.length > 0;
+            if (entries.length === 0 && localStorage.getItem('zyomix_token')) {
+                emptyMessage.textContent = 'No exam attempts saved yet. Try a timed practice or exam simulator.';
+            } else if (entries.length > 0) {
+                emptyMessage.textContent = '';
+            }
+        }
+
+        async function loadDashboard() {
+            const token = localStorage.getItem('zyomix_token');
+            if (!token) {
+                setAuthState(null);
+                updateWeeklyGoal();
+                renderExamHistory([]);
+                return;
+            }
+
+            try {
+                const headers = { Authorization: `Bearer ${token}` };
+                const [meRes, dashboardRes, progressRes, attemptsRes] = await Promise.all([
+                    fetch('/api/me', { headers }),
+                    fetch('/api/dashboard', { headers }),
+                    fetch('/api/progress', { headers }),
+                    fetch('/api/exam-attempts', { headers })
+                ]);
+
+                if (meRes.status === 401) {
+                    localStorage.removeItem('zyomix_token');
+                    setAuthState(null);
+                    return;
+                }
+                if (!meRes.ok) {
+                    throw new Error('Unable to verify your account session.');
+                }
+                if (!dashboardRes.ok || !progressRes.ok || !attemptsRes.ok) {
+                    throw new Error('Unable to load your account progress or exam history.');
+                }
+
+                const meData = await meRes.json();
+                const dashboardData = await dashboardRes.json();
+                const progressData = await progressRes.json();
+                const attemptsData = await attemptsRes.json();
+                const progress = Array.isArray(progressData.progress) ? progressData.progress : [];
+                accountProgress = progress;
+
+                setAuthState(meData.user);
+                document.getElementById('accountStreak').textContent = `${dashboardData.currentStreak} ${dashboardData.currentStreak === 1 ? 'Day' : 'Days'} Active`;
+
+                const completedLessons = Number(dashboardData.completedLessons ?? progress.filter(item => item.completed).length);
+                document.getElementById('completedCount').textContent = String(completedLessons);
+                document.getElementById('avgScoreValue').textContent = `${Math.round(Number(dashboardData.averageScore || 0))}%`;
+                updateWeeklyGoal(progress);
+                renderExamHistory(attemptsData.attempts);
+                document.getElementById('accountLoadError').hidden = true;
+
+                const subjectProgress = [
+                    ['math', 'mathMasteryLabel', 'mathMasteryBar'],
+                    ['science', 'scienceMasteryLabel', 'scienceMasteryBar'],
+                    ['rla', 'rlaMasteryLabel', 'rlaMasteryBar'],
+                    ['social', 'socialMasteryLabel', 'socialMasteryBar']
+                ];
+                subjectProgress.forEach(([subject, labelId, barId]) => {
+                    const results = progress.filter(item => item.subject.toLowerCase() === subject);
+                    const score = results.length ? Math.round(results.reduce((total, item) => total + Number(item.score), 0) / results.length) : 0;
+                    document.getElementById(labelId).textContent = `${score}%`;
+                    document.getElementById(barId).style.width = `${score}%`;
+                });
+            } catch (err) {
+                console.error('Dashboard load failed:', err);
+                const message = document.getElementById('accountLoadError');
+                message.textContent = 'We could not load your saved progress. Please refresh the page or try again later.';
+                message.hidden = false;
+            }
+        }
+
+        function continueAfterAuth() {
+            const next = new URLSearchParams(window.location.search).get('next');
+            const destination = next ? new URL(next, window.location.origin) : new URL('dashboard.html', window.location.origin);
+            window.location.assign(destination.origin === window.location.origin ? destination.href : 'dashboard.html');
+        }
+
+        function attachAuthHandlers() {
+            const loginForm = document.getElementById('loginForm');
+            const signupForm = document.getElementById('signupForm');
+
+            loginForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const payload = {
+                    email: document.getElementById('loginEmail').value,
+                    password: document.getElementById('loginPassword').value
+                };
+
+                try {
+                    const response = await fetch('/api/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) {
+                        alert(data.error || 'Login failed.');
+                        return;
+                    }
+
+                    localStorage.setItem('zyomix_token', data.token);
+                    continueAfterAuth();
+                } catch (error) {
+                    alert('Network error while logging in.');
+                }
+            });
+
+            signupForm.addEventListener('submit', async function(event) {
+                event.preventDefault();
+
+                const payload = {
+                    name: document.getElementById('signupName').value,
+                    email: document.getElementById('signupEmail').value,
+                    password: document.getElementById('signupPassword').value
+                };
+
+                try {
+                    const response = await fetch('/api/signup', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    const data = await response.json();
+                    if (!response.ok) {
+                        alert(data.error || 'Signup failed.');
+                        return;
+                    }
+
+                    localStorage.setItem('zyomix_token', data.token);
+                    continueAfterAuth();
+                } catch (error) {
+                    alert('Network error while creating account.');
+                }
+            });
+
+            document.getElementById('logoutButton').addEventListener('click', async () => {
+                const token = localStorage.getItem('zyomix_token');
+                if (token) {
+                    try {
+                        const response = await fetch('/api/logout', {
+                            method: 'POST',
+                            headers: { Authorization: `****** }
+                        });
+                        if (!response.ok && response.status !== 401) {
+                            throw new Error(`Logout request failed: ${response.status}`);
+                        }
+                    } catch (error) {
+                        console.error('Unable to revoke the session:', error);
+                        alert('Could not securely log out. Please check your connection and try again.');
+                        return;
+                    }
+                }
+
+                localStorage.removeItem('zyomix_token');
+                window.location.reload();
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelectorAll('.password-visibility-toggle').forEach(button => {
+                button.addEventListener('click', () => {
+                    const input = document.getElementById(button.dataset.passwordTarget);
+                    if (!input) return;
+
+                    const isVisible = input.type === 'text';
+                    input.type = isVisible ? 'password' : 'text';
+                    button.setAttribute('aria-pressed', String(!isVisible));
+                    button.setAttribute('aria-label', isVisible ? 'Show password' : 'Hide password');
+                    button.title = isVisible ? 'Show password' : 'Hide password';
+                    input.focus();
+                });
+            });
+
+            const today = new Date();
+            const todayValue = new Date(today.getTime() - today.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
+            const examDateInput = document.getElementById('targetExamDate');
+            examDateInput.min = todayValue;
+            const savedDate = localStorage.getItem('zyomix_exam_date');
+            if (savedDate) {
+                examDateInput.value = savedDate;
+            }
+            renderExamCountdown();
+            renderContinueLearning();
+            renderSavedTopics();
+            document.getElementById('weeklyLessonGoal').value = getWeeklyGoal();
+            updateWeeklyGoal();
+
+            attachAuthHandlers();
+            loadDashboard();
+
+            examDateInput.addEventListener('change', renderExamCountdown);
+            document.getElementById('saveExamGoalButton').addEventListener('click', saveExamGoal);
+            document.getElementById('saveWeeklyGoalButton').addEventListener('click', () => {
+                const goal = document.getElementById('weeklyLessonGoal').value;
+                if (!['3', '5', '7', '10'].includes(goal)) {
+                    document.getElementById('weeklyGoalMessage').textContent = 'Choose a valid weekly lesson goal.';
+                    return;
+                }
+                localStorage.setItem('zyomix_weekly_lesson_goal', goal);
+                updateWeeklyGoal();
+                document.getElementById('weeklyGoalMessage').textContent = `Weekly goal saved: ${goal} lessons. Progress updates when your account progress loads.`;
+            });
+        });
+
+        function saveExamGoal() {
+            const dateVal = document.getElementById('targetExamDate').value;
+            const msg = document.getElementById('goalMessage');
+            if (dateVal && dateVal < document.getElementById('targetExamDate').min) {
+                msg.textContent = 'Choose today or a future date.';
+                return;
+            }
+            if (dateVal) localStorage.setItem('zyomix_exam_date', dateVal);
+            else localStorage.removeItem('zyomix_exam_date');
+            renderExamCountdown();
+            msg.textContent = dateVal ? '✓ Exam date saved on this browser.' : 'Exam date cleared.';
+        }
+    </script>
+</body>
+</html>

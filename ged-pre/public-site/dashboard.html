@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix | Course Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+</head>
+<body class="dashboard-page">
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group"><img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo"><span class="logo">Zyomix</span></a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="dashboard.html" class="nav-btn active">Dashboard</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="account.html" class="nav-btn">Account</a>
+                <a href="concept.html" class="nav-btn">Concept</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+                <a href="about.html" class="nav-btn">About</a>
+            </nav>
+        </div>
+    </header>
+    <main class="dashboard main-content">
+        <section class="dashboard-intro" aria-labelledby="dashboardTitle">
+            <div class="dashboard-intro-copy">
+                <p class="dash-eyebrow">GED STUDY DASHBOARD</p>
+                <h1 id="dashboardTitle"><span id="welcomeName">See Your Progress Here</span></h1>
+                <p>Check your study results and choose what to work on next.</p>
+            </div>
+            <div class="dash-actions">
+                <a class="dash-button" href="#subjectPerformance"><span class="dash-button-icon" aria-hidden="true">▥</span>View subject scores</a>
+                <a class="dash-button primary" href="practice.html"><span class="dash-button-icon" aria-hidden="true">▷</span>Start practice<span aria-hidden="true">→</span></a>
+            </div>
+        </section>
+        <section class="continue-card" aria-labelledby="continueTitle">
+            <div class="continue-icon" aria-hidden="true">▶</div>
+            <div class="continue-copy">
+                <p class="dash-eyebrow" id="continueEyebrow">YOUR NEXT STEP</p>
+                <h2 id="continueTitle">Choose a GED subject</h2>
+                <p id="continueDescription">Choose a subject to browse its lessons and practice questions.</p>
+            </div>
+            <div class="continue-actions">
+                <a class="dash-button primary" id="continueButton" href="concept.html">Browse subjects</a>
+                <a class="dash-button continue-review" id="reviewLessonButton" href="concept.html" hidden>Review concept</a>
+            </div>
+        </section>
+        <section class="guest-dashboard-prompt" id="guestDashboardPrompt" aria-labelledby="guestPromptTitle" hidden>
+            <span class="guest-prompt-icon" aria-hidden="true">✓</span>
+            <div>
+                <h2 id="guestPromptTitle">Keep your progress with your account</h2>
+                <p>Sign in or create an account to save future study progress. Guest results stay in this browser.</p>
+            </div>
+            <a class="dash-button primary" href="account.html">Sign in or create account</a>
+        </section>
+        <section class="summary-section" aria-labelledby="summaryTitle">
+            <div class="summary-heading">
+                <div>
+                    <p class="dash-eyebrow">YOUR STUDY SNAPSHOT</p>
+                    <h2 id="summaryTitle">Progress summary</h2>
+                    <p class="summary-subtitle">Small steps add up. Keep practicing to build your record.</p>
+                </div>
+                <div class="subject-filters" role="group" aria-label="Filter quiz performance by subject">
+                    <button type="button" class="subject-filter is-active" data-subject-filter="all" aria-pressed="true">All Subjects</button>
+                    <button type="button" class="subject-filter" data-subject-filter="math" aria-pressed="false">Math</button>
+                    <button type="button" class="subject-filter" data-subject-filter="science" aria-pressed="false">Science</button>
+                    <button type="button" class="subject-filter" data-subject-filter="rla" aria-pressed="false">RLA</button>
+                    <button type="button" class="subject-filter" data-subject-filter="social" aria-pressed="false">Social Studies</button>
+                </div>
+            </div>
+            <div class="dash-grid" role="list" aria-label="Study progress statistics">
+                <div class="dash-stat streak-stat" role="listitem">
+                    <div class="stat-topline"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M17.5 3.5c1.2 5.2-3.8 6.7-2.2 11.1 1-1.6 2.5-2.8 4.1-3.4 4.4 4.1 5.3 8.3 3.1 12.2a8.6 8.6 0 0 1-15.7-4.3c0-4.2 2.4-7.3 6-10.6-.2 3.7.4 5.3 1.7 6.2C13.7 9.8 18.3 8.3 17.5 3.5Z"/></svg></span><span id="streakStatus" class="stat-badge" hidden>Active</span></div>
+                    <div class="stat-value-line"><strong id="streakValue">0</strong><span id="streakUnit">Days</span></div>
+                    <span class="dash-stat-label">day study streak</span>
+                </div>
+                <div class="dash-stat lessons-stat" role="listitem">
+                    <div class="stat-topline"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><path d="M4.5 7.5c4.3-1.7 8-.9 11.5 2.1v17c-3.5-3-7.2-3.8-11.5-2.1v-17Zm23 0c-4.3-1.7-8-.9-11.5 2.1v17c3.5-3 7.2-3.8 11.5-2.1v-17Z"/></svg></span></div>
+                    <div class="stat-value-line"><strong id="completedValue">0</strong></div>
+                    <span class="dash-stat-label">lessons completed</span>
+                </div>
+                <div class="dash-stat score-stat" role="listitem">
+                    <div class="stat-topline"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="11.5"/><circle cx="16" cy="16" r="6.5"/><circle cx="16" cy="16" r="1.5"/></svg></span></div>
+                    <div class="stat-value-line"><strong id="averageValue">0%</strong></div>
+                    <span class="dash-stat-label">average quiz score</span>
+                </div>
+                <div class="dash-stat exam-stat" role="listitem">
+                    <div class="stat-topline"><span class="stat-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><rect x="7" y="6" width="18" height="23" rx="2.5"/><path d="M12 6.5V4h8v2.5M11.5 13h9M11.5 18h9M11.5 23h6"/></svg></span></div>
+                    <div class="stat-value-line"><strong id="examValue">0</strong><span>Tests</span></div>
+                    <span class="dash-stat-label">exam attempts</span>
+                </div>
+            </div>
+        </section>
+        <div class="dashboard-columns">
+            <section class="dash-section progress-section" id="subjectPerformance" aria-labelledby="progressTitle">
+                <div class="section-heading">
+                    <div><p class="dash-eyebrow">BY GED SUBJECT</p><h2 id="progressTitle">Quiz performance</h2></div>
+                </div>
+                <p id="dashboardMessage" aria-live="polite">Loading your saved study data...</p>
+                <div id="subjectProgress" aria-live="polite"></div>
+                <p class="progress-help">Each bar shows your average quiz score for that subject, not course completion.</p>
+            </section>
+            <div>
+                <section class="dash-section" aria-labelledby="studyModesTitle">
+                    <div class="section-heading">
+                        <div><p class="dash-eyebrow">KEEP LEARNING</p><h2 id="studyModesTitle">Study options</h2></div>
+                    </div>
+                    <div class="study-links">
+                        <a href="concept.html"><span><strong>Learn a concept</strong><small>Review a topic before you practice</small></span><span class="study-link-arrow" aria-hidden="true">&rarr;</span></a>
+                        <a href="quiz.html?mode=timed-practice&amp;step=math-1-1"><span><strong>Practice with a timer</strong><small>Build speed in a 5-minute session</small></span><span class="study-link-arrow" aria-hidden="true">&rarr;</span></a>
+                        <a href="quiz.html?mode=exam"><span><strong>Try an exam session</strong><small>Take a 20-minute GED practice exam</small></span><span class="study-link-arrow" aria-hidden="true">&rarr;</span></a>
+                    </div>
+                </section>
+                <section class="dash-section" aria-labelledby="recentExamsTitle">
+                    <div class="section-heading">
+                        <div><p class="dash-eyebrow">YOUR RECENT ACTIVITY</p><h2 id="recentExamsTitle">Recent attempts</h2></div>
+                    </div>
+                    <div id="attemptList" class="attempt-list"><p class="muted">No exam attempts yet.</p></div>
+                </section>
+            </div>
+        </div>
+    </main>
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">
+                GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. Independent educational project.
+            </p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+    <script>
+        const subjects = [
+            ['Mathematics', 'math'],
+            ['Science', 'science'],
+            ['Reasoning Through Language Arts', 'rla'],
+            ['Social Studies', 'social']
+        ];
+        const subjectNames = Object.fromEntries(subjects.map(([label, key]) => [key, label]));
+
+        function readStoredValue(key, fallback) {
+            try {
+                const value = localStorage.getItem(key);
+                return value ? JSON.parse(value) : fallback;
+            } catch (error) {
+                console.warn(`Unable to read saved ${key} data:`, error);
+                return fallback;
+            }
+        }
+
+        function getLocalProgress() {
+            const saved = readStoredValue('zyomix_practice_progress', {});
+            return Object.entries(saved).map(([lesson, result]) => ({
+                lesson,
+                subject: lesson.split('-')[0],
+                completed: Boolean(result.completed),
+                score: Number(result.score) || 0,
+                updated_at: result.timestamp || ''
+            }));
+        }
+
+        function renderContinueLearning(progressRows) {
+            const storedLesson = readStoredValue('zyomix_last_lesson', null);
+            const recentProgress = progressRows
+                .filter(item => item.lesson && subjectNames[item.lesson.split('-')[0]])
+                .sort((a, b) => Date.parse(b.updated_at || '') - Date.parse(a.updated_at || ''))[0];
+            const progressLesson = recentProgress
+                ? { step: recentProgress.lesson, subject: recentProgress.subject, updatedAt: recentProgress.updated_at }
+                : null;
+            const candidates = [storedLesson, progressLesson].filter(item => item && subjectNames[item.subject]);
+            candidates.sort((a, b) => Date.parse(b.updatedAt || b.updated_at || '') - Date.parse(a.updatedAt || a.updated_at || ''));
+            const lastLesson = candidates[0];
+
+            if (!lastLesson || !subjectNames[lastLesson.subject]) return;
+
+            const subjectName = subjectNames[lastLesson.subject];
+            const chapterAndStep = lastLesson.step.split('-').slice(1).join('.');
+            document.getElementById('continueEyebrow').textContent = 'PICK UP WHERE YOU LEFT OFF';
+            document.getElementById('continueTitle').textContent = lastLesson.title || `${subjectName} · Chapter ${chapterAndStep}`;
+            document.getElementById('continueDescription').textContent = `Continue your ${subjectName} study session, or review the concept first.`;
+
+            const continueButton = document.getElementById('continueButton');
+            continueButton.href = `quiz.html?step=${encodeURIComponent(lastLesson.step)}`;
+            continueButton.textContent = 'Continue practice';
+            const reviewButton = document.getElementById('reviewLessonButton');
+            reviewButton.href = `lesson.html?step=${encodeURIComponent(lastLesson.step)}`;
+            reviewButton.textContent = 'Review concept';
+            reviewButton.hidden = false;
+        }
+
+        function renderSubjectProgress(progressRows) {
+            document.getElementById('subjectProgress').innerHTML = subjects.map(([label, key]) => {
+                const results = progressRows.filter(item => String(item.subject).toLowerCase() === key);
+                const score = results.length
+                    ? Math.round(results.reduce((sum, item) => sum + Number(item.score || 0), 0) / results.length)
+                    : 0;
+                const status = results.length ? `${score}% quiz average` : 'Not started';
+                return `<div class="subject-row" data-subject="${key}">
+                    <a class="subject-row-main" href="concept.html?subject=${key}" aria-label="View ${label} concepts">
+                        <span>${label}</span><span>${status}</span>
+                    </a>
+                    <div class="track" role="progressbar" aria-label="${label} quiz average" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${score}">
+                        <span style="width:${score}%"></span>
+                    </div>
+                    <a class="subject-practice-link" href="practice.html?subject=${key}">Practice ${label} &rarr;</a>
+                </div>`;
+            }).join('');
+        }
+
+        function setupSubjectFilters() {
+            const filters = document.querySelectorAll('.subject-filter');
+            const rows = document.getElementById('subjectProgress');
+            filters.forEach(button => {
+                button.addEventListener('click', () => {
+                    const selectedSubject = button.dataset.subjectFilter || 'all';
+                    filters.forEach(filter => {
+                        const selected = filter === button;
+                        filter.classList.toggle('is-active', selected);
+                        filter.setAttribute('aria-pressed', String(selected));
+                    });
+                    rows.querySelectorAll('.subject-row').forEach(row => {
+                        row.hidden = selectedSubject !== 'all' && row.dataset.subject !== selectedSubject;
+                    });
+                });
+            });
+        }
+
+        function renderAttempts(attempts) {
+            const attemptList = document.getElementById('attemptList');
+            if (!attempts.length) {
+                attemptList.innerHTML = '<p class="muted">Complete a timed session or exam to see it here.</p>';
+                return;
+            }
+
+            attemptList.replaceChildren(...attempts.slice(0, 5).map(attempt => {
+                const item = document.createElement('div');
+                item.className = 'attempt-item';
+                const summary = document.createElement('span');
+                const label = document.createElement('strong');
+                label.textContent = attempt.mode === 'exam-simulator' || attempt.mode === 'exam'
+                    ? 'Exam simulator'
+                    : 'Timed practice';
+                const date = document.createElement('span');
+                const parsedDate = new Date(String(attempt.completed_at || attempt.timestamp || '').replace(' ', 'T'));
+                date.textContent = Number.isNaN(parsedDate.getTime()) ? 'Recently completed' : parsedDate.toLocaleDateString();
+                summary.append(label, document.createElement('br'), date);
+                const score = document.createElement('span');
+                const total = Number(attempt.total);
+                score.textContent = total > 0 ? `${Math.round(Number(attempt.score) / total * 100)}%` : '—';
+                item.append(summary, score);
+                return item;
+            }));
+        }
+
+        function renderSummary(summary, progressRows, attempts, message) {
+            const streak = Number(summary.currentStreak);
+            document.getElementById('streakValue').textContent = Number.isFinite(streak) ? String(streak) : '—';
+            document.getElementById('streakUnit').hidden = !Number.isFinite(streak);
+            document.getElementById('streakStatus').hidden = !Number.isFinite(streak) || streak < 1;
+            document.getElementById('completedValue').textContent = summary.completedLessons
+                ?? progressRows.filter(item => item.completed).length;
+            document.getElementById('averageValue').textContent = `${Math.round(Number(summary.averageScore || 0))}%`;
+            document.getElementById('examValue').textContent = attempts.length;
+            document.getElementById('dashboardMessage').textContent = message || (progressRows.length
+                ? 'Choose a subject below to continue learning or take another practice quiz.'
+                : 'Complete a practice quiz to see your results here. Choose a subject below to get started.');
+            renderSubjectProgress(progressRows);
+            renderContinueLearning(progressRows);
+            renderAttempts(attempts);
+        }
+
+        setupSubjectFilters();
+
+        async function loadCourseDashboard() {
+            const localProgress = getLocalProgress();
+            const localAttempts = readStoredValue('zyomix_exam_attempts', []);
+            const token = localStorage.getItem('zyomix_token');
+
+            if (!token) {
+                document.getElementById('guestDashboardPrompt').hidden = false;
+                document.getElementById('dashboardMessage').textContent = localProgress.length
+                    ? 'Showing quiz results saved in this browser. Guest results are not transferred to an account automatically.'
+                    : 'Your quiz averages will appear here after you complete practice. You can start without an account.';
+                renderSummary({
+                    currentStreak: '—',
+                    completedLessons: localProgress.filter(item => item.completed).length,
+                    averageScore: localProgress.length
+                        ? localProgress.reduce((sum, item) => sum + item.score, 0) / localProgress.length
+                        : 0
+                }, localProgress, localAttempts, localProgress.length
+                    ? 'Showing quiz results saved in this browser. Guest results are not transferred to an account automatically.'
+                    : 'Your quiz averages will appear here after you complete practice. You can start without an account.');
+                return;
+            }
+
+            document.getElementById('guestDashboardPrompt').hidden = true;
+            const headers = { Authorization: `Bearer ${token}` };
+            const [meResponse, dashboardResponse, progressResponse, attemptsResponse] = await Promise.all([
+                fetch('/api/me', { headers }), fetch('/api/dashboard', { headers }), fetch('/api/progress', { headers }), fetch('/api/exam-attempts', { headers })
+            ]);
+            const responses = [meResponse, dashboardResponse, progressResponse, attemptsResponse];
+            if (responses.some(response => response.status === 401)) {
+                localStorage.removeItem('zyomix_token');
+                document.getElementById('guestDashboardPrompt').hidden = false;
+                document.getElementById('dashboardMessage').textContent = 'Your session expired. Showing progress saved in this browser. Guest results are not transferred to an account automatically.';
+                renderSummary({
+                    currentStreak: '—',
+                    completedLessons: localProgress.filter(item => item.completed).length,
+                    averageScore: localProgress.length
+                        ? localProgress.reduce((sum, item) => sum + item.score, 0) / localProgress.length
+                        : 0
+                }, localProgress, localAttempts, 'Your session expired. Showing progress saved in this browser. Guest results are not transferred to an account automatically.');
+                return;
+            }
+            if (!responses.every(response => response.ok)) throw new Error('Unable to load course data.');
+            const [me, summary, progress, attempts] = await Promise.all([meResponse.json(), dashboardResponse.json(), progressResponse.json(), attemptsResponse.json()]);
+            document.getElementById('welcomeName').textContent = `Welcome, ${me.user.name}`;
+            renderSummary(summary, progress.progress, attempts.attempts);
+        }
+
+        loadCourseDashboard().catch(error => {
+            console.error('Unable to load dashboard data:', error);
+            document.getElementById('dashboardMessage').textContent = 'We could not load your saved study data. Refresh the page to try again.';
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Study Modules</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="theme.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group" style="text-decoration: none;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="modules.html" class="nav-btn active">Modules</a>
+                <a href="account.html" class="nav-btn">Account</a>
+                <a href="concept.html" class="nav-btn">Concept</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="hero">
+            <div class="container">
+                <h2 class="hero-title">GED Study Modules</h2>
+                <p class="hero-subtitle">Choose a subject to access integrated concepts and practice sets.</p>
+                
+                <div class="module-grid" style="margin-top: 2rem;">
+                    <div class="module-card math-card">
+                        <div class="card-content">
+                            <h3>Math Module</h3>
+                            <p>Linear equations, algebra, and geometry.</p>
+                            <div class="card-actions">
+                                <a href="concept.html?subject=math" class="btn-card-secondary">Concept</a>
+                                <a href="practice.html?subject=math" class="btn-card-primary">Practice</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-card science-card">
+                        <div class="card-content">
+                            <h3>Science Module</h3>
+                            <p>Experimental reasoning and life sciences.</p>
+                            <div class="card-actions">
+                                <a href="concept.html?subject=science" class="btn-card-secondary">Concept</a>
+                                <a href="practice.html?subject=science" class="btn-card-primary">Practice</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-card rla-card">
+                        <div class="card-content">
+                            <h3>RLA Module</h3>
+                            <p>Reading comprehension and argument analysis.</p>
+                            <div class="card-actions">
+                                <a href="concept.html?subject=rla" class="btn-card-secondary">Concept</a>
+                                <a href="practice.html?subject=rla" class="btn-card-primary">Practice</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="module-card social-card">
+                        <div class="card-content">
+                            <h3>Social Studies Module</h3>
+                            <p>Civics, government, and history.</p>
+                            <div class="card-actions">
+                                <a href="concept.html?subject=social" class="btn-card-secondary">Concept</a>
+                                <a href="practice.html?subject=social" class="btn-card-primary">Practice</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">GED® is a registered trademark of ACE. Independent educational platform.</p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

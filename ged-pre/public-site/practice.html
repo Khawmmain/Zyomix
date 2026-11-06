@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Practice Question Bank</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="course-ui.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+    <script src="chapter-labels.js" defer></script>
+    <style>
+        :root {
+            --blue-accent: #0284c7;
+            --green-accent: #10b981;
+            --red-accent: #ef4444;
+            --yellow-accent: #f59e0b;
+        }
+
+        body {
+            background-color: var(--page-background, #f4f7fb);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Hero Section */
+        .practice-hero {
+            background: linear-gradient(135deg, #e0f2fe 0%, #f0fdf4 100%);
+            padding: 3rem 1rem 2.5rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .practice-hero h2 {
+            font-size: 2.25rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .practice-hero p {
+            font-size: 1.05rem;
+            color: #475569;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Search Bar */
+        .search-container {
+            max-width: 500px;
+            margin: 0 auto 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .practice-search-input {
+            width: 100%;
+            padding: 0.75rem 1.25rem;
+            border-radius: 50px;
+            border: 1px solid #cbd5e1;
+            font-size: 0.95rem;
+            outline: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            transition: all 0.2s ease;
+        }
+
+        .practice-search-input:focus {
+            border-color: var(--blue-accent);
+            box-shadow: 0 0 0 4px rgba(2, 132, 199, 0.15);
+        }
+
+        /* Filter Tabs */
+        .practice-nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .practice-tab-btn {
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+        }
+
+        .practice-tab-btn:hover {
+            transform: translateY(-2px);
+            opacity: 0.9;
+        }
+
+        .tab-all { background: #1e293b; }
+        .tab-math { background: #0284c7; }
+        .tab-science { background: #059669; }
+        .tab-rla { background: #dc2626; }
+        .tab-social { background: #d97706; color: #ffffff; }
+
+        .practice-tab-btn.active {
+            outline: 3px solid #0f172a;
+            box-shadow: 0 0 0 5px rgba(15, 23, 42, 0.15);
+        }
+
+        /* Main Container */
+        .practice-container {
+            max-width: 1050px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .practice-subject-group {
+            margin-bottom: 2rem;
+        }
+
+        /* Chapter Concept Directory Row */
+        .chapter-concept-row {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.02);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            text-decoration: none;
+            color: #1e293b;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .chapter-concept-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 6px;
+        }
+
+        .border-math::before { background: var(--blue-accent); }
+        .border-science::before { background: var(--green-accent); }
+        .border-rla::before { background: var(--red-accent); }
+        .border-social::before { background: var(--yellow-accent); }
+
+        .chapter-concept-row:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(2, 132, 199, 0.08);
+            border-color: #cbd5e1;
+        }
+
+        .chapter-row-left {
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            padding-left: 0.5rem;
+        }
+
+        .chapter-pill {
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        .math-pill { background: #e0f2fe; color: #0369a1; }
+        .science-pill { background: #dcfce7; color: #15803d; }
+        .rla-pill { background: #fee2e2; color: #b91c1c; }
+        .social-pill { background: #fef3c7; color: #b45309; }
+
+        .divider-line {
+            color: #cbd5e1;
+            font-weight: 300;
+            font-size: 1.25rem;
+        }
+
+        .chapter-row-left h3 {
+            margin: 0;
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .arrow-badge {
+            width: 32px;
+            height: 32px;
+            background: #f1f5f9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: #64748b;
+            transition: all 0.2s ease;
+        }
+
+        .chapter-concept-row:hover .arrow-badge {
+            background: var(--blue-accent);
+            color: #ffffff;
+        }
+
+        /* Detailed Subject View Box */
+        .chapter-section-box {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            margin-bottom: 2rem;
+            overflow: hidden;
+        }
+
+        .chapter-title-bar {
+            padding: 1.25rem 2rem;
+            background: #ffffff;
+            border-bottom: 1px solid #f1f5f9;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chapter-title-bar h3 {
+            margin: 0;
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .steps-grid-2col {
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            background: #f8fafc;
+        }
+
+        @media (max-width: 768px) {
+            .steps-grid-2col {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .step-practice-card {
+            background: #ffffff;
+            border: 1px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 1.5rem 1.75rem;
+            text-decoration: none;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            transition: all 0.25s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+            min-height: 140px;
+        }
+
+        .step-practice-card:hover {
+            border-color: #0284c7;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 22px rgba(2, 132, 199, 0.1);
+        }
+
+        .step-header-tag {
+            align-self: flex-start;
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 6px;
+            color: #ffffff;
+            margin-bottom: 0.6rem;
+            letter-spacing: 0.5px;
+        }
+
+        .bg-blue { background: var(--blue-accent); }
+        .bg-green { background: var(--green-accent); }
+        .bg-red { background: var(--red-accent); }
+        .bg-yellow { background: var(--yellow-accent); color: #1e293b; }
+        .bg-completed { background: var(--green-accent); }
+
+        .step-practice-card h4 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin: 0 0 0.35rem 0;
+        }
+
+        .step-practice-card p {
+            font-size: 0.88rem;
+            color: #64748b;
+            margin: 0 0 1rem 0;
+            line-height: 1.4;
+        }
+
+        .start-btn {
+            align-self: flex-end;
+            background: var(--blue-accent);
+            color: #ffffff;
+            padding: 0.5rem 1.25rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: opacity 0.2s ease;
+        }
+
+        .start-btn.green-btn { background: var(--green-accent); }
+        .start-btn:hover { opacity: 0.9; }
+
+        /* Visibility control containers */
+        .all-subjects-view { display: block; }
+        .subject-detail-view { display: none; }
+    </style>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body class="practice-page">
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group" style="text-decoration: none;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="account.html" class="nav-btn">Account</a>
+                <a href="concept.html" class="nav-btn">Concept</a>
+                <a href="practice.html" class="nav-btn active">Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="practice-hero">
+        <div class="container">
+            <h2>Practice Question Bank</h2>
+            <p>Select a subtopic below to launch active step-by-step interactive practice sessions.</p>
+            <div class="practice-mode-links">
+                <a href="quiz.html?mode=timed-practice">Start 5-minute timed practice</a>
+                <a href="quiz.html?mode=exam">Take the 20-minute exam simulator</a>
+            </div>
+            
+            <!-- Search Input Bar -->
+            <div class="search-container">
+                <input type="text" id="practiceSearch" class="practice-search-input" placeholder="🔍 Search subtopics (e.g., PEMDAS, Fractions, Slope)..." onkeyup="searchPracticeBank(this.value)">
+            </div>
+
+            <!-- Filter Tabs -->
+            <div class="practice-nav-tabs">
+                <button class="practice-tab-btn tab-all active" onclick="filterPractice('all', this)">🗂️ All Subjects</button>
+                <button class="practice-tab-btn tab-math" onclick="filterPractice('math', this)">🔢 Mathematics</button>
+                <button class="practice-tab-btn tab-science" onclick="filterPractice('science', this)">🔬 Science</button>
+                <button class="practice-tab-btn tab-rla" onclick="filterPractice('rla', this)">📖 RLA</button>
+                <button class="practice-tab-btn tab-social" onclick="filterPractice('social', this)">🌍 Social Studies</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Container -->
+    <main class="practice-container">
+
+        <!-- ================= ALL SUBJECTS VIEW (Directory Style) ================= -->
+        <div id="all-view" class="all-subjects-view">
+            
+            <!-- Math Chapters 1 to 12 -->
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 1</span><span class="divider-line">|</span><h3>Basic Math & Number Operations</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 2</span><span class="divider-line">|</span><h3>Fractions, Decimals & Percentages</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 3</span><span class="divider-line">|</span><h3>Ratios, Proportions & Rates</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 4</span><span class="divider-line">|</span><h3>Exponents, Roots & Scientific Notation</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 5</span><span class="divider-line">|</span><h3>Geometry & Measurement</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 6</span><span class="divider-line">|</span><h3>Algebraic Expressions & Equations</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 7</span><span class="divider-line">|</span><h3>Inequalities & Systems of Equations</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 8</span><span class="divider-line">|</span><h3>Polynomials & Quadratic Equations</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 9</span><span class="divider-line">|</span><h3>Graphs & Coordinate Geometry</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 10</span><span class="divider-line">|</span><h3>Functions</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 11</span><span class="divider-line">|</span><h3>Statistics & Data Analysis</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+            <a href="#" onclick="switchAndScroll('math'); return false;" class="chapter-concept-row border-math">
+                <div class="chapter-row-left"><span class="chapter-pill math-pill">Math Chapter 12</span><span class="divider-line">|</span><h3>Probability</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+
+            <!-- Science Directory Links -->
+            <a href="#" onclick="switchAndScroll('science'); return false;" class="chapter-concept-row border-science">
+                <div class="chapter-row-left"><span class="chapter-pill science-pill">Science Chapter 1</span><span class="divider-line">|</span><h3>Experimental Design & Life Science</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+
+            <!-- RLA Directory Links -->
+            <a href="#" onclick="switchAndScroll('rla'); return false;" class="chapter-concept-row border-rla">
+                <div class="chapter-row-left"><span class="chapter-pill rla-pill">RLA Chapter 1</span><span class="divider-line">|</span><h3>Reading Comprehension & Arguments</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+
+            <!-- Social Studies Directory Links -->
+            <a href="#" onclick="switchAndScroll('social'); return false;" class="chapter-concept-row border-social">
+                <div class="chapter-row-left"><span class="chapter-pill social-pill">Social Chapter 1</span><span class="divider-line">|</span><h3>Civics, Government & History</h3></div>
+                <div class="arrow-badge">&rsaquo;</div>
+            </a>
+
+        </div>
+
+        <!-- ================= SUBJECT DETAIL VIEWS (2-Column Grid Steps) ================= -->
+        <div id="subject-detail-view" class="subject-detail-view">
+
+            <!-- MATHEMATICS PRACTICE GROUP -->
+            <div class="practice-subject-group" data-subject="math">
+                
+                <!-- Math Chapter 1 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 1</span><span class="divider-line">|</span><h3>Basic Math & Number Operations</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-1-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 1.1</span><h4>Whole Numbers</h4><p>Practice place value, rounding, and whole number operations.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 1.2</span><h4>Integers (Positive & Negative)</h4><p>Solve operations involving negative integers and absolute value.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 1.3</span><h4>Number Line and Absolute Value</h4><p>Plot values and evaluate distance from zero.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 1.4</span><h4>Comparing and Ordering Numbers</h4><p>Order rational numbers from least to greatest.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 1.5</span><h4>Rounding and Estimation</h4><p>Round numbers to target place values for quick checks.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 1.6</span><h4>Addition, Subtraction, Multiplication & Division</h4><p>Practice basic operational fluency.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 1.7</span><h4>Order of Operations (PEMDAS)</h4><p>Evaluate expressions following strict PEMDAS rules.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 1.8</span><h4>Factors and Multiples</h4><p>Determine factor pairs and common multiples.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 1.9</span><h4>Prime and Composite Numbers</h4><p>Classify numbers and find prime factorizations.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 1.10</span><h4>Greatest Common Factor (GCF)</h4><p>Find the largest factor shared between integers.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 1.11</span><h4>Least Common Multiple (LCM)</h4><p>Identify the smallest shared multiple.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-1-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 1.12</span><h4>Divisibility Rules</h4><p>Apply divisibility tests for fast mental math.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 2 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 2</span><span class="divider-line">|</span><h3>Fractions, Decimals & Percentages</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-2-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.1</span><h4>Types of Fractions</h4><p>Identify proper, improper, and unit fractions.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.2</span><h4>Equivalent Fractions</h4><p>Find matching fractions with different denominators.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.3</span><h4>Simplifying Fractions</h4><p>Reduce fractions to their simplest terms.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.4</span><h4>Comparing and Ordering Fractions</h4><p>Compare fraction values using common denominators.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.5</span><h4>Mixed Numbers and Improper Fractions</h4><p>Convert between mixed numbers and improper forms.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.6</span><h4>Fraction Operations</h4><p>Add, subtract, multiply, and divide fractions.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.7</span><h4>Decimal Place Value</h4><p>Read tenths, hundredths, and thousandths places.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.8</span><h4>Comparing and Rounding Decimals</h4><p>Compare decimal values and round accurately.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.9</span><h4>Decimal Operations</h4><p>Execute arithmetic with decimal numbers.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.10</span><h4>Fraction–Decimal–Percentage Conversions</h4><p>Convert seamlessly between representation formats.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.11</span><h4>Percentage Calculations</h4><p>Calculate percent of numbers and missing totals.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.12</span><h4>Percentage Increase and Decrease</h4><p>Find percentage changes across given datasets.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 2.13</span><h4>Discounts, Taxes and Tips</h4><p>Solve real-world retail financial math problems.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-2-14" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 2.14</span><h4>Simple Interest</h4><p>Apply the simple interest formula I = Prt.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 3 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 3</span><span class="divider-line">|</span><h3>Ratios, Proportions & Rates</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-3-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 3.1</span><h4>Understanding Ratios</h4><p>Express comparisons using ratio notation.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 3.2</span><h4>Equivalent Ratios</h4><p>Scale ratios up and down proportionally.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 3.3</span><h4>Simplifying Ratios</h4><p>Reduce ratio expressions to lowest terms.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 3.4</span><h4>Part-to-Part and Part-to-Whole Ratios</h4><p>Analyze relationships between quantities.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 3.5</span><h4>Unit Rates</h4><p>Find rates per single unit quantity.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 3.6</span><h4>Proportions</h4><p>Identify true proportional statements.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 3.7</span><h4>Solving Proportions</h4><p>Use cross-multiplication to solve for variables.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 3.8</span><h4>Direct Proportions</h4><p>Model directly proportional relationships.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 3.9</span><h4>Scale Factors and Scale Drawings</h4><p>Determine actual lengths from map scales.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 3.10</span><h4>Speed, Distance and Time</h4><p>Apply the d = rt motion formula.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-3-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 3.11</span><h4>Real-World Ratio and Rate Problems</h4><p>Solve word problems involving rate rates.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 4 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 4</span><span class="divider-line">|</span><h3>Exponents, Roots & Scientific Notation</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-4-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 4.1</span><h4>Understanding Exponents</h4><p>Evaluate repeated multiplication expressions.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 4.2</span><h4>Powers and Bases</h4><p>Identify base values and exponent powers.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 4.3</span><h4>Laws of Exponents</h4><p>Apply product, quotient, and power rules.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 4.4</span><h4>Zero and Negative Exponents</h4><p>Simplify expressions with zero and negative powers.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 4.5</span><h4>Square Roots and Cube Roots</h4><p>Calculate exact square and cube roots.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 4.6</span><h4>Simplifying Radicals</h4><p>Simplify radical expressions step-by-step.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 4.7</span><h4>Estimating Roots</h4><p>Estimate non-perfect square root values.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 4.8</span><h4>Scientific Notation</h4><p>Understand standard scientific notation format.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 4.9</span><h4>Converting Between Standard and Scientific Notation</h4><p>Convert large and small values.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-4-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 4.10</span><h4>Operations with Scientific Notation</h4><p>Multiply and divide scientific values.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 5 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 5</span><span class="divider-line">|</span><h3>Geometry & Measurement</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-5-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.1</span><h4>Points, Lines and Line Segments</h4><p>Identify basic geometric elements.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.2</span><h4>Types of Angles</h4><p>Classify acute, right, obtuse, and straight angles.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.3</span><h4>Parallel and Perpendicular Lines</h4><p>Determine line intersections and slopes.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.4</span><h4>Angle Relationships</h4><p>Find complementary and supplementary angles.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.5</span><h4>Triangles and Their Properties</h4><p>Apply interior angle sum rules.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.6</span><h4>Quadrilaterals and Polygons</h4><p>Study properties of 4-sided shapes.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.7</span><h4>Perimeter</h4><p>Calculate boundaries of 2D shapes.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.8</span><h4>Area of 2D Shapes</h4><p>Compute areas of rectangles, triangles, and trapezoids.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.9</span><h4>Composite Figures</h4><p>Break down complex shapes to find total area.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.10</span><h4>Circles: Radius, Diameter and Circumference</h4><p>Calculate circle distance measurements.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.11</span><h4>Area of Circles</h4><p>Apply A = πr² formula.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.12</span><h4>Coordinate Geometry</h4><p>Plot shapes on the coordinate grid.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.13</span><h4>Pythagorean Theorem</h4><p>Solve right triangle side lengths using a² + b² = c².</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-14" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.14</span><h4>3D Geometric Shapes</h4><p>Identify prisms, cylinders, cones, and spheres.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-15" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.15</span><h4>Surface Area</h4><p>Calculate total exterior area of 3D solids.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-16" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.16</span><h4>Volume</h4><p>Compute 3D shape capacity.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-17" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 5.17</span><h4>Measurement and Unit Conversions</h4><p>Convert US customary and metric units.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-5-18" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 5.18</span><h4>Scale Drawings</h4><p>Solve geometry ratio problems.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 6 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 6</span><span class="divider-line">|</span><h3>Algebraic Expressions & Equations</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-6-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.1</span><h4>Variables, Constants and Coefficients</h4><p>Identify algebraic components.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.2</span><h4>Algebraic Expressions</h4><p>Formulate expressions from descriptions.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.3</span><h4>Evaluating Expressions</h4><p>Substitute numeric values for variables.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.4</span><h4>Combining Like Terms</h4><p>Group terms with matching variables.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.5</span><h4>Distributive Property</h4><p>Expand expressions using multiplication over addition.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.6</span><h4>Simplifying Expressions</h4><p>Reduce expressions to simplest algebraic form.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.7</span><h4>Writing Expressions from Word Problems</h4><p>Translate word problems into algebra.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.8</span><h4>One-Step Equations</h4><p>Solve basic single-operation equations.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.9</span><h4>Two-Step Equations</h4><p>Isolate variables using two inverse steps.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.10</span><h4>Multi-Step Equations</h4><p>Solve complex equations with multiple operations.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.11</span><h4>Equations with Fractions and Decimals</h4><p>Clear fractional denominators.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.12</span><h4>Variables on Both Sides</h4><p>Move unknown terms to one side of equal sign.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 6.13</span><h4>Translating Word Problems into Equations</h4><p>Set up solvable equations.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-6-14" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 6.14</span><h4>Rearranging Formulas</h4><p>Solve literal equations for target variable.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 7 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 7</span><span class="divider-line">|</span><h3>Inequalities & Systems of Equations</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-7-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 7.1</span><h4>Understanding Inequalities</h4><p>Compare non-equal numeric quantities.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 7.2</span><h4>Inequality Symbols</h4><p>Use <, >, ≤, and ≥ symbols correctly.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 7.3</span><h4>One-Step Inequalities</h4><p>Solve single operation inequality statements.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 7.4</span><h4>Multi-Step Inequalities</h4><p>Remember to flip inequality sign when multiplying/dividing by negatives.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 7.5</span><h4>Inequalities with Variables on Both Sides</h4><p>Isolate inequality terms.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 7.6</span><h4>Graphing Inequalities on a Number Line</h4><p>Plot open and closed circle boundaries.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 7.7</span><h4>Compound Inequalities</h4><p>Solve AND/OR combined inequalities.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 7.8</span><h4>Systems of Linear Equations</h4><p>Find intersection solution pairs.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 7.9</span><h4>Solving by Graphing</h4><p>Identify intersection coordinates.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 7.10</span><h4>Solving by Substitution</h4><p>Substitute algebraic expressions.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 7.11</span><h4>Solving by Elimination</h4><p>Eliminate variables by adding/subtracting equations.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-7-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 7.12</span><h4>Real-World Systems of Equations</h4><p>Model word problems using systems.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 8 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 8</span><span class="divider-line">|</span><h3>Polynomials & Quadratic Equations</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-8-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.1</span><h4>Understanding Polynomials</h4><p>Identify terms, coefficients, and exponents.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 8.2</span><h4>Types and Degrees of Polynomials</h4><p>Classify monomials, binomials, and trinomials.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.3</span><h4>Adding and Subtracting Polynomials</h4><p>Combine like algebraic terms.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 8.4</span><h4>Multiplying Polynomials</h4><p>Use FOIL method for binomial multiplication.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.5</span><h4>Factoring Polynomials</h4><p>Factor trinomial expressions into binomials.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 8.6</span><h4>Greatest Common Factor Factoring</h4><p>Factor out common algebraic factors.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.7</span><h4>Difference of Two Squares</h4><p>Factor a² - b² = (a+b)(a-b).</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 8.8</span><h4>Introduction to Quadratic Equations</h4><p>Identify standard form ax² + bx + c = 0.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.9</span><h4>Solving Quadratics by Factoring</h4><p>Apply zero-product property.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 8.10</span><h4>Solving by Square Roots</h4><p>Isolate squared variable terms.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.11</span><h4>Quadratic Formula</h4><p>Use x = (-b ± √(b² - 4ac)) / (2a).</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 8.12</span><h4>Discriminant and Nature of Roots</h4><p>Evaluate b² - 4ac to determine root count.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-8-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 8.13</span><h4>Introduction to Quadratic Applications</h4><p>Solve projectile motion word problems.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 9 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 9</span><span class="divider-line">|</span><h3>Graphs & Coordinate Geometry</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-9-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.1</span><h4>Cartesian Coordinate Plane</h4><p>Understand axes, origin, and grid setup.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.2</span><h4>Ordered Pairs and Quadrants</h4><p>Identify quadrants I through IV.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.3</span><h4>Plotting Points</h4><p>Locate coordinates (x, y) accurately.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.4</span><h4>Reading Tables and Graphs</h4><p>Extract data values from coordinate visual plots.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.5</span><h4>Graph Interpretation</h4><p>Analyze trends and key intercept points.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.6</span><h4>Slope and Rate of Change</h4><p>Calculate rise over run ratios.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.7</span><h4>Finding Slope Between Two Points</h4><p>Apply m = (y₂ - y₁) / (x₂ - x₁).</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.8</span><h4>X-Intercept and Y-Intercept</h4><p>Find axis intersection values.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.9</span><h4>Graphing Linear Equations</h4><p>Plot linear functions on the grid.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.10</span><h4>Slope-Intercept Form</h4><p>Write linear equations in y = mx + b form.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.11</span><h4>Standard Form of Linear Equations</h4><p>Convert equations to Ax + By = C.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.12</span><h4>Distance Between Two Points</h4><p>Apply distance formula d = √((x₂-x₁)² + (y₂-y₁)²).</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.13</span><h4>Midpoint of a Line Segment</h4><p>Calculate midpoint coordinates ((x₁+x₂)/2, (y₁+y₂)/2).</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-14" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 9.14</span><h4>Parallel and Perpendicular Lines</h4><p>Compare equal and negative reciprocal slopes.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-9-15" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 9.15</span><h4>Scatter Plots and Trends</h4><p>Evaluate line of best fit and correlations.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 10 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 10</span><span class="divider-line">|</span><h3>Functions</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-10-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 10.1</span><h4>Understanding Functions</h4><p>Test inputs for unique output relations.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 10.2</span><h4>Function Notation</h4><p>Interpret f(x) algebraic representation.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 10.3</span><h4>Input and Output</h4><p>Substitute independent variable inputs.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 10.4</span><h4>Evaluating Functions</h4><p>Calculate f(c) for given values.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 10.5</span><h4>Function Tables</h4><p>Complete x and f(x) value tables.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 10.6</span><h4>Domain and Range</h4><p>Determine all possible input x and output y values.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 10.7</span><h4>Linear Functions</h4><p>Analyze constant rate of change functions.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 10.8</span><h4>Comparing Functions</h4><p>Compare growth rates across equations and tables.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 10.9</span><h4>Graphing Functions</h4><p>Plot function curves and lines.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 10.10</span><h4>Quadratic Functions</h4><p>Study parabolic function graphs.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 10.11</span><h4>Interpreting Function Graphs</h4><p>Identify maximums, minimums, and intercepts.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-10-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 10.12</span><h4>Real-World Function Applications</h4><p>Model physical situations with functions.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 11 -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 11</span><span class="divider-line">|</span><h3>Statistics & Data Analysis</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-11-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.1</span><h4>Understanding Data</h4><p>Distinguish numerical and categorical data.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.2</span><h4>Frequency Tables</h4><p>Read count frequency charts.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.3</span><h4>Bar Graphs</h4><p>Analyze vertical and horizontal bar charts.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.4</span><h4>Line Graphs</h4><p>Track continuous changes over time.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.5</span><h4>Pie Charts</h4><p>Interpret percentage circle sectors.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.6</span><h4>Histograms</h4><p>Analyze continuous interval data plots.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.7</span><h4>Dot Plots</h4><p>Read discrete point distribution plots.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.8</span><h4>Mean</h4><p>Calculate arithmetic average of datasets.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.9</span><h4>Median</h4><p>Find middle value of ordered datasets.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.10</span><h4>Mode</h4><p>Identify most frequently occurring values.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.11</span><h4>Range</h4><p>Calculate difference between maximum and minimum.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.12</span><h4>Weighted Average</h4><p>Calculate averages with varying weight values.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.13</span><h4>Measures of Data Distribution</h4><p>Evaluate spread and central tendency.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-14" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.14</span><h4>Comparing Data Sets</h4><p>Compare means and medians of two groups.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-15" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.15</span><h4>Box Plots</h4><p>Read quartiles and five-number summaries.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-16" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.16</span><h4>Scatter Plots</h4><p>Analyze bivariate data distributions.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-17" class="step-practice-card"><div><span class="step-header-tag bg-blue">Step 11.17</span><h4>Correlation and Trends</h4><p>Identify positive, negative, or zero correlation.</p></div><span class="start-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-11-18" class="step-practice-card"><div><span class="step-header-tag bg-green">Step 11.18</span><h4>Data Interpretation and Predictions</h4><p>Make predictions using data trends.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+                <!-- Math Chapter 12: Probability -->
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill math-pill">Math Chapter 12</span><span class="divider-line">|</span><h3>Probability</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=math-12-1" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.1</span><h4>Introduction to Probability</h4><p>Identify events, outcomes, sample spaces, and favorable outcomes.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-2" class="step-practice-card"><div><span class="step-header-tag bg-green">Section 1.2</span><h4>Theoretical and Experimental Probability</h4><p>Compare predicted chances with results from trials.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-3" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.3</span><h4>Probability Scale</h4><p>Interpret probabilities from impossible (0) to certain (1).</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-4" class="step-practice-card"><div><span class="step-header-tag bg-green">Section 1.4</span><h4>Complementary Events</h4><p>Find the probability that an event will not happen.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-5" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.5</span><h4>Compound Probability: AND</h4><p>Find the chance that both events happen.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-6" class="step-practice-card"><div><span class="step-header-tag bg-green">Section 1.6</span><h4>Compound Probability: OR</h4><p>Find the chance of either event, accounting for overlap.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-7" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.7</span><h4>Three-Event Probability</h4><p>Combine probabilities across three events or trials.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-8" class="step-practice-card"><div><span class="step-header-tag bg-green">Section 1.8</span><h4>Independent Events</h4><p>Recognize events that do not change one another's chances.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-9" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.9</span><h4>Dependent Events</h4><p>Update probabilities when an earlier outcome changes the next.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-10" class="step-practice-card"><div><span class="step-header-tag bg-green">Section 1.10</span><h4>Conditional Probability</h4><p>Calculate a chance when some information is already known.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-11" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.11</span><h4>With and Without Replacement</h4><p>See how returning an item changes later probabilities.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-12" class="step-practice-card"><div><span class="step-header-tag bg-green">Section 1.12</span><h4>Real-World Applications</h4><p>Apply probability to practical situations and estimates.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=math-12-13" class="step-practice-card"><div><span class="step-header-tag bg-blue">Section 1.13</span><h4>Probability Assessment</h4><p>Review and test understanding across the full chapter.</p></div><span class="start-btn green-btn">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SCIENCE PRACTICE GROUP -->
+            <div class="practice-subject-group" data-subject="science">
+                <div id="science-practice-chapters"></div>
+            </div>
+
+            <!-- RLA PRACTICE GROUP -->
+            <div class="practice-subject-group" data-subject="rla">
+                <div class="chapter-section-box">
+                    <div class="chapter-title-bar"><span class="chapter-pill rla-pill">RLA Chapter 1</span><span class="divider-line">|</span><h3>Reading Comprehension & Arguments</h3></div>
+                    <div class="steps-grid-2col">
+                        <a href="quiz.html?step=rla-1-1" class="step-practice-card"><div><span class="step-header-tag bg-red">Step 1.1</span><h4>Central Ideas & Summaries</h4><p>Identify core arguments versus secondary background details.</p></div><span class="start-btn" style="background:var(--red-accent);">Start Practice &rarr;</span></a>
+                        <a href="quiz.html?step=rla-1-2" class="step-practice-card"><div><span class="step-header-tag bg-red">Step 1.2</span><h4>Evaluating Claims & Evidence</h4><p>Determine author tone, bias, and logical validity of evidence.</p></div><span class="start-btn" style="background:var(--red-accent);">Start Practice &rarr;</span></a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SOCIAL STUDIES PRACTICE GROUP -->
+            <div class="practice-subject-group" data-subject="social">
+                <div id="social-practice-chapters"></div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">
+                GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. Independent educational project.
+            </p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="science-catalog.js"></script>
+    <script src="social-studies-catalog.js"></script>
+    <script src="topic-practice.js"></script>
+    <!-- Interactive Controller Script -->
+    <script>
+        function filterPractice(subject, element) {
+            const buttons = document.querySelectorAll('.practice-tab-btn');
+            const allView = document.getElementById('all-view');
+            const detailView = document.getElementById('subject-detail-view');
+            const subjectGroups = document.querySelectorAll('.practice-subject-group');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            if (subject === 'all') {
+                allView.style.display = 'block';
+                detailView.style.display = 'none';
+            } else {
+                allView.style.display = 'none';
+                detailView.style.display = 'block';
+
+                subjectGroups.forEach(group => {
+                    if (group.getAttribute('data-subject') === subject) {
+                        group.style.display = 'block';
+                    } else {
+                        group.style.display = 'none';
+                    }
+                });
+            }
+            window.scrollTo({ top: 250, behavior: 'smooth' });
+        }
+
+        function switchAndScroll(subjectName) {
+            const targetBtn = document.querySelector('.tab-' + subjectName);
+            if (targetBtn) {
+                filterPractice(subjectName, targetBtn);
+            }
+        }
+
+        function searchPracticeBank(query) {
+            const searchTerm = query.toLowerCase().trim();
+            const cards = document.querySelectorAll('.step-practice-card');
+            const rows = document.querySelectorAll('.chapter-concept-row');
+
+            cards.forEach(card => {
+                const title = card.querySelector('h4') ? card.querySelector('h4').textContent.toLowerCase() : '';
+                const desc = card.querySelector('p') ? card.querySelector('p').textContent.toLowerCase() : '';
+                card.style.display = (title.includes(searchTerm) || desc.includes(searchTerm)) ? 'flex' : 'none';
+            });
+
+            rows.forEach(row => {
+                const title = row.querySelector('h3') ? row.querySelector('h3').textContent.toLowerCase() : '';
+                row.style.display = title.includes(searchTerm) ? 'flex' : 'none';
+            });
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            window.renderCoursePracticeLists();
+            const savedProgress = JSON.parse(localStorage.getItem("zyomix_practice_progress")) || {};
+            Object.keys(savedProgress).forEach(stepId => {
+                const cardLink = document.querySelector(`a[href*="${stepId}"]`);
+                if (cardLink && savedProgress[stepId].completed) {
+                    const cardTag = cardLink.querySelector('.step-header-tag');
+                    if (cardTag && !cardTag.textContent.includes('Completed')) {
+                        cardTag.textContent = `${cardTag.textContent} · Completed ✓`;
+                        cardTag.style.backgroundColor = "#10b981";
+                    }
+                }
+            });
+
+            const subject = new URLSearchParams(window.location.search).get('subject');
+            const subjectButton = subject && document.querySelector(`.tab-${subject}`);
+            if (subjectButton) filterPractice(subject, subjectButton);
+
+            const chapterAssignment = window.location.hash.match(/^#chapter-assignment-[a-z]+-\d+$/i);
+            if (chapterAssignment) {
+                requestAnimationFrame(() => {
+                    document.getElementById(chapterAssignment[0].slice(1))?.scrollIntoView({ block: 'start' });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

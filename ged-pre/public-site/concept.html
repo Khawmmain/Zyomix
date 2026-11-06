@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Concept Handbook</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="course-ui.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+    <script src="chapter-labels.js" defer></script>
+    <script src="science-catalog.js" defer></script>
+    <script src="social-studies-catalog.js" defer></script>
+    <script src="rla-catalog.js" defer></script>
+    <script src="learning-path.js" defer></script>
+    <style>
+        /* Modern Concept Card Styles */
+        .concept-subject-section {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+            margin-bottom: 2rem;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .concept-banner-header {
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .concept-banner-overlay {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.65) 100%);
+            display: flex;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .concept-banner-overlay h3 {
+            color: #ffffff;
+            font-size: 1.35rem;
+            font-weight: 800;
+            margin: 0 0 0.25rem 0;
+        }
+
+        .concept-banner-overlay p {
+            color: #cbd5e1;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .math-bg { background-image: url('assets/math.jpg'); border-left: 6px solid #2b6cb0; }
+        .science-bg { background-image: url('assets/science.jpg'); border-left: 6px solid #276749; }
+        .rla-bg { background-image: url('assets/rla.jpeg'); border-left: 6px solid #9b2c2c; }
+        .social-bg { background-image: url('assets/social.jpg'); border-left: 6px solid #d69e2e; }
+
+        .concept-body-padding {
+            padding: 1.75rem 2rem;
+        }
+        .science-beginner-intro {
+            margin: 0 0 1.5rem;
+            padding: 1.25rem;
+            border: 1px solid #bbf7d0;
+            border-radius: 14px;
+            background: linear-gradient(145deg, #f0fdf4, #ffffff);
+            color: #334155;
+            line-height: 1.65;
+        }
+        .science-beginner-intro h4 {
+            margin: 0 0 0.6rem;
+            color: #14532d;
+            font-size: 1.1rem;
+        }
+        .science-beginner-intro p { margin: 0.5rem 0; }
+        .science-example-table {
+            width: 100%;
+            margin: 0.75rem 0;
+            border-collapse: collapse;
+            background: #ffffff;
+        }
+        .science-example-table th,
+        .science-example-table td {
+            padding: 0.55rem 0.7rem;
+            border: 1px solid #bbf7d0;
+            text-align: left;
+        }
+        .science-example-table th { background: #dcfce7; }
+        .science-beginner-intro .lesson-table-wrap { overflow-x: auto; }
+
+        .chapter-title-modern {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: #1e293b;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        .chapter-title-modern:first-of-type {
+            margin-top: 0;
+        }
+
+        .concept-steps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 0.85rem;
+        }
+
+        .step-pill-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            padding: 1rem 1.15rem;
+            text-decoration: none;
+            color: #1e293b;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .step-pill-card:hover {
+            background: #ffffff;
+            border-color: #3182ce;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(49, 130, 206, 0.1);
+        }
+
+        .science-outline-card {
+            cursor: default;
+        }
+
+        .science-outline-card:hover {
+            background: #f8fafc;
+            border-color: #cbd5e1;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .step-badge-tag {
+            align-self: flex-start;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .step-pill-card h4 {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: #0f172a;
+            margin: 0;
+        }
+
+        .step-pill-card span.arrow {
+            position: absolute;
+            top: 1rem;
+            right: 1.15rem;
+            color: #94a3b8;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+
+        .step-pill-card:hover span.arrow {
+            color: #3182ce;
+        }
+
+        /* Subject Tab Button Styles */
+        .concept-nav-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            border: none;
+            padding: 0.65rem 1.4rem;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.1s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .tab-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-1px);
+        }
+
+        .tab-all { background: #4a5568; color: #ffffff; }
+        .tab-math { background: #3182ce; color: #ffffff; }
+        .tab-science { background: #276749; color: #ffffff; }
+        .tab-rla { background: #9b2c2c; color: #ffffff; }
+        .tab-social { background: #d69e2e; color: #1a202c; }
+        
+        .tab-btn.active {
+            outline: 3px solid #0f172a;
+        }
+    </style>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body class="concept-page">
+
+    <!-- Header Navigation -->
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group" style="text-decoration: none;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="account.html" class="nav-btn">Account</a>
+                <a href="concept.html" class="nav-btn active">Concept</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <section class="hero concept-page-hero">
+            <div class="container">
+                <h2 class="hero-title">Interactive Concept Handbook</h2>
+                <p class="hero-subtitle">Explore core chapters and study guides designed for clarity and active mastery.</p>
+
+                <!-- Search Bar -->
+                <div style="max-width: 550px; margin: 1.5rem auto 0 auto;">
+                    <input type="text" id="conceptSearchInput" placeholder="🔍 Search topics, steps, or chapters..." onkeyup="filterConceptCards()" style="width: 100%; padding: 0.75rem 1.15rem; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.92rem; outline: none; box-shadow: 0 2px 6px rgba(0,0,0,0.03);">
+                </div>
+
+                <!-- Subject Tabs -->
+                <div class="concept-nav-tabs" style="margin-top: 1.25rem;">
+                    <button class="tab-btn tab-all active" onclick="showSubject('all', this)">All Subjects</button>
+                    <button class="tab-btn tab-math" onclick="showSubject('math', this)">Mathematics</button>
+                    <button class="tab-btn tab-science" onclick="showSubject('science', this)">Science</button>
+                    <button class="tab-btn tab-rla" onclick="showSubject('rla', this)">RLA</button>
+                    <button class="tab-btn tab-social" onclick="showSubject('social', this)">Social Studies</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Syllabus Cards Content -->
+        <section class="concepts-content-section" style="margin-top: 2rem;">
+            <div class="container" style="padding-bottom: 3.5rem;" id="cardsContainer">
+                <div id="chapter-catalog-layout">
+                    <aside id="chapterSectionSidebar" class="chapter-section-sidebar" aria-label="Chapter sections" hidden></aside>
+                    <div id="chapter-catalog-main">
+                <!-- ================= OVERVIEW CARDS (Visible only on 'All Subjects') ================= -->
+                
+                <div id="overview-cards-wrapper" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.5rem;">
+                    
+                    <div class="concept-subject-section" style="cursor: pointer; border-left: 6px solid #2b6cb0;" onclick="showSubject('math', document.querySelector('.tab-math'))">
+                        <div class="concept-banner-header math-bg" style="height: 100px;">
+                            <div class="concept-banner-overlay"><h3>Mathematics</h3></div>
+                        </div>
+                        <div class="concept-body-padding" style="padding: 1.25rem 1.5rem;">
+                            <p style="color: #64748b; font-size: 0.92rem; margin: 0 0 1rem 0;">Covers 12 comprehensive chapters ranging from number operations and algebra to geometry and probability.</p>
+                            <span style="color: #2b6cb0; font-weight: 700; font-size: 0.9rem;">View 12 Chapters &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="concept-subject-section" style="cursor: pointer; border-left: 6px solid #276749;" onclick="showSubject('science', document.querySelector('.tab-science'))">
+                        <div class="concept-banner-header science-bg" style="height: 100px;">
+                            <div class="concept-banner-overlay"><h3>Science</h3></div>
+                        </div>
+                        <div class="concept-body-padding" style="padding: 1.25rem 1.5rem;">
+                            <p style="color: #64748b; font-size: 0.92rem; margin: 0 0 1rem 0;">15 step-by-step chapters covering scientific reading, investigations, data, life science, physical science, and Earth and space science.</p>
+                            <span style="color: #276749; font-weight: 700; font-size: 0.9rem;">View 15 Chapters &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="concept-subject-section" style="cursor: pointer; border-left: 6px solid #9b2c2c;" onclick="showSubject('rla', document.querySelector('.tab-rla'))">
+                        <div class="concept-banner-header rla-bg" style="height: 100px;">
+                            <div class="concept-banner-overlay"><h3>Reasoning Through Language Arts (RLA)</h3></div>
+                        </div>
+                        <div class="concept-body-padding" style="padding: 1.25rem 1.5rem;">
+                            <p style="color: #64748b; font-size: 0.92rem; margin: 0 0 1rem 0;">Enhances reading comprehension, textual analysis, grammar, and argument evaluation.</p>
+                            <span style="color: #9b2c2c; font-weight: 700; font-size: 0.9rem;">View Chapters &rarr;</span>
+                        </div>
+                    </div>
+
+                    <div class="concept-subject-section" style="cursor: pointer; border-left: 6px solid #d69e2e;" onclick="showSubject('social', document.querySelector('.tab-social'))">
+                        <div class="concept-banner-header social-bg" style="height: 100px;">
+                            <div class="concept-banner-overlay"><h3>Social Studies</h3></div>
+                        </div>
+                        <div class="concept-body-padding" style="padding: 1.25rem 1.5rem;">
+                            <p style="color: #64748b; font-size: 0.92rem; margin: 0 0 1rem 0;">Explore source skills, civics, U.S. history, important writers, economics, geography, and GED question practice.</p>
+                            <span style="color: #d69e2e; font-weight: 700; font-size: 0.9rem;">View Chapters &rarr;</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <!-- ================= DETAILED SUBJECT CHAPTERS (Hidden by default, shown when subject tab is clicked) ================= -->
+
+                <div id="detailed-chapters-wrapper" style="display: none;">
+
+                    <!-- MATHEMATICS (All 12 Chapters) -->
+                    <div class="subject-detail-block" data-subject="math" style="display: none;">
+                        <div class="concept-subject-section" style="border-left: 6px solid #2b6cb0;">
+                            <div class="concept-banner-header math-bg">
+                                <div class="concept-banner-overlay">
+                                    <div>
+                                        <h3>Mathematics Syllabus Index</h3>
+                                        <p>Complete GED Mathematics curriculum spanning 12 structured chapters.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="concept-body-padding">
+                                
+                                <div class="chapter-title-modern">Chapter 1: Basic Math & Number Operations</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-1-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.1</span><h4>Whole Numbers</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.2</span><h4>Integers (Positive & Negative)</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.3</span><h4>Number Line and Absolute Value</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.4</span><h4>Comparing and Ordering Numbers</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.5</span><h4>Rounding and Estimation</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.6</span><h4>Addition, Subtraction, Multiplication & Division</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.7</span><h4>Order of Operations (PEMDAS)</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.8</span><h4>Factors and Multiples</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.9</span><h4>Prime and Composite Numbers</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.10</span><h4>Greatest Common Factor (GCF)</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-11" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.11</span><h4>Least Common Multiple (LCM)</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-1-12" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 1.12</span><h4>Divisibility Rules</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 2: Fractions, Decimals & Percentages</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-2-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.1</span><h4>Types of Fractions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.2</span><h4>Equivalent Fractions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.3</span><h4>Simplifying Fractions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.4</span><h4>Comparing and Ordering Fractions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.5</span><h4>Mixed Numbers and Improper Fractions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.6</span><h4>Fraction Operations</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.7</span><h4>Decimal Place Value</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.8</span><h4>Comparing and Rounding Decimals</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.9</span><h4>Decimal Operations</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.10</span><h4>Fraction-Decimal-Percentage Conversions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-11" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.11</span><h4>Percentage Calculations</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-12" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.12</span><h4>Percentage Increase and Decrease</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-13" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.13</span><h4>Discounts, Taxes and Tips</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-2-14" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 2.14</span><h4>Simple Interest</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 3: Ratios, Proportions & Rates</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-3-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.1</span><h4>Understanding Ratios</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.2</span><h4>Equivalent Ratios</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.3</span><h4>Simplifying Ratios</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.4</span><h4>Part-to-Part & Part-to-Whole Ratios</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.5</span><h4>Unit Rates</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.6</span><h4>Proportions & Solving Proportions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.7</span><h4>Direct Proportions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.8</span><h4>Scale Factors and Scale Drawings</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.9</span><h4>Speed, Distance and Time</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-3-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 3.10</span><h4>Real-World Ratio and Rate Problems</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 4: Exponents, Roots & Scientific Notation</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-4-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.1</span><h4>Understanding Exponents & Powers/Bases</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-4-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.2</span><h4>Laws of Exponents</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-4-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.3</span><h4>Zero and Negative Exponents</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-4-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.4</span><h4>Square Roots and Cube Roots</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-4-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.5</span><h4>Simplifying Radicals & Estimating Roots</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-4-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 4.6</span><h4>Scientific Notation & Operations</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 5: Geometry & Measurement</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-5-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.1</span><h4>Points, Lines, Angles & Relationships</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.2</span><h4>Triangles, Quadrilaterals and Polygons</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.3</span><h4>Perimeter and Area of 2D Shapes</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.4</span><h4>Composite Figures</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.5</span><h4>Circles: Radius, Diameter, Circumference & Area</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.6</span><h4>Coordinate Geometry & Pythagorean Theorem</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.7</span><h4>3D Shapes: Surface Area and Volume</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-5-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 5.8</span><h4>Measurement, Unit Conversions & Scale Drawings</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 6: Algebraic Expressions & Equations</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-6-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.1</span><h4>Variables, Constants, Coefficients & Expressions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-6-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.2</span><h4>Evaluating Expressions & Like Terms</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-6-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.3</span><h4>Distributive Property & Simplifying Expressions</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-6-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.4</span><h4>One-Step, Two-Step & Multi-Step Equations</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-6-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.5</span><h4>Equations with Fractions, Decimals & Both Sides</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-6-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 6.6</span><h4>Translating Word Problems & Rearranging Formulas</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 7: Inequalities & Systems of Equations</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-7-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.1</span><h4>Inequalities, Symbols & Multi-Step Solving</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-7-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.2</span><h4>Graphing Inequalities & Compound Inequalities</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-7-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.3</span><h4>Systems of Linear Equations (Graphing/Substitution/Elimination)</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-7-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 7.4</span><h4>Real-World Systems of Equations</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 8: Polynomials & Quadratic Equations</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-8-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.1</span><h4>Polynomial Types, Degrees & Operations</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-8-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.2</span><h4>Factoring Polynomials & Difference of Squares</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-8-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.3</span><h4>Quadratic Equations & Solving by Factoring</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-8-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 8.4</span><h4>Quadratic Formula, Discriminant & Applications</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 9: Graphs & Coordinate Geometry</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-9-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.1</span><h4>Cartesian Coordinate Plane, Ordered Pairs & Plotting</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-9-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.2</span><h4>Slope, Rate of Change & Intercepts</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-9-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.3</span><h4>Slope-Intercept & Standard Form Equations</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-9-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.4</span><h4>Distance, Midpoint, Parallel & Perpendicular Lines</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-9-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 9.5</span><h4>Scatter Plots and Trends</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 10: Functions</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-10-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 10.1</span><h4>Understanding Functions & Notation f(x)</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-10-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 10.2</span><h4>Evaluating Functions, Tables & Domain/Range</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-10-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 10.3</span><h4>Linear & Quadratic Functions, Graphs & Applications</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 11: Statistics & Data Analysis</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-11-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.1</span><h4>Data Tables, Bar, Line & Pie Graphs</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-11-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.2</span><h4>Histograms, Dot Plots & Box Plots</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-11-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.3</span><h4>Mean, Median, Mode, Range & Weighted Average</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-11-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Step 11.4</span><h4>Data Interpretation, Predictions & Correlation</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                                <div class="chapter-title-modern">Chapter 12: Probability</div>
+                                <div class="concept-steps-grid">
+                                    <a href="lesson.html?step=math-12-1" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.1</span><h4>Introduction to Probability</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-2" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.2</span><h4>Theoretical and Experimental Probability</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-3" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.3</span><h4>Probability Scale</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-4" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.4</span><h4>Complementary Events</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-5" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.5</span><h4>Compound Probability: AND</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-6" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.6</span><h4>Compound Probability: OR</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-7" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.7</span><h4>Three-Event Probability</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-8" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.8</span><h4>Independent Events</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-9" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.9</span><h4>Dependent Events</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-10" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.10</span><h4>Conditional Probability</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-11" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.11</span><h4>With and Without Replacement</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-12" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.12</span><h4>Real-World Applications</h4><span class="arrow">&rarr;</span></a>
+                                    <a href="lesson.html?step=math-12-13" class="step-pill-card searchable-card"><span class="step-badge-tag" style="background: #ebf8ff; color: #2b6cb0;">Section 1.13</span><h4>Probability Assessment</h4><span class="arrow">&rarr;</span></a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SCIENCE -->
+                    <div class="subject-detail-block" data-subject="science" style="display: none;">
+                        <div class="concept-subject-section" style="border-left: 6px solid #276749;">
+                            <div class="concept-banner-header science-bg">
+                                <div class="concept-banner-overlay">
+                                    <div>
+                                        <h3>Science Syllabus Index</h3>
+                                        <p>Complete GED Science curriculum spanning 15 structured chapters.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="concept-body-padding">
+                                <section class="science-beginner-intro" aria-labelledby="scienceBeginnerTitle">
+                                    <h4 id="scienceBeginnerTitle">New to science? You can start here.</h4>
+                                    <p><strong>What does GED Science test?</strong> It checks how well you read scientific information, understand experiments, interpret tables and graphs, and use evidence to choose a reasonable conclusion. You do not need prior science knowledge to begin: the test provides information you can use.</p>
+                                    <p><strong>What will you learn?</strong> You will practice asking testable questions, understanding life, physical, and Earth science ideas, reading data, and using basic math in scientific situations. The course starts with reading and investigations, moves to tables and graphs, then uses science math to interpret measurements before building into life, matter, motion, energy, and Earth science. Reading, graphs, and experiments work together: read the question, inspect the evidence, then explain what the evidence supports.</p>
+                                    <p><strong>Try this real-life example.</strong> A student gives similar plants different amounts of water and measures their height after two weeks:</p>
+                                    <div class="lesson-table-wrap">
+                                        <table class="science-example-table">
+                                            <caption>Plant height after two weeks</caption>
+                                            <thead><tr><th scope="col">Water each day (mL)</th><th scope="col">Plant height (cm)</th></tr></thead>
+                                            <tbody><tr><td>0</td><td>4</td></tr><tr><td>25</td><td>8</td></tr><tr><td>50</td><td>12</td></tr><tr><td>75</td><td>13</td></tr></tbody>
+                                        </table>
+                                    </div>
+                                    <p>Read the column labels and compare the numbers: in this small example, plants given more water grew taller, though growth increased less between 50 and 75 mL. If the student kept light, soil, and plant type the same, the results support a link between water and growth. The table alone does not prove that water was the only cause.</p>
+                                </section>
+                                <div id="science-chapter-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- RLA -->
+                    <div class="subject-detail-block" data-subject="rla" style="display: none;">
+                        <div class="concept-subject-section" style="border-left: 6px solid #9b2c2c;">
+                            <div class="concept-banner-header rla-bg">
+                                <div class="concept-banner-overlay">
+                                    <div>
+                                        <h3>Reasoning Through Language Arts (RLA)</h3>
+                                        <p>24 chapters across seven stages: English foundations, editing, reading, arguments, and essay writing.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="concept-body-padding">
+                                <div id="rla-chapter-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SOCIAL STUDIES -->
+                    <div class="subject-detail-block" data-subject="social" style="display: none;">
+                        <div class="concept-subject-section" style="border-left: 6px solid #d69e2e;">
+                            <div class="concept-banner-header social-bg">
+                                <div class="concept-banner-overlay">
+                                    <div>
+                                        <h3>Social Studies Study Guide</h3>
+                                        <p>Explore source skills, civics, U.S. history, important writers, economics, geography, and GED question practice.</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="concept-body-padding">
+                                <div id="social-chapter-list"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">
+                GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. Independent educational project[cite: 2].
+            </p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Filter Scripts -->
+    <script>
+        function showSubject(subjectId, element) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            const overviewWrapper = document.getElementById('overview-cards-wrapper');
+            const detailedWrapper = document.getElementById('detailed-chapters-wrapper');
+            const catalogLayout = document.getElementById('chapter-catalog-layout');
+            const detailBlocks = document.querySelectorAll('.subject-detail-block');
+            document.querySelectorAll('.searchable-card').forEach(card => card.style.display = 'flex');
+
+            if (subjectId === 'all') {
+                overviewWrapper.style.display = 'grid';
+                detailedWrapper.style.display = 'none';
+                catalogLayout.classList.remove('has-chapter-sidebar');
+                detailBlocks.forEach(block => block.style.display = 'none');
+            } else {
+                overviewWrapper.style.display = 'none';
+                detailedWrapper.style.display = 'block';
+                catalogLayout.classList.add('has-chapter-sidebar');
+                detailBlocks.forEach(block => {
+                    if (block.getAttribute('data-subject') === subjectId) {
+                        block.style.display = 'block';
+                    } else {
+                        block.style.display = 'none';
+                    }
+                });
+            }
+            window.renderChapterSidebar?.(subjectId);
+            window.scrollTo({ top: 300, behavior: 'smooth' });
+        }
+
+        function filterConceptCards() {
+            const query = document.getElementById('conceptSearchInput').value.toLowerCase();
+            if (!query) {
+                const activeTab = document.querySelector('.tab-btn.active') || document.querySelector('.tab-all');
+                const subjectId = [...activeTab.classList]
+                    .find(className => className.startsWith('tab-') && className !== 'tab-btn')
+                    ?.replace('tab-', '') || 'all';
+                showSubject(subjectId, activeTab);
+                return;
+            }
+
+            // If searching, automatically show detailed view
+            document.getElementById('overview-cards-wrapper').style.display = 'none';
+            document.getElementById('detailed-chapters-wrapper').style.display = 'block';
+            document.getElementById('chapter-catalog-layout').classList.add('has-chapter-sidebar');
+            document.querySelectorAll('.subject-detail-block').forEach(b => b.style.display = 'block');
+            window.renderChapterSidebar?.('all');
+
+            const cards = document.querySelectorAll('.searchable-card');
+            cards.forEach(card => {
+                const text = card.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const subject = new URLSearchParams(window.location.search).get('subject');
+            const subjectButton = subject && document.querySelector(`.tab-${subject}`);
+            if (subjectButton) showSubject(subject, subjectButton);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zyomix - Active Practice Quiz Engine</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="course-ui.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="learning-progress.js" defer></script>
+    <style>
+        :root {
+            --blue-accent: #0284c7;
+            --green-accent: #10b981;
+            --red-accent: #ef4444;
+            --gray-bg: #f8fafc;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            background-color: var(--page-background, #f4f7fb);
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            color: #1e293b;
+            margin: 0;
+            padding: 0;
+        }
+
+        .quiz-container {
+            max-width: 800px;
+            margin: 3rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .quiz-card {
+            background: #ffffff;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+            padding: 2.5rem;
+        }
+
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #f1f5f9;
+            padding-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-badge {
+            background: var(--blue-accent);
+            color: #ffffff;
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .progress-indicator {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .question-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: #0f172a;
+            margin-bottom: 1.25rem;
+            line-height: 1.4;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--gray-bg);
+            border: 1px solid var(--border-color);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .option-label:hover {
+            border-color: var(--blue-accent);
+            background: #e0f2fe;
+        }
+
+        .option-label input {
+            accent-color: var(--blue-accent);
+            transform: scale(1.2);
+        }
+
+        /* Feedback and Explanation Box */
+        .explanation-box {
+            display: none;
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1.5rem;
+            color: #166534;
+            font-size: 0.92rem;
+            line-height: 1.4;
+        }
+
+        .explanation-box.incorrect {
+            background: #fef2f2;
+            border-color: #fecaca;
+            color: #991b1b;
+        }
+
+        .action-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-primary {
+            background: var(--blue-accent);
+            color: #ffffff;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.2);
+            transition: opacity 0.2s ease;
+        }
+
+        .btn-primary:hover { opacity: 0.9; }
+
+        .result-box {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .result-box h3 {
+            font-size: 1.75rem;
+            color: #0f172a;
+            margin-bottom: 0.5rem;
+        }
+
+        .result-box p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+        .practice-unavailable-notice {
+            padding: 1.5rem;
+            border: 1px solid #fed7aa;
+            border-radius: 14px;
+            background: #fff7ed;
+            color: #7c2d12;
+            line-height: 1.6;
+        }
+        .practice-unavailable-notice h2 { margin-top: 0; color: #7c2d12; }
+        .practice-unavailable-notice a { margin-right: 1rem; }
+    </style>
+    <link rel="stylesheet" href="theme.css">
+</head>
+<body class="quiz-page">
+
+    <header class="site-header">
+        <div class="container header-container" style="max-width: 1150px; margin: 0 auto; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+            <a href="index.html" class="brand-group" style="text-decoration: none; display: flex; align-items: center; gap: 0.75rem;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo" style="width: 40px; height: 40px; border-radius: 50%;">
+                <h1 class="logo" style="margin: 0; font-size: 1.2rem; color: #0f172a;">Zyomix CBT Engine</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="practice.html" class="nav-btn">Back to Practice Bank</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="quiz-container">
+        <div class="quiz-card">
+            
+            <!-- Active Quiz Form -->
+            <div id="quiz-content">
+                <div class="quiz-header">
+                    <span id="stepDisplayBadge" class="step-badge">Loading Step...</span>
+                    <span id="progressIndicator" class="progress-indicator">Question 1 of 3</span>
+                    <span id="timerDisplay" class="timer-display" aria-live="polite" style="display:none;"></span>
+                </div>
+
+                <div class="quiz-tools" aria-label="Quiz display controls">
+                    <div class="text-size-controls" role="group" aria-label="Question text size">
+                        <span>Text size</span>
+                        <button type="button" id="decreaseTextSize" aria-label="Decrease text size">A−</button>
+                        <button type="button" id="increaseTextSize" aria-label="Increase text size">A+</button>
+                    </div>
+                    <button type="button" id="contrastToggle" class="contrast-toggle" aria-pressed="false">Dark contrast</button>
+                </div>
+
+                <section class="question-navigation" aria-labelledby="questionNavigationTitle">
+                    <div class="question-navigation-heading">
+                        <h2 id="questionNavigationTitle">Questions</h2>
+                        <span id="answerCount" aria-live="polite"></span>
+                    </div>
+                    <div id="questionNavigator" class="question-navigator" role="group" aria-label="Navigate between questions"></div>
+                    <div class="question-legend" aria-label="Question status legend">
+                        <span><i class="legend-dot answered" aria-hidden="true"></i>Answered</span>
+                        <span><i class="legend-dot unanswered" aria-hidden="true"></i>Unanswered</span>
+                        <span><i class="legend-dot flagged" aria-hidden="true"></i>For review</span>
+                    </div>
+                </section>
+
+                <div id="questionContainer">
+                    <h3 id="questionTitle" class="question-title">Loading practice question...</h3>
+                    <div id="optionsList" class="options-list"></div>
+                </div>
+
+                <!-- Explanation Box -->
+                <div id="explanationBox" class="explanation-box"></div>
+
+                <div class="action-row">
+                    <a href="practice.html" style="text-decoration: none; color: #64748b; font-weight: 600; font-size: 0.9rem;">Exit Practice</a>
+                    <div class="quiz-action-buttons">
+                        <button type="button" id="skipQuestionButton" class="review-toggle">Next Question →</button>
+                        <button type="button" id="markReviewButton" class="review-toggle" aria-pressed="false">Mark for review</button>
+                        <button type="button" id="actionBtn" class="btn-primary">Submit Answer &rarr;</button>
+                    </div>
+                </div>
+            </div>
+
+            <dialog id="scoreSummaryDialog" class="score-summary-dialog" aria-labelledby="scoreDialogTitle">
+                <div class="score-dialog-header">
+                    <div>
+                        <p class="dash-eyebrow">SESSION COMPLETE</p>
+                        <h2 id="scoreDialogTitle">Your results</h2>
+                    </div>
+                    <button type="button" id="closeScoreDialog" class="dialog-close" aria-label="Close score summary">×</button>
+                </div>
+                <p id="dialogScoreText" class="dialog-score-text"></p>
+                <p id="dialogSaveStatus" class="dialog-save-status" role="status"></p>
+                <div class="score-breakdown" aria-label="Answer summary">
+                    <div><strong id="dialogCorrectCount">0</strong><span>Correct</span></div>
+                    <div><strong id="dialogIncorrectCount">0</strong><span>Incorrect</span></div>
+                    <div><strong id="dialogUnansweredCount">0</strong><span>Unanswered</span></div>
+                </div>
+                <p id="dialogReviewCount" class="dialog-review-count"></p>
+                <button type="button" id="viewDetailedReview" class="btn-primary" disabled>View explanations</button>
+            </dialog>
+
+            <!-- Result Box -->
+            <div id="resultBox" class="result-box">
+                <h3>🎉 Practice Session Completed!</h3>
+                <p id="finalScoreText">Your mastery score has been recorded.</p>
+                <p id="resultSaveStatus" class="result-save-status" role="status"></p>
+                <p id="resultRecommendation" class="result-recommendation"></p>
+                <div class="result-actions">
+                    <a href="practice.html" id="resultRetryButton" class="btn-primary result-action-link">Try again</a>
+                    <a href="concept.html" id="resultReviewButton" class="result-action-link secondary">Review concepts</a>
+                    <a href="dashboard.html" class="result-action-link secondary">View dashboard</a>
+                </div>
+                <div id="examReview" class="exam-review"></div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- Quiz Engine Script -->
+    <script src="science-catalog.js"></script>
+    <script src="social-studies-catalog.js"></script>
+    <script src="topic-practice.js"></script>
+    <script>
+    (function () {
+        const urlParams = new URLSearchParams(window.location.search);
+        const currentStep = urlParams.get('step') || 'math-1-1';
+        const modeParam = urlParams.get('mode');
+        const isExamMode = modeParam === 'exam';
+        const isTimedMode = modeParam === 'timed-practice';
+        const modeLabel = isExamMode ? 'GED Exam Simulator' : isTimedMode ? 'Timed Practice' : 'Practice';
+
+        const catalogMatch = currentStep.match(/^(science|social)-(\d+)-(\d+)$/);
+        const sectionCatalog = catalogMatch?.[1] === 'science'
+            ? window.scienceCourseChapters
+            : window.socialStudiesCourseChapters;
+        const catalogEntry = catalogMatch
+            ? sectionCatalog?.[Number(catalogMatch[2]) - 1]?.sections[Number(catalogMatch[3]) - 1]
+            : null;
+        document.getElementById('stepDisplayBadge').textContent = isExamMode
+            ? modeLabel
+            : catalogEntry
+                ? `${modeLabel}: Section ${catalogMatch[2]}.${catalogMatch[3]} · ${catalogEntry[0]}`
+                : `${modeLabel}: ${currentStep.toUpperCase()}`;
+
+        // Comprehensive question repository for steps including Chapter 3 Probability
+        const questionBank = {
+            "math-1-1": [
+                {
+                    title: "What is the place value of 7 in the number 4,723,591?",
+                    options: [
+                        "A) Seven thousand",
+                        "B) Seven hundred thousand",
+                        "C) Seventy thousand",
+                        "D) Seven million"
+                    ],
+                    correct: 1,
+                    explanation: "Correct! In 4,723,591, the digit 7 occupies the hundred-thousands place value position."
+                },
+                {
+                    title: "Which of the following numbers is the greatest?",
+                    options: [
+                        "A) 4,723,519",
+                        "B) 4,732,159",
+                        "C) 4,723,915",
+                        "D) 4,732,109"
+                    ],
+                    correct: 3,
+                    explanation: "Correct! Comparing place values from left to right, 4,732,109 is greater than the other options."
+                }
+            ],
+            "science-1-1": [
+                {
+                    title: "A passage says plants need light to make food and that leaves capture light. What is the main idea?",
+                    options: ["Leaves are the only plant part", "Light helps plants make food", "All plants grow at the same speed", "Soil creates sunlight"],
+                    correct: 1,
+                    explanation: "The main idea is the central point supported by the details: light helps plants make food."
+                },
+                {
+                    title: "A short science passage explains that a habitat provides food, water, and shelter. Which detail best supports the main idea that habitats help organisms survive?",
+                    options: ["A rabbit finds food and shelter in its habitat", "A habitat always has the same temperature", "Every habitat contains the same species", "Organisms never leave their habitats"],
+                    correct: 0,
+                    explanation: "Finding food and shelter directly supports the idea that habitats help organisms meet needs for survival."
+                }
+            ],
+            "science-1-2": [
+                {
+                    title: "A passage says a material is “porous” and then explains that water can pass through its tiny openings. What does “porous” mean here?",
+                    options: ["Able to let liquid pass through small spaces", "Unable to change shape", "Made only of metal", "Always warmer than water"],
+                    correct: 0,
+                    explanation: "The nearby clue about water passing through tiny openings explains the meaning of “porous.”"
+                },
+                {
+                    title: "A report states that a sample’s temperature “increased gradually.” Which meaning best matches “gradually”?",
+                    options: ["It rose slowly over time", "It changed instantly", "It stayed exactly the same", "It fell to zero"],
+                    correct: 0,
+                    explanation: "In context, “gradually” means the change happened in small amounts over time."
+                }
+            ],
+            "science-1-3": [
+                {
+                    title: "A diagram shows sunlight → plant → caterpillar. What relationship does the arrow direction represent?",
+                    options: ["Energy moves from the plant to the Sun", "Energy moves from the Sun to the plant and then to the caterpillar", "The caterpillar makes sunlight", "The plant eats the caterpillar"],
+                    correct: 1,
+                    explanation: "The arrows show the direction of energy transfer through the sequence."
+                },
+                {
+                    title: "A data table shows that longer heating times are paired with higher water temperatures. Which relationship is shown?",
+                    options: ["A cause-and-effect claim is proven in every situation", "Temperature tends to rise as heating time increases", "Time and temperature are unrelated", "Temperature causes time to stop"],
+                    correct: 1,
+                    explanation: "The table supports a pattern between the two quantities; the exact relationship depends on the conditions tested."
+                }
+            ],
+            "science-1-4": [
+                {
+                    title: "A student claims that fertilizer made plants taller. The fertilized plants averaged 14 cm and the comparison plants averaged 9 cm, with light and water kept the same. Which evidence best supports the claim?",
+                    options: ["The fertilized group had a greater average height", "The pots were different colors", "The student expected taller plants", "The plants were measured on a Monday"],
+                    correct: 0,
+                    explanation: "The measured average difference directly supports the claim, while the other details do not address plant height."
+                },
+                {
+                    title: "A study tests only two plants and reports that fertilizer always increases growth in every plant species. What is the main problem?",
+                    options: ["The conclusion is broader than the limited evidence", "The study used measurements", "The plants received water", "The result is written as a sentence"],
+                    correct: 0,
+                    explanation: "A very small sample of two plants cannot support a universal claim about every species."
+                }
+            ],
+            "science-1-5": [
+                {
+                    title: "Two sources report on a new water filter. Source A includes a controlled test and its measurements; Source B gives only the manufacturer's opinion. Which source provides stronger evidence about performance?",
+                    options: ["Source A, because it reports a test and measurements", "Source B, because the manufacturer made it", "Both prove the filter always works", "Neither can contain any useful information"],
+                    correct: 0,
+                    explanation: "A described test with measurements gives evidence that can be examined; the author's interest should also be considered."
+                },
+                {
+                    title: "Two reports reach different conclusions about the same experiment. What should a reader compare first?",
+                    options: ["Their methods, data, and how each conclusion follows from the evidence", "The length of their titles", "Which report uses more colorful words", "Which conclusion sounds more confident"],
+                    correct: 0,
+                    explanation: "Comparing methods and evidence helps explain whether the conclusions are supported."
+                }
+            ],
+            "science-1-6": [
+                {
+                    title: "A plant diagram shows arrows from the soil into the roots, up the stem, and out of the leaves. What does the arrow sequence represent?",
+                    options: ["A path water may take through the plant", "The exact number of water molecules in each leaf", "Proof that sunlight moves through the roots", "The size of each plant part"],
+                    correct: 0,
+                    explanation: "The arrows represent the path shown by the model. The diagram does not provide molecule counts, sunlight movement, or scale information."
+                },
+                {
+                    title: "A model labels a cell's nucleus and membrane but does not show how materials cross the membrane. Which conclusion is best supported?",
+                    options: ["The model explains every process in the cell", "The model identifies some cell parts but does not show membrane transport", "The nucleus moves materials through the membrane", "The cell has no other structures"],
+                    correct: 1,
+                    explanation: "A model shows only the information represented. Since membrane transport is not depicted, the diagram cannot explain that process."
+                }
+            ],
+            "science-2-1": [
+                {
+                    title: "Which question is most directly testable by collecting measurements?",
+                    options: ["Are flowers beautiful?", "Does the amount of water each plant receives affect its height after 14 days?", "Which plant is the best?", "Should everyone grow beans?"],
+                    correct: 1,
+                    explanation: "This question identifies a changeable condition (water amount) and a measurable outcome (plant height after 14 days)."
+                },
+                {
+                    title: "A student predicts: “If water temperature increases, then sugar will dissolve in less time because warmer water moves particles faster.” Which part is the predicted measurable result?",
+                    options: ["Water temperature increases", "Sugar will dissolve in less time", "Because warmer water moves particles faster", "The student"],
+                    correct: 1,
+                    explanation: "The “then” part states the expected result to measure: dissolving time."
+                }
+            ],
+            "science-2-2": [
+                {
+                    title: "A student changes the number of hours of light for bean plants and measures their height after three weeks. What is the dependent variable?",
+                    options: ["Hours of light", "Plant height after three weeks", "Type of bean", "Amount of soil"],
+                    correct: 1,
+                    explanation: "The dependent variable is the outcome measured—in this case, plant height after three weeks."
+                },
+                {
+                    title: "A class tests whether fertilizer affects plant growth. Which condition would be most useful to keep the same for all groups?",
+                    options: ["Amount of fertilizer", "Plant height at the end", "Plant type and amount of water", "The measured growth result"],
+                    correct: 2,
+                    explanation: "Keeping plant type and water amount consistent helps make fertilizer the main planned difference."
+                }
+            ],
+            "science-2-3": [
+                {
+                    title: "In a study, one group of similar plants receives a new fertilizer and another receives none. What is the main purpose of the group receiving no fertilizer?",
+                    options: ["To provide a baseline for comparison", "To change the independent variable twice", "To prove the fertilizer is safe for people", "To measure the amount of sunlight"],
+                    correct: 0,
+                    explanation: "The group without fertilizer provides a baseline against which the treated plants can be compared."
+                },
+                {
+                    title: "A treatment group is kept in a warm room while the comparison group is kept in a cool room. Why is this a concern?",
+                    options: ["The groups differ in another condition that could affect the outcome", "The sample must be too large", "A comparison group cannot be used with plants", "The outcome can no longer be measured"],
+                    correct: 0,
+                    explanation: "Temperature differs along with the treatment, so it could help explain any observed difference."
+                }
+            ],
+            "science-2-4": [
+                {
+                    title: "A student tests how water temperature affects sugar dissolving time. Which plan is fairest?",
+                    options: ["Change temperature and sugar amount in each trial", "Use the same water volume and sugar mass, change temperature, and time dissolving the same way", "Use different sugar types and estimate the time", "Test each temperature once using different cup sizes"],
+                    correct: 1,
+                    explanation: "This plan changes the factor being studied while keeping other important conditions and the measurement method consistent."
+                },
+                {
+                    title: "Why repeat each condition in an investigation?",
+                    options: ["To guarantee the hypothesis is correct", "To see whether results are consistent across trials", "To remove the need for measurements", "To change several variables at once"],
+                    correct: 1,
+                    explanation: "Repeated trials help show how variable the results are and whether a pattern appears consistently."
+                }
+            ],
+            "science-2-5": [
+                {
+                    title: "A school wants to estimate breakfast habits among all students but surveys only people waiting in the cafeteria line. What is the main concern?",
+                    options: ["The sample may not represent students who do not use the cafeteria", "The population is the surveyed 40 people", "A survey cannot collect scientific evidence", "The results automatically prove a cause"],
+                    correct: 0,
+                    explanation: "Students waiting in the cafeteria may differ from students who do not use it, creating possible selection bias."
+                },
+                {
+                    title: "Researchers record exercise habits and health outcomes without assigning anyone an exercise routine. What kind of study is this?",
+                    options: ["An observational study", "A controlled experiment", "A repeated-trial laboratory test", "A randomized treatment"],
+                    correct: 0,
+                    explanation: "The researchers observe existing habits rather than assigning or changing the condition."
+                }
+            ],
+            "science-2-6": [
+                {
+                    title: "A fertilizer study uses one plant in each group, and the plants are kept in rooms with different lighting. What is the strongest improvement?",
+                    options: ["Use more plants in each group and keep lighting conditions alike", "Measure a different outcome without changing the setup", "Remove all recorded measurements", "Conclude fertilizer always increases growth"],
+                    correct: 0,
+                    explanation: "More plants reduce the influence of individual differences, and similar lighting removes a potential confounding condition."
+                },
+                {
+                    title: "A short study measured plant height for three weeks. Which conclusion stays closest to the evidence?",
+                    options: ["The treatment will always increase growth in every plant species", "The treatment group was taller at the end of this three-week study", "The treatment increases fruit production for years", "The study proves the treatment is safe for humans"],
+                    correct: 1,
+                    explanation: "This conclusion describes the measured outcome and time period without extending beyond the study."
+                }
+            ],
+            "rla-1-1": [
+                {
+                    title: "A passage explains that a community garden provides fresh produce, gives neighbors a place to work together, and turns an empty lot into green space. What is its central idea?",
+                    options: ["Gardens require expensive tools", "Community gardens can benefit neighborhoods in several ways", "Empty lots should never be used", "Only neighbors can grow vegetables"],
+                    correct: 1,
+                    explanation: "The details support the broader idea that community gardens provide multiple neighborhood benefits."
+                },
+                {
+                    title: "Which sentence is the best concise summary of a passage about a library extending its weekend hours to serve working families?",
+                    options: ["The library has many books", "Longer weekend hours make library services easier for working families to use", "Some people work on weekdays", "Libraries are quiet places"],
+                    correct: 1,
+                    explanation: "A strong summary captures the main point and purpose without adding unrelated details."
+                }
+            ],
+            "rla-1-2": [
+                {
+                    title: "An author claims that a new bus route reduces commute times. Which evidence best supports the claim?",
+                    options: ["A rider says the buses look new", "Travel-time records show average commutes fell after the route began", "The route map uses bright colors", "A nearby town has more buses"],
+                    correct: 1,
+                    explanation: "Before-and-after travel-time records directly measure the outcome named in the claim."
+                },
+                {
+                    title: "A report about a product is written by the company that sells it. What should a reader do?",
+                    options: ["Accept every claim as proven", "Consider the possible bias and check independent evidence", "Ignore all numbers in the report", "Assume the report is fictional"],
+                    correct: 1,
+                    explanation: "A source's interests may affect its presentation, so compare its claims with independent evidence."
+                }
+            ],
+            "social-1-1": [
+                {
+                    title: "Which question is best answered by combining history, geography, civics, and economics?",
+                    options: ["How do a community's location, past, government choices, and jobs shape daily life?", "What is the chemical formula for water?", "How does a cell divide?", "What is the area of a triangle?"],
+                    correct: 0,
+                    explanation: "Social Studies connects people, places, history, government, and economic choices to understand communities."
+                },
+                {
+                    title: "A student studies how a town's past influenced its neighborhoods and how residents make public decisions. Which subject area best fits this work?",
+                    options: ["Social Studies", "Astronomy only", "Cell biology only", "Geometry only"],
+                    correct: 0,
+                    explanation: "Social Studies examines people and communities through connected subjects such as history, geography, civics, and economics."
+                }
+            ],
+            "social-1-2": [
+                {
+                    title: "Which example is mainly about civics and government?",
+                    options: ["Residents vote for representatives who make local public decisions", "A scientist measures the boiling point of water", "A student calculates the area of a garden", "A biologist observes cell structures"],
+                    correct: 0,
+                    explanation: "Civics and government examine public institutions, rules, citizenship, and participation in collective decisions."
+                },
+                {
+                    title: "A city council debates a rule for public parks. Which question is most directly about government?",
+                    options: ["Who has authority to make the rule and how residents can participate?", "Which mineral makes the soil dark?", "How many leaves are on each tree?", "What is the temperature of the park pond?"],
+                    correct: 0,
+                    explanation: "Government concerns who has authority to make and carry out public rules and how people take part."
+                }
+            ],
+            "math-12-1": [
+                {
+                    title: "A standard six-sided die is rolled. How many outcomes are in its sample space?",
+                    options: ["4", "6", "12", "36"],
+                    correct: 1,
+                    explanation: "The sample space is {1, 2, 3, 4, 5, 6}, so it contains six outcomes."
+                },
+                {
+                    title: "A bag has 5 red, 3 blue, and 2 green marbles. What is the probability of drawing a blue marble?",
+                    options: ["1/5", "3/10", "1/2", "7/10"],
+                    correct: 1,
+                    explanation: "There are 3 favorable marbles out of 10 total, so P(blue) = 3/10."
+                },
+                {
+                    title: "A number from 1 through 8 is selected. Which set lists the outcomes in the event “select a number greater than 6”?",
+                    options: ["{6, 7, 8}", "{7, 8}", "{1, 2, 3, 4, 5, 6}", "{8}"],
+                    correct: 1,
+                    explanation: "The sample space is {1, 2, 3, 4, 5, 6, 7, 8}; the favorable outcomes greater than 6 are 7 and 8."
+                }
+            ],
+            "math-12-2": [
+                { title: "A fair spinner has 5 equal sections, 2 of them yellow. What is the theoretical probability of landing on yellow?", options: ["2/5", "1/5", "2/3", "3/5"], correct: 0, explanation: "Two of the five equally likely sections are yellow, so the theoretical probability is 2/5." },
+                { title: "A coin is flipped 50 times and lands heads 28 times. What is the experimental probability of heads?", options: ["1/2", "14/25", "28/22", "1/28"], correct: 1, explanation: "Experimental probability is observed successes divided by trials: 28/50 = 14/25." }
+            ],
+            "math-12-3": [
+                { title: "Which probability describes an impossible event?", options: ["0", "0.25", "0.75", "1"], correct: 0, explanation: "An impossible event has probability 0; a certain event has probability 1." },
+                { title: "A probability is 0.8. Which description is most accurate?", options: ["Impossible", "Unlikely", "Likely but not certain", "Certain"], correct: 2, explanation: "0.8 is high and greater than 0.5, so the event is likely, but it is not certain because it is less than 1." }
+            ],
+            "math-12-4": [
+                { title: "The probability that a student walks to school is 0.35. What is the probability that the student does not walk to school?", options: ["0.35", "0.55", "0.65", "1.35"], correct: 2, explanation: "Complementary probabilities add to 1, so P(not walk) = 1 − 0.35 = 0.65." },
+                { title: "If P(A) = 7/12, what is P(not A)?", options: ["7/12", "5/12", "1/12", "12/7"], correct: 1, explanation: "P(not A) = 1 − 7/12 = 12/12 − 7/12 = 5/12." }
+            ],
+            "math-12-5": [
+                { title: "A fair coin is flipped and a fair six-sided die is rolled. What is the probability of tails and a 4?", options: ["1/12", "1/8", "1/6", "1/2"], correct: 0, explanation: "The events are independent, so multiply: 1/2 × 1/6 = 1/12." },
+                { title: "A fair coin is flipped three times. What is the probability of getting heads on all three flips?", options: ["1/4", "1/6", "1/8", "3/8"], correct: 2, explanation: "The flips are independent, so (1/2) × (1/2) × (1/2) = 1/8." }
+            ],
+            "math-12-6": [
+                { title: "A number from 1 through 8 is chosen at random. What is the probability it is even or greater than 6?", options: ["3/8", "1/2", "5/8", "3/4"], correct: 2, explanation: "The union is {2, 4, 6, 7, 8}, five outcomes out of eight, so the probability is 5/8." },
+                { title: "A fair die is rolled. What is the probability of rolling a 2 or a 5?", options: ["1/6", "1/3", "1/2", "2/3"], correct: 1, explanation: "Rolling a 2 and rolling a 5 are mutually exclusive. There are 2 favorable outcomes out of 6, so 2/6 = 1/3." }
+            ],
+            "math-12-7": [
+                { title: "A fair coin is flipped three times. What is the probability of getting tails on all three flips?", options: ["1/4", "1/6", "1/8", "3/8"], correct: 2, explanation: "Each flip has a 1/2 chance of tails and the flips are independent: (1/2)³ = 1/8." },
+                { title: "A fair six-sided die is rolled twice. What is the probability of rolling an odd number both times?", options: ["1/6", "1/4", "1/3", "1/2"], correct: 1, explanation: "There are 3 odd numbers out of 6 on each roll. The rolls are independent: 1/2 × 1/2 = 1/4." }
+            ],
+            "math-12-8": [
+                { title: "Which pair of events is independent?", options: ["Drawing two cards without replacement", "Drawing two marbles and keeping the first out", "Flipping a coin, then flipping it again", "Selecting two students without returning the first"], correct: 2, explanation: "The result of the first coin flip does not change the probability of the second flip." },
+                { title: "A coin is flipped and a die is rolled. What is the probability of heads and an even number?", options: ["1/6", "1/4", "1/3", "1/2"], correct: 1, explanation: "The events are independent: P(heads) × P(even) = 1/2 × 3/6 = 1/4." }
+            ],
+            "math-12-9": [
+                { title: "A bag has 3 red and 2 blue marbles. Two are drawn without replacement. What is the probability of red first, then blue?", options: ["1/5", "3/10", "2/5", "3/5"], correct: 1, explanation: "After a red is drawn, 2 blue remain among 4 marbles. Multiply 3/5 × 2/4 = 3/10." },
+                { title: "A box has 4 green and 1 yellow tile. A green tile is drawn and kept. What is the probability the next tile is yellow?", options: ["1/5", "1/4", "1/2", "4/5"], correct: 1, explanation: "After removing a green tile, 4 tiles remain, including 1 yellow, so the probability is 1/4." }
+            ],
+            "math-12-10": [
+                { title: "In a group of 20 students, 8 ride the bus and 5 of those bus riders are in grade 10. Given that a student rides the bus, what is the probability the student is in grade 10?", options: ["1/4", "5/8", "5/20", "8/20"], correct: 1, explanation: "The condition limits the sample space to 8 bus riders; 5 of them are in grade 10, so the probability is 5/8." },
+                { title: "Of 12 students who play a sport, 7 also play an instrument. Given that a student plays a sport, what is the probability they play an instrument?", options: ["7/12", "7/20", "12/7", "5/12"], correct: 0, explanation: "Among the 12 students who play a sport, 7 play an instrument. The conditional probability is 7/12." }
+            ],
+            "math-12-11": [
+                { title: "A bag has 2 red and 3 blue counters. One is drawn, returned, and another is drawn. What is the probability both are red?", options: ["2/5", "4/25", "1/5", "2/25"], correct: 1, explanation: "With replacement, the red probability remains 2/5 on both draws: 2/5 × 2/5 = 4/25." },
+                { title: "A bag has 3 red and 2 blue counters. Two counters are drawn without replacement. What is the probability both are red?", options: ["3/10", "9/25", "1/2", "2/5"], correct: 0, explanation: "Without replacement, the second red chance is 2/4: 3/5 × 2/4 = 3/10." }
+            ],
+            "math-12-12": [
+                { title: "A factory expects 2% of its items to need repair. About how many items would be expected to need repair in a batch of 250?", options: ["2", "5", "25", "50"], correct: 1, explanation: "Convert 2% to 0.02 and multiply: 0.02 × 250 = 5 expected items." },
+                { title: "A weather report gives a 30% chance of rain. What does this probability mean?", options: ["It will rain for exactly 30% of the day", "Rain is impossible", "Rain is possible, but not certain", "It will definitely rain"], correct: 2, explanation: "A 30% probability describes the chance of rain; it does not guarantee whether or how long it will rain." }
+            ],
+            "math-12-13": [
+                { title: "A fair die is rolled. What is the probability of not rolling a 6?", options: ["1/6", "1/3", "5/6", "1"], correct: 2, explanation: "Five of the six outcomes are not 6, so the probability is 5/6." },
+                { title: "A fair coin is flipped and a fair die is rolled. What is the probability of heads and a number greater than 4?", options: ["1/12", "1/6", "1/3", "1/2"], correct: 1, explanation: "The events are independent. P(heads) × P(5 or 6) = 1/2 × 2/6 = 1/6." },
+                { title: "A bag has 3 red and 2 blue counters. Two are drawn without replacement. What is the probability of two red counters?", options: ["1/5", "3/10", "2/5", "9/25"], correct: 1, explanation: "The draws are dependent: 3/5 × 2/4 = 6/20 = 3/10." },
+                { title: "A number from 1 through 10 is chosen. What is the probability it is even or greater than 8?", options: ["2/5", "1/2", "3/5", "7/10"], correct: 2, explanation: "The outcomes are {2, 4, 6, 8, 9, 10}: 6 of 10, which simplifies to 3/5." }
+            ]
+        };
+
+        const examQuestionBank = [
+            { subject: 'math', title: 'Solve for x: 3x + 5 = 20.', options: ['3', '5', '7', '15'], correct: 1, explanation: 'Subtract 5 from both sides, then divide by 3: x = 5.' },
+            { subject: 'math', title: 'A $40 item is discounted by 25%. What is the sale price?', options: ['$10', '$25', '$30', '$35'], correct: 2, explanation: '25% of $40 is $10; $40 - $10 = $30.' },
+            { subject: 'math', title: 'A right triangle has legs of 6 and 8. What is the hypotenuse?', options: ['9', '10', '12', '14'], correct: 1, explanation: 'By the Pythagorean theorem, c² = 6² + 8² = 100, so c = 10.' },
+            { subject: 'science', title: 'A student tests how sunlight affects plant growth. Which variable should be kept constant?', options: ['Hours of sunlight', 'Plant height', 'Type of plant', 'Growth rate'], correct: 2, explanation: 'Keeping plant type constant helps isolate sunlight as the variable being tested.' },
+            { subject: 'science', title: 'A graph shows bacteria doubling every hour. What pattern does this represent?', options: ['Linear decrease', 'Exponential growth', 'No change', 'Random variation'], correct: 1, explanation: 'Repeated doubling is exponential growth.' },
+            { subject: 'science', title: 'A metal spoon feels colder than a wooden spoon in the same room. Why?', options: ['Metal is at a lower temperature', 'Metal transfers heat from your hand faster', 'Wood creates heat', 'The spoons have different mass'], correct: 1, explanation: 'Metal conducts heat away from your hand faster, so it feels colder.' },
+            { subject: 'rla', title: 'Passage: The town added evening bus service. Within a month, ridership rose and fewer residents reported missing work. What is the strongest supported conclusion?', options: ['All residents use the bus', 'Evening service may improve access to work', 'The town should remove morning service', 'Bus fares were reduced'], correct: 1, explanation: 'The passage supports a connection between evening service and improved access to work.' },
+            { subject: 'rla', title: 'Which detail is the strongest evidence that a source is reliable?', options: ['It uses dramatic language', 'It cites verifiable data and its methods', 'It is the first result online', 'It agrees with the reader'], correct: 1, explanation: 'Verifiable evidence and transparent methods support reliability.' },
+            { subject: 'rla', title: 'In an argument, what is a counterclaim?', options: ['The main supporting example', 'A reason opposing the central claim', 'A summary of the conclusion', 'A definition of a key term'], correct: 1, explanation: 'A counterclaim presents a different or opposing position.' },
+            { subject: 'social', title: 'Which branch of the U.S. government interprets laws?', options: ['Executive', 'Legislative', 'Judicial', 'State'], correct: 2, explanation: 'The judicial branch interprets laws and applies them in cases.' },
+            { subject: 'social', title: 'What is one purpose of checks and balances?', options: ['Give one branch total authority', 'Limit concentration of government power', 'Replace elections', 'Set state tax rates'], correct: 1, explanation: 'Checks and balances allow branches to limit one another’s power.' },
+            { subject: 'social', title: 'If demand rises while supply stays the same, what usually happens to price?', options: ['It rises', 'It falls', 'It becomes zero', 'It never changes'], correct: 0, explanation: 'With supply unchanged, stronger demand typically puts upward pressure on price.' }
+        ];
+
+        const catalogPracticeUnavailable = Boolean(catalogMatch) &&
+            !isExamMode &&
+            !window.hasTopicPractice(currentStep);
+        if (catalogPracticeUnavailable) {
+            const notice = document.createElement('section');
+            notice.className = 'practice-unavailable-notice';
+            notice.setAttribute('role', 'status');
+            const heading = document.createElement('h2');
+            heading.textContent = `${catalogEntry?.[0] || 'Topic-specific practice'} is not available yet`;
+            const message = document.createElement('p');
+            message.textContent = 'This section is listed in the course catalog, but its topic-specific question set is still being prepared. Review the lesson or choose an available section from the practice list.';
+            const lessonLink = document.createElement('a');
+            lessonLink.className = 'btn-primary';
+            lessonLink.href = `lesson.html?step=${encodeURIComponent(currentStep)}`;
+            lessonLink.textContent = 'Review this lesson';
+            const practiceLink = document.createElement('a');
+            practiceLink.href = 'practice.html';
+            practiceLink.textContent = 'Back to the practice list';
+            notice.append(heading, message, lessonLink, practiceLink);
+            document.querySelector('.quiz-card').prepend(notice);
+            document.getElementById('quiz-content').hidden = true;
+            return;
+        }
+
+        let questions = questionBank[currentStep] || [
+            {
+                title: "Sample core practice question for " + currentStep.toUpperCase() + ". Which option is correct?",
+                options: [
+                    "A) First conceptual option choice",
+                    "B) Second conceptual option choice",
+                    "C) Third conceptual option choice",
+                    "D) Fourth conceptual option choice"
+                ],
+                correct: 0,
+                explanation: "Correct! This represents the primary conceptual principle for this step."
+            }
+        ];
+
+        if (isExamMode) questions = examQuestionBank;
+
+        let currentIndex = 0;
+        let score = 0;
+        let answered = false;
+        let remainingSeconds = isExamMode ? 20 * 60 : 5 * 60;
+        let timerInterval;
+        let finished = false;
+        const selectedAnswers = [];
+        const markedForReview = new Set();
+        const submittedAnswers = [];
+        const questionTimes = questions.map(() => 0);
+        const startedAt = Date.now();
+        let currentQuestionStartedAt = null;
+
+        const textScaleKey = 'zyomix_quiz_text_scale';
+        const contrastKey = 'zyomix_quiz_dark_contrast';
+        const storedTextScale = localStorage.getItem(textScaleKey);
+        let textScale = storedTextScale === null ? 1 : Number(storedTextScale);
+        if (!Number.isInteger(textScale) || textScale < 0 || textScale > 2) textScale = 1;
+        let darkContrast = localStorage.getItem(contrastKey) === 'true';
+
+        function applyDisplayPreferences() {
+            document.body.dataset.textSize = ['small', 'normal', 'large'][textScale];
+            document.body.classList.toggle('quiz-dark-mode', darkContrast);
+            document.getElementById('contrastToggle').setAttribute('aria-pressed', String(darkContrast));
+            document.getElementById('contrastToggle').textContent = darkContrast ? 'Light contrast' : 'Dark contrast';
+        }
+
+        document.getElementById('decreaseTextSize').addEventListener('click', () => {
+            textScale = Math.max(0, textScale - 1);
+            localStorage.setItem(textScaleKey, String(textScale));
+            applyDisplayPreferences();
+        });
+        document.getElementById('increaseTextSize').addEventListener('click', () => {
+            textScale = Math.min(2, textScale + 1);
+            localStorage.setItem(textScaleKey, String(textScale));
+            applyDisplayPreferences();
+        });
+        document.getElementById('contrastToggle').addEventListener('click', () => {
+            darkContrast = !darkContrast;
+            localStorage.setItem(contrastKey, String(darkContrast));
+            applyDisplayPreferences();
+        });
+        applyDisplayPreferences();
+
+        function formatDuration(seconds) {
+            const roundedSeconds = Math.max(0, Math.round(seconds));
+            const minutes = Math.floor(roundedSeconds / 60);
+            const remainder = roundedSeconds % 60;
+            return minutes ? `${minutes}m ${remainder}s` : `${remainder}s`;
+        }
+
+        function recordQuestionTime() {
+            if (currentQuestionStartedAt === null) return;
+            questionTimes[currentIndex] += (Date.now() - currentQuestionStartedAt) / 1000;
+            currentQuestionStartedAt = null;
+        }
+
+        function renderQuestionNavigator() {
+            const navigator = document.getElementById('questionNavigator');
+            navigator.replaceChildren(...questions.map((question, index) => {
+                const button = document.createElement('button');
+                const hasAnswer = selectedAnswers[index] !== undefined;
+                const isFlagged = markedForReview.has(index);
+                button.type = 'button';
+                button.className = 'question-nav-button';
+                if (hasAnswer) button.classList.add('is-answered');
+                if (isFlagged) button.classList.add('is-flagged');
+                if (index === currentIndex) button.classList.add('is-current');
+                button.setAttribute('aria-label', `Question ${index + 1}: ${hasAnswer ? 'answered' : 'unanswered'}${isFlagged ? ', marked for review' : ''}`);
+                if (index === currentIndex) button.setAttribute('aria-current', 'step');
+                button.textContent = String(index + 1);
+                if (isFlagged) {
+                    const marker = document.createElement('span');
+                    marker.className = 'question-nav-flag';
+                    marker.setAttribute('aria-hidden', 'true');
+                    marker.textContent = '★';
+                    button.append(marker);
+                }
+                button.addEventListener('click', () => {
+                    if (index === currentIndex || finished) return;
+                    recordQuestionTime();
+                    currentIndex = index;
+                    loadQuestion();
+                });
+                return button;
+            }));
+
+            const answeredCount = questions.length - questions.filter((_, index) => selectedAnswers[index] === undefined).length;
+            document.getElementById('answerCount').textContent = `${answeredCount} of ${questions.length} answered`;
+        }
+
+        function startTimer() {
+            if (!isExamMode && !isTimedMode) return;
+            const timer = document.getElementById('timerDisplay');
+            timer.style.display = 'inline';
+            const updateTimer = () => {
+                const minutes = Math.floor(remainingSeconds / 60).toString().padStart(2, '0');
+                const seconds = (remainingSeconds % 60).toString().padStart(2, '0');
+                timer.textContent = `${isExamMode ? 'Exam' : 'Practice'} time ${minutes}:${seconds}`;
+                timer.classList.toggle('is-warning', remainingSeconds <= 60);
+                timer.setAttribute('aria-label', remainingSeconds <= 60
+                    ? `Warning: ${isExamMode ? 'exam' : 'practice'} time remaining ${minutes}:${seconds}`
+                    : `${isExamMode ? 'Exam' : 'Practice'} time remaining ${minutes}:${seconds}`);
+                if (remainingSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    finishQuiz(true);
+                    return;
+                }
+                remainingSeconds--;
+            };
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function loadQuestion() {
+            answered = Boolean(submittedAnswers[currentIndex]);
+            const q = questions[currentIndex];
+            document.getElementById('progressIndicator').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+            document.getElementById('questionTitle').textContent = q.title;
+            
+            const optList = document.getElementById('optionsList');
+            optList.innerHTML = '';
+            
+            q.options.forEach((opt, idx) => {
+                const label = document.createElement('label');
+                label.className = 'option-label';
+                label.id = `optLabel${idx}`;
+                const input = document.createElement('input');
+                input.type = 'radio';
+                input.name = 'quizOption';
+                input.value = String(idx);
+                input.checked = selectedAnswers[currentIndex] === idx;
+                input.disabled = answered;
+                input.addEventListener('change', () => {
+                    selectedAnswers[currentIndex] = idx;
+                    renderQuestionNavigator();
+                });
+                const text = document.createElement('span');
+                text.textContent = opt;
+                label.append(input, text);
+                optList.append(label);
+            });
+
+            const expBox = document.getElementById('explanationBox');
+            expBox.style.display = 'none';
+            if (answered) {
+                const correct = selectedAnswers[currentIndex] === q.correct;
+                expBox.className = correct ? 'explanation-box' : 'explanation-box incorrect';
+                expBox.textContent = correct
+                    ? q.explanation
+                    : `Incorrect. The correct answer was ${q.options[q.correct]}. ${q.explanation}`;
+                expBox.style.display = 'block';
+                document.getElementById(`optLabel${q.correct}`).classList.add('is-correct');
+                if (!correct) document.getElementById(`optLabel${selectedAnswers[currentIndex]}`).classList.add('is-incorrect');
+            }
+
+            const actionButton = document.getElementById('actionBtn');
+            if (isExamMode) {
+                actionButton.textContent = currentIndex === questions.length - 1 ? 'Finish Exam' : 'Save & Continue →';
+            } else if (answered) {
+                actionButton.textContent = currentIndex === questions.length - 1 ? 'Complete Practice →' : 'Next Question →';
+            } else {
+                actionButton.textContent = 'Submit Answer →';
+            }
+
+            const reviewButton = document.getElementById('markReviewButton');
+            const isFlagged = markedForReview.has(currentIndex);
+            reviewButton.setAttribute('aria-pressed', String(isFlagged));
+            reviewButton.textContent = isFlagged ? 'Marked for review ★' : 'Mark for review';
+            const skipButton = document.getElementById('skipQuestionButton');
+            skipButton.hidden = isExamMode || answered;
+            skipButton.textContent = currentIndex === questions.length - 1 ? 'Finish Practice →' : 'Next Question →';
+            renderQuestionNavigator();
+            currentQuestionStartedAt = Date.now();
+        }
+
+        function handleQuizAction() {
+            const selected = document.querySelector('input[name="quizOption"]:checked');
+            const actionBtn = document.getElementById('actionBtn');
+
+            if (selected) selectedAnswers[currentIndex] = Number(selected.value);
+
+            if (isExamMode) {
+                recordQuestionTime();
+                if (currentIndex === questions.length - 1) {
+                    finishQuiz();
+                } else {
+                    currentIndex++;
+                    loadQuestion();
+                }
+                return;
+            }
+
+            if (!answered) {
+                if (selectedAnswers[currentIndex] === undefined) {
+                    alert('Please select an option before submitting.');
+                    return;
+                }
+                submittedAnswers[currentIndex] = true;
+                answered = true;
+                const q = questions[currentIndex];
+                const chosenValue = selectedAnswers[currentIndex];
+                const expBox = document.getElementById('explanationBox');
+                const isCorrect = chosenValue === q.correct;
+                expBox.className = isCorrect ? 'explanation-box' : 'explanation-box incorrect';
+                expBox.textContent = isCorrect
+                    ? q.explanation
+                    : `Incorrect. The correct answer was ${q.options[q.correct]}. ${q.explanation}`;
+                expBox.style.display = 'block';
+                document.getElementById(`optLabel${q.correct}`).classList.add('is-correct');
+                if (!isCorrect) document.getElementById(`optLabel${chosenValue}`).classList.add('is-incorrect');
+                document.querySelectorAll('input[name="quizOption"]').forEach(input => { input.disabled = true; });
+                actionBtn.textContent = currentIndex < questions.length - 1 ? 'Next Question →' : 'Finish Practice →';
+                document.getElementById('skipQuestionButton').hidden = true;
+                renderQuestionNavigator();
+            } else {
+                recordQuestionTime();
+                if (currentIndex < questions.length - 1) {
+                    currentIndex++;
+                    loadQuestion();
+                } else {
+                    finishQuiz();
+                }
+            }
+        }
+
+        document.getElementById('markReviewButton').addEventListener('click', () => {
+            if (markedForReview.has(currentIndex)) markedForReview.delete(currentIndex);
+            else markedForReview.add(currentIndex);
+            const button = document.getElementById('markReviewButton');
+            const isFlagged = markedForReview.has(currentIndex);
+            button.setAttribute('aria-pressed', String(isFlagged));
+            button.textContent = isFlagged ? 'Marked for review ★' : 'Mark for review';
+            renderQuestionNavigator();
+        });
+
+        document.getElementById('skipQuestionButton').addEventListener('click', () => {
+            recordQuestionTime();
+            if (currentIndex === questions.length - 1) {
+                finishQuiz();
+                return;
+            }
+            currentIndex++;
+            loadQuestion();
+        });
+
+        document.getElementById('closeScoreDialog').addEventListener('click', () => {
+            document.getElementById('scoreSummaryDialog').close();
+        });
+        document.getElementById('viewDetailedReview').addEventListener('click', () => {
+            document.getElementById('scoreSummaryDialog').close();
+            document.getElementById('resultBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+
+        async function finishQuiz(timeExpired = false) {
+            if (finished) return;
+            recordQuestionTime();
+            finished = true;
+            clearInterval(timerInterval);
+            score = questions.reduce((total, question, index) =>
+                total + (selectedAnswers[index] === question.correct ? 1 : 0), 0);
+            const unansweredCount = questions.filter((_, index) => selectedAnswers[index] === undefined).length;
+            const incorrectCount = questions.length - score - unansweredCount;
+            const finalPercentage = Math.round((score / questions.length) * 100);
+            const token = localStorage.getItem('zyomix_token');
+            const durationSeconds = Math.max(0, Math.round((Date.now() - startedAt) / 1000));
+
+            if (!isExamMode) {
+                const savedProgress = JSON.parse(localStorage.getItem("zyomix_practice_progress") || '{}');
+                savedProgress[currentStep] = { completed: true, score: finalPercentage, timestamp: new Date().toISOString() };
+                localStorage.setItem("zyomix_practice_progress", JSON.stringify(savedProgress));
+            }
+
+            const resultTimestamp = new Date().toISOString();
+            if (isExamMode || isTimedMode) {
+                let savedAttempts;
+                try {
+                    savedAttempts = JSON.parse(localStorage.getItem('zyomix_exam_attempts') || '[]');
+                    if (!Array.isArray(savedAttempts)) savedAttempts = [];
+                } catch (error) {
+                    console.warn('Unable to read saved exam attempts:', error);
+                    savedAttempts = [];
+                }
+                savedAttempts.unshift({
+                    mode: isExamMode ? 'exam-simulator' : 'timed-practice',
+                    score,
+                    total: questions.length,
+                    timestamp: resultTimestamp
+                });
+                localStorage.setItem('zyomix_exam_attempts', JSON.stringify(savedAttempts.slice(0, 10)));
+            }
+
+            let saveStatus = token
+                ? 'Saving your result to your account...'
+                : 'Saved on this browser. Sign in to save future progress to your account.';
+            document.getElementById('resultSaveStatus').textContent = saveStatus;
+            document.getElementById('quiz-content').style.display = 'none';
+            document.getElementById('resultBox').style.display = 'block';
+            document.getElementById('dialogScoreText').textContent = `You scored ${score} of ${questions.length} (${finalPercentage}%).${timeExpired ? ' The timer expired.' : ''}`;
+            document.getElementById('dialogSaveStatus').textContent = saveStatus;
+            document.getElementById('dialogCorrectCount').textContent = String(score);
+            document.getElementById('dialogIncorrectCount').textContent = String(incorrectCount);
+            document.getElementById('dialogUnansweredCount').textContent = String(unansweredCount);
+            document.getElementById('dialogReviewCount').textContent = markedForReview.size
+                ? `${markedForReview.size} question${markedForReview.size === 1 ? '' : 's'} marked for review.`
+                : 'Your detailed explanations will be ready shortly.';
+            const scoreDialog = document.getElementById('scoreSummaryDialog');
+            scoreDialog.showModal();
+            try {
+                const headers = { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` };
+                const requests = [];
+                if (token && (isExamMode || isTimedMode)) {
+                    requests.push(fetch('/api/exam-attempts', {
+                        method: 'POST', headers,
+                        body: JSON.stringify({ mode: isExamMode ? 'exam-simulator' : 'timed-practice', score, total: questions.length, durationSeconds })
+                    }));
+                }
+                if (token && !isExamMode) {
+                    const subject = currentStep.split('-')[0];
+                    requests.push(fetch('/api/progress', {
+                        method: 'POST', headers,
+                        body: JSON.stringify({ subject, lesson: currentStep, completed: true, score: finalPercentage })
+                    }));
+                }
+                const responses = await Promise.all(requests);
+                for (const response of responses) {
+                    if (!response.ok) {
+                        const data = await response.json().catch(() => ({}));
+                        throw new Error(data.error || 'The server could not save your result.');
+                    }
+                }
+                if (token) saveStatus = 'Saved to your account and this browser.';
+            } catch (error) {
+                console.error('Unable to save study result:', error);
+                saveStatus = token
+                    ? 'Your result is saved on this browser, but could not be confirmed on your account. Check your connection and retry later.'
+                    : 'Your result is saved on this browser. Sign in to save future progress to your account.';
+            }
+
+            document.getElementById('quiz-content').style.display = 'none';
+            const modeText = isExamMode ? 'Exam simulator' : isTimedMode ? 'Timed practice' : 'Practice session';
+            document.querySelector('#resultBox h3').textContent = timeExpired ? 'Time is up' : `${modeText} complete`;
+            document.getElementById('finalScoreText').textContent = `You scored ${score} out of ${questions.length} (${finalPercentage}%).`;
+            document.getElementById('resultSaveStatus').textContent = saveStatus;
+
+            const subjectResults = new Map();
+            questions.forEach((question, index) => {
+                const subject = question.subject || currentStep.split('-')[0];
+                const result = subjectResults.get(subject) || { correct: 0, total: 0 };
+                result.total++;
+                if (selectedAnswers[index] === question.correct) result.correct++;
+                subjectResults.set(subject, result);
+            });
+            const weakestSubject = [...subjectResults.entries()]
+                .sort((a, b) => a[1].correct / a[1].total - b[1].correct / b[1].total)[0]?.[0] || currentStep.split('-')[0];
+            const targetSubject = finalPercentage < 70 ? weakestSubject : currentStep.split('-')[0];
+            const subjectName = {
+                math: 'Mathematics',
+                science: 'Science',
+                rla: 'Reasoning Through Language Arts',
+                social: 'Social Studies'
+            }[targetSubject] || 'GED';
+            const recommendation = finalPercentage >= 80
+                ? `Strong work. Continue with another ${subjectName} topic.`
+                : finalPercentage >= 50
+                    ? `Good start. Review the explanations, then try this ${subjectName} practice again.`
+                    : `Review ${subjectName} concepts before your next practice attempt.`;
+            document.getElementById('resultRecommendation').textContent = recommendation;
+
+            const retryButton = document.getElementById('resultRetryButton');
+            retryButton.href = window.location.href;
+            retryButton.textContent = isExamMode ? 'Retry exam' : 'Retry practice';
+            const reviewButton = document.getElementById('resultReviewButton');
+            reviewButton.href = isExamMode
+                ? `concept.html?subject=${encodeURIComponent(targetSubject)}`
+                : `lesson.html?step=${encodeURIComponent(currentStep)}`;
+            reviewButton.textContent = isExamMode ? `Review ${subjectName} concepts` : 'Review this concept';
+
+            const examReview = document.getElementById('examReview');
+            const quizSubjectNames = {
+                math: 'Mathematics',
+                science: 'Science',
+                rla: 'Reasoning Through Language Arts',
+                social: 'Social Studies'
+            };
+            examReview.replaceChildren();
+            questions.forEach((question, index) => {
+                const reviewItem = document.createElement('p');
+                reviewItem.className = 'review-question';
+                const heading = document.createElement('strong');
+                const questionSubject = question.subject || currentStep.split('-')[0];
+                const outcome = selectedAnswers[index] === undefined
+                    ? 'Unanswered'
+                    : selectedAnswers[index] === question.correct ? 'Correct' : 'Incorrect';
+                heading.textContent = `${index + 1}. ${quizSubjectNames[questionSubject] || 'GED'} · ${outcome}`;
+                const answer = document.createElement('span');
+                answer.className = 'review-answer';
+                answer.textContent = `Your answer: ${selectedAnswers[index] === undefined ? 'No answer' : question.options[selectedAnswers[index]]} · Correct answer: ${question.options[question.correct]}`;
+                const time = document.createElement('span');
+                time.className = 'review-time';
+                time.textContent = `Time on question: ${formatDuration(questionTimes[index])}${markedForReview.has(index) ? ' · Marked for review' : ''}`;
+                const explanation = document.createElement('span');
+                explanation.className = 'review-explanation';
+                explanation.textContent = question.explanation;
+                reviewItem.append(heading, answer, time, explanation);
+                examReview.append(reviewItem);
+            });
+            examReview.hidden = !examReview.childElementCount;
+            document.getElementById('resultBox').style.display = 'block';
+
+            const percentage = document.getElementById('dialogScoreText');
+            percentage.textContent = `You scored ${score} of ${questions.length} (${finalPercentage}%).${timeExpired ? ' The timer expired.' : ''}`;
+            document.getElementById('dialogCorrectCount').textContent = String(score);
+            document.getElementById('dialogIncorrectCount').textContent = String(incorrectCount);
+            document.getElementById('dialogUnansweredCount').textContent = String(unansweredCount);
+            const flaggedCount = markedForReview.size;
+            document.getElementById('dialogReviewCount').textContent = flaggedCount
+                ? `${flaggedCount} question${flaggedCount === 1 ? '' : 's'} marked for review. Review answers and explanations below.`
+                : 'Review your answers and explanations below.';
+            document.getElementById('dialogSaveStatus').textContent = saveStatus;
+            document.getElementById('viewDetailedReview').disabled = false;
+        }
+
+        document.getElementById('actionBtn').addEventListener('click', handleQuizAction);
+
+        // Initialize first question on load
+        renderQuestionNavigator();
+        loadQuestion();
+        startTimer();
+    })();
+    </script>
+</body>
+</html>
