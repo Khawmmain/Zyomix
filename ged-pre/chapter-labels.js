@@ -11,13 +11,19 @@
         if (!match) return null;
 
         const [, subject, chapter, lesson] = match;
-        const section = subject.toLowerCase() === 'math' && chapter === '12'
+        const normalizedSubject = subject.toLowerCase();
+        const displayChapter = normalizedSubject === 'science'
+            ? window.scienceCourseChapters?.findIndex(
+                item => item.stepChapter === Number(chapter)
+            ) + 1
+            : Number(chapter);
+        const section = normalizedSubject === 'math' && chapter === '12'
             ? `1.${lesson}`
-            : `${chapter}.${lesson}`;
+            : `${displayChapter || chapter}.${lesson}`;
 
         return {
-            subject: subjects[subject.toLowerCase()] || subject.toUpperCase(),
-            chapter,
+            subject: subjects[normalizedSubject] || subject.toUpperCase(),
+            chapter: String(displayChapter || chapter),
             section
         };
     }

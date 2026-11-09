@@ -51,7 +51,8 @@
                 grid.className = 'steps-grid-2col';
                 chapter.sections.forEach(([sectionTitle], sectionIndex) => {
                     const sectionNumber = sectionIndex + 1;
-                    const stepId = `${subject}-${chapterNumber}-${sectionNumber}`;
+                    const stepChapter = subject === 'science' ? chapter.stepChapter : chapterNumber;
+                    const stepId = `${subject}-${stepChapter}-${sectionNumber}`;
                     const available = window.hasTopicPractice(stepId);
                     const card = document.createElement('a');
                     card.href = available
