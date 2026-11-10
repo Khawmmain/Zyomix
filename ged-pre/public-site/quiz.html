@@ -296,13 +296,19 @@
         const sectionCatalog = catalogMatch?.[1] === 'science'
             ? window.scienceCourseChapters
             : window.socialStudiesCourseChapters;
-        const catalogEntry = catalogMatch
-            ? sectionCatalog?.[Number(catalogMatch[2]) - 1]?.sections[Number(catalogMatch[3]) - 1]
+        const catalogChapter = catalogMatch
+            ? catalogMatch[1] === 'science'
+                ? sectionCatalog?.find(chapter => chapter.stepChapter === Number(catalogMatch[2]))
+                : sectionCatalog?.[Number(catalogMatch[2]) - 1]
             : null;
+        const catalogEntry = catalogChapter?.sections[Number(catalogMatch?.[3]) - 1];
+        const displayChapter = catalogMatch?.[1] === 'science'
+            ? sectionCatalog.indexOf(catalogChapter) + 1
+            : Number(catalogMatch?.[2]);
         document.getElementById('stepDisplayBadge').textContent = isExamMode
             ? modeLabel
             : catalogEntry
-                ? `${modeLabel}: Section ${catalogMatch[2]}.${catalogMatch[3]} · ${catalogEntry[0]}`
+                ? `${modeLabel}: Section ${displayChapter}.${catalogMatch[3]} · ${catalogEntry[0]}`
                 : `${modeLabel}: ${currentStep.toUpperCase()}`;
 
         // Comprehensive question repository for steps including Chapter 3 Probability

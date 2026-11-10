@@ -305,6 +305,30 @@
             color: #475569;
             font-size: 0.9rem;
         }
+        .lesson-image-placeholder {
+            margin: 1rem 0;
+            padding: 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            background: #ffffff;
+        }
+        .lesson-image-placeholder-frame {
+            display: block;
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            background: #f8fafc;
+        }
+        .lesson-image-placeholder figcaption {
+            margin-top: 0.65rem;
+            color: #475569;
+            font-size: 0.9rem;
+        }
+        .lesson-image-placeholder figcaption strong {
+            display: block;
+            margin-bottom: 0.35rem;
+            color: #1e293b;
+        }
         .lesson-relationship-charts {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
@@ -4295,12 +4319,17 @@
         };
 
         const scienceStep = stepId.match(/^science-(\d+)-(\d+)$/);
-        const scienceChapter = scienceStep && window.scienceCourseChapters?.[Number(scienceStep[1]) - 1];
+        const scienceChapter = scienceStep && window.scienceCourseChapters?.find(
+            chapter => chapter.stepChapter === Number(scienceStep[1])
+        );
+        const scienceDisplayChapter = scienceChapter
+            ? window.scienceCourseChapters.indexOf(scienceChapter) + 1
+            : Number(scienceStep?.[1]);
         const scienceSection = scienceChapter?.sections[Number(scienceStep[2]) - 1];
         const scienceLesson = scienceSection ? {
-            badge: `Science · Chapter ${scienceStep[1]} · Section ${scienceStep[1]}.${scienceStep[2]}`,
+            badge: `Science · Chapter ${scienceDisplayChapter} · Section ${scienceDisplayChapter}.${scienceStep[2]}`,
             title: scienceSection[0],
-            intro: `This section is part of Chapter ${scienceStep[1]}: ${scienceChapter.title}.`,
+            intro: `This section is part of Chapter ${scienceDisplayChapter}: ${scienceChapter.title}.`,
             theory: `Work through each skill in order. Use the passage, data, diagram, or other information provided in a question to support your reasoning.`,
             example: `Apply the steps below to a science question about ${scienceSection[0].toLowerCase()}.`,
             rules: "Base each answer on the information provided. Check units, variables, and evidence before choosing a conclusion.",
@@ -4586,7 +4615,9 @@
         const probabilitySection = stepId.match(/^math-12-(\d+)$/);
         document.getElementById('lessonBadge').innerText = probabilitySection
             ? `Mathematics · Chapter 12 · Section 1.${probabilitySection[1]}`
-            : currentLesson.badge;
+            : scienceSection
+                ? `Science · Chapter ${scienceDisplayChapter} · Section ${scienceDisplayChapter}.${scienceStep[2]}`
+                : currentLesson.badge;
         document.getElementById('lessonTitle').innerText = currentLesson.title;
         document.getElementById('lessonIntro').innerText = currentLesson.intro || currentLesson.theory;
         const introQuestion = document.getElementById('lessonIntroQuestion');
@@ -4626,7 +4657,7 @@
         const sectionIndex = Number(scienceStep?.[2] || socialStep?.[2]) - 1;
         const chapterSections = scienceChapter?.sections || socialChapter?.sections || [];
         const relatedSection = chapterSections[sectionIndex + 1] || chapterSections[sectionIndex - 1];
-        const criticalThinkingSections = catalogSectionTitle && !rlaLesson
+        let criticalThinkingSections = catalogSectionTitle && !rlaLesson
             ? window.createCriticalThinkingSections({
                 subject: scienceSection ? 'science' : 'social',
                 title: catalogSectionTitle,
@@ -4637,6 +4668,18 @@
             })
             : [];
         const lessonSections = [...(currentLesson.lessonSections || [])];
+        if (scienceSection) {
+            criticalThinkingSections = criticalThinkingSections
+                .filter(section => !['7. Compare & Contrast', '9. Ask “Why?”'].includes(section.title));
+            let nextSectionNumber = lessonSections.reduce((highest, section) => {
+                const number = Number(section.title.match(/^\s*(\d+)\./)?.[1] || 0);
+                return Math.max(highest, number);
+            }, 0) + 1;
+            criticalThinkingSections = criticalThinkingSections.map(section => ({
+                ...section,
+                title: section.title.replace(/^\d+\.\s*/, `${nextSectionNumber++}. `)
+            }));
+        }
         if (scienceSection || socialSection) {
             const resourceSections = lessonSections.filter(section => section.resourceLink);
             if (resourceSections.length) {
@@ -5047,7 +5090,29 @@
             }
 
             function appendContent(parent, content) {
+                if (content.leadParagraph) {
+                    const paragraph = document.createElement('p');
+                    paragraph.className = 'lesson-text';
+                    const strong = document.createElement('strong');
+                    strong.textContent = content.leadParagraph;
+                    paragraph.append(strong);
+                    parent.append(paragraph);
+                }
                 appendParagraphs(parent, content.paragraphs, content.highlights, content.preserveLineBreaks);
+                if (content.imagePlaceholder) {
+                    const figure = document.createElement('figure');
+                    figure.className = 'lesson-image-placeholder';
+                    const frame = document.createElement('img');
+                    frame.className = 'lesson-image-placeholder-frame';
+                    frame.src = content.imagePlaceholder.src;
+                    frame.alt = content.imagePlaceholder.altText;
+                    frame.loading = 'lazy';
+                    frame.decoding = 'async';
+                    const caption = document.createElement('figcaption');
+                    caption.textContent = content.imagePlaceholder.caption;
+                    figure.append(frame, caption);
+                    parent.append(figure);
+                }
                 if (content.blockquote) {
                     const quote = document.createElement('blockquote');
                     quote.className = 'lesson-science-passage';

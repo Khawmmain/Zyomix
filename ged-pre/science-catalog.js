@@ -1,20 +1,20 @@
 (function () {
     const parts = {
         1: {
-            title: 'Part A: Scientific reasoning and data',
-            description: 'Build the reading, investigation, data, and math skills used throughout the science test.'
-        },
-        5: {
-            title: 'Part B: Life science',
+            title: 'Part A: Life science',
             description: 'Study cells, human health, heredity, ecosystems, and evolution.'
         },
-        9: {
-            title: 'Part C: Physical science',
+        5: {
+            title: 'Part B: Physical science',
             description: 'Practice matter, chemical reactions, motion, forces, work, and energy.'
         },
-        12: {
-            title: 'Part D: Earth and space science',
+        8: {
+            title: 'Part C: Earth and space science',
             description: 'Explore Earth systems, the environment, the solar system, and the universe.'
+        },
+        10: {
+            title: 'Part D: Scientific reasoning and data',
+            description: 'Build reading, investigation, data, and math skills used throughout the science test.'
         },
         14: {
             title: 'Part E: Turn knowledge into real-test readiness',
@@ -167,12 +167,17 @@
         }
     ];
 
-    window.scienceCourseChapters = chapters;
+    chapters.forEach((chapter, index) => {
+        chapter.stepChapter = index + 1;
+    });
+    const orderedChapters = [5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 14, 15]
+        .map(chapterNumber => chapters[chapterNumber - 1]);
+    window.scienceCourseChapters = orderedChapters;
 
     const chapterList = document.getElementById('science-chapter-list');
     if (!chapterList) return;
 
-    chapters.forEach((chapter, chapterIndex) => {
+    orderedChapters.forEach((chapter, chapterIndex) => {
         const chapterNumber = chapterIndex + 1;
         const part = parts[chapterNumber];
         if (part) {
@@ -194,7 +199,7 @@
 
         chapter.sections.forEach(([sectionTitle], sectionIndex) => {
             const link = document.createElement('a');
-            link.href = `lesson.html?step=science-${chapterNumber}-${sectionIndex + 1}`;
+            link.href = `lesson.html?step=science-${chapter.stepChapter}-${sectionIndex + 1}`;
             link.className = 'step-pill-card searchable-card';
 
             const badge = document.createElement('span');

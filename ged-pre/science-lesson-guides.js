@@ -9,7 +9,8 @@
         practice,
         resource,
         formula,
-        flow
+        flow,
+        customLessonSections
     }) => ({
         title,
         intro,
@@ -19,7 +20,7 @@
         rules: steps.join(" "),
         lessonSectionsOnly: true,
         gedConnection: "GED Science questions give you information to read and reason about. Use the evidence in the question, follow these steps, and explain what your answer means.",
-        lessonSections: [
+        lessonSections: customLessonSections || [
             {
                 title: `Why ${title} matters`,
                 paragraphs: [intro]
@@ -119,42 +120,209 @@
     const guides = {
         "science-5-1": makeGuide({
             title: "Cell Structures and Functions",
-            intro: "A cell is the smallest living building block. Its parts do different jobs, much like the rooms and equipment in a small factory.",
-            explanation: "Every cell has a cell membrane that controls what enters and leaves, cytoplasm where many cell activities happen, and DNA that stores instructions. Many cells also have organelles—small parts with special jobs. Plant cells have a cell wall and chloroplasts; both plant and animal cells have a nucleus and mitochondria.",
+            intro: "A cell is the smallest unit of life that can carry out the basic activities needed to live. Think of it as a tiny factory: its parts have different jobs, but they work together.",
+            explanation: "Cells organize many small parts into a working living system. The cell membrane controls exchange with the surroundings; the nucleus stores most of a eukaryotic cell's DNA; and organelles carry out special jobs. This makes a cell's activities easier to understand than a list of unrelated parts.",
             keywords: ["cell", "cell membrane", "cytoplasm", "DNA", "organelle", "nucleus", "mitochondria", "ribosome", "chloroplast", "cell wall"],
             terms: [
                 "Cell: the smallest unit that can carry out the basic jobs of life.",
                 "Cell membrane: a thin boundary that controls what enters and leaves.",
-                "Nucleus: a cell part that holds most of the cell's DNA instructions.",
-                "Mitochondria: cell parts that release usable energy from food.",
-                "Chloroplast: a plant-cell part that captures light for photosynthesis.",
-                "Cell wall: a firm outer support found in plant cells."
+                "Organelle: a cell structure with a specific job.",
+                "DNA: molecule that carries instructions used in building and running cells.",
+                "Cell theory: the idea that living things are made of cells, cells are life's basic unit, and new cells come from existing cells."
             ],
             example: {
-                question: "A plant cell uses sunlight to make sugar. Which cell part helps it capture the light?",
+                question: "A leafy plant is placed in sunlight and has water and carbon dioxide. How do cell parts help it make and use sugar?",
                 steps: [
-                    "Find the action: the cell is using sunlight to make sugar.",
-                    "Recall that photosynthesis is the process that uses light to make sugar.",
-                    "Match the job to the cell part: chloroplasts capture light."
+                    "The chloroplast captures light energy used in photosynthesis to make sugar.",
+                    "The cell membrane controls the movement of substances into and out of the cell.",
+                    "Mitochondria help release usable energy from sugar when the cell needs it."
                 ],
-                answer: "The chloroplast helps the plant cell capture light. The cell wall supports the cell, but it does not make sugar."
+                answer: "Chloroplasts help make sugar using light. Other cell parts support exchange and energy use; the parts work together rather than doing the same job."
             },
             steps: [
-                "1. Read the question and identify the cell job it describes.",
-                "2. Look for a clue such as control, energy, making proteins, or capturing light.",
-                "3. Match that job to the cell part: nucleus controls instructions, mitochondria release energy, ribosomes build proteins, and chloroplasts capture light.",
-                "4. Check whether the question is about a plant cell, an animal cell, or both."
+                "1. Identify the cell job named in the question.",
+                "2. Match the job to a structure: membrane controls exchange; nucleus holds most DNA; ribosomes build proteins; mitochondria release usable energy from food; chloroplasts capture light for photosynthesis.",
+                "3. Check whether the diagram shows a plant cell, an animal cell, or another kind of cell.",
+                "4. Use labels and evidence in the question; do not assume every cell has every organelle."
             ],
             practice: {
-                question: "A cell needs to control which substances enter and leave. Which part does this job?",
-                steps: ["Think of the cell's outer boundary.", "Choose the part that controls entry and exit."],
-                answer: "The cell membrane controls what enters and leaves."
+                question: "A cell cannot control what substances enter and leave. Which structure may be damaged, and what is one likely effect?",
+                steps: ["Find the job described: controlling exchange.", "Match it to the cell's boundary."],
+                answer: "The cell membrane may be damaged. The cell may not regulate the movement of needed or harmful substances normally."
             },
             resource: resource("OpenStax Biology 2e: Cells (free reading)", `${biology}4-introduction`),
-            flow: {
-                label: "Simple plant cell parts and jobs",
-                steps: ["Cell membrane: controls entry and exit", "Nucleus: stores DNA instructions", "Mitochondria: release usable energy", "Chloroplasts: use light to make sugar"]
-            }
+            formula: "To understand Cell Structures and Functions, one must first look at its foundational element: the cell. When specialized cell structures carry out their jobs (which you can check in the free OpenStax Biology 2e cell guide), they directly affect the cell's ability to exchange materials, use energy, and stay alive. In an exam setting, this relationship is typically illustrated by a labeled cell diagram or a short scenario, where the reader must trace the direct path from a structure's job to the result.",
+            customLessonSections: [
+                {
+                    title: "🧠 Part 1: The Master Framework (Cell Structures and Functions)",
+                    paragraphs: []
+                },
+                {
+                    title: "1. Introduction",
+                    leadParagraph: "A cell is the smallest unit of life that can carry out the basic activities needed to live. Think of it as a tiny factory: the membrane is its guarded boundary, DNA stores instructions, and organelles carry out specialized jobs.",
+                    paragraphs: [
+                        "Cell structures turn many small parts into one working system. As you read this lesson, you are using the same idea: headings, examples, and key words each do a different job, but together they help you understand the topic.",
+                        "Mental Experiment: Imagine a factory where the doors stop working, the instruction book is lost, and the power equipment fails. Workers cannot get supplies, follow plans, or use energy. A cell also depends on parts working together; damage to one part can affect the whole cell."
+                    ]
+                },
+                {
+                    title: "2. Concept Deep-Dive: Concept & History",
+                    subsections: [
+                        {
+                            title: "🔍 Step 1: What is the concept?",
+                            paragraphs: [
+                                "Cell structure and function means understanding how the parts of a cell are built for particular jobs and how those jobs support the whole cell. A cell is not just a bag of parts: its boundary, internal fluid, DNA, and organelles interact.",
+                                "In the town model, the membrane controls what can enter or leave, the cytoplasm is the space where many cell activities happen, and the nucleus stores most of the DNA instructions in plant and animal cells. Ribosomes build proteins. Mitochondria help release usable energy from food. Plant cells also have a supportive cell wall and chloroplasts, which capture light energy for photosynthesis.",
+                                "The model has limits: not every cell has a nucleus or the same organelles. Bacteria, for example, do not have a nucleus. Follow the cell type shown in the question."
+                            ],
+                            table: {
+                                headers: ["Cell part", "Town or factory comparison", "Main job"],
+                                rows: [
+                                    ["Cell membrane", "Gate and boundary", "Controls movement into and out of the cell."],
+                                    ["Nucleus", "Records office", "Holds most DNA instructions in plant and animal cells."],
+                                    ["Mitochondria", "Energy equipment", "Help release usable energy from food."],
+                                    ["Chloroplast", "Solar-powered workshop", "Captures light energy for photosynthesis in plants and some other organisms."]
+                                ]
+                            }
+                        },
+                        {
+                            title: "🔬 Step 2: How scientists built cell theory",
+                            paragraphs: [
+                                "Cell theory developed over time as microscopes improved and scientists compared observations. No single experiment or scientist established every part of it.",
+                                "In the 1600s, early microscopes revealed structures too small to see with the unaided eye. In the 1800s, scientists compared plant and animal tissues and used observations of cell division to build a broader explanation.",
+                                "ASCII timeline:\n1665: Hooke observes cork --> cells\n  |\n1670s: Leeuwenhoek observes living microbes\n  |\n1838-1839: Schleiden and Schwann compare plants and animals\n  |\n1850s: Cell-division evidence supports cells coming from existing cells\n  |\nCell theory: living things are made of cells; cells are life's basic unit; cells come from existing cells."
+                            ],
+                            preserveLineBreaks: true,
+                            bullets: [
+                                "1665 — Robert Hooke examined thin cork with a microscope and described box-like spaces as “cells.” He saw dead plant cell walls, not living cell activity.",
+                                "1670s — Antonie van Leeuwenhoek used improved microscopes to observe living microscopic organisms and cells.",
+                                "1838 — Matthias Schleiden argued from plant observations that plants are made of cells.",
+                                "1839 — Theodor Schwann concluded that animals are also made of cells, helping establish that cells are basic units of life.",
+                                "1850s — Rudolf Virchow and other researchers supported the idea that new cells come from existing cells through cell division."
+                            ],
+                            visualAid: {
+                                title: "A timeline of cell theory",
+                                description: "Microscope observations and comparisons built cell theory over time.",
+                                steps: [
+                                    "1600s: Microscopes reveal structures too small to see unaided.",
+                                    "1665: Hooke describes box-like spaces in cork as cells.",
+                                    "1670s: Leeuwenhoek observes living microscopic organisms.",
+                                    "1838–1839: Schleiden and Schwann compare plants and animals.",
+                                    "1850s: Cell division evidence supports cells coming from existing cells.",
+                                    "Cell theory: living things are made of cells; cells are life's basic unit; cells come from existing cells."
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    title: "3. Real-World Example",
+                    paragraphs: ["A plant on a windowsill needs materials and energy to grow. Follow how cell structures help its leaf cells do their work."],
+                    bullets: [
+                        "The Raw Element: A leaf cell contains a membrane, cytoplasm, DNA, ribosomes, mitochondria, chloroplasts, water, and other materials. Without knowing the jobs, these are just names and parts on a diagram.",
+                        "The Structured Context: The cell membrane regulates exchange; chloroplasts capture light energy for photosynthesis; the nucleus stores most of the DNA instructions; mitochondria help release usable energy from food.",
+                        "The Applied Result: The cell can make sugar through photosynthesis and use materials and energy to support its activities. The plant's tissues can then contribute to the growth of the whole plant."
+                    ]
+                },
+                {
+                    title: "4. The Underlying Theory: The Rules of Cell Structures and Functions",
+                    paragraphs: ["Use these rules to explain a cell diagram or predict the effect of a change."],
+                    table: {
+                        headers: ["Rule", "Core Theoretical Logic"],
+                        rows: [
+                            ["Structure fits the job", "A cell part's features help it perform a particular function."],
+                            ["Parts work together", "A cell depends on connected jobs; one structure's change can affect other activities."],
+                            ["Exchange is controlled", "The cell membrane regulates materials moving into and out of the cell."],
+                            ["Cell types differ", "Not all cells have the same structures; use evidence to identify the cell type."]
+                        ]
+                    }
+                },
+                {
+                    title: "5. Standardized Exam Connection",
+                    paragraphs: [
+                        "GED Science questions may ask you to read a cell diagram, match a structure to its function, compare plant and animal cells, or predict what happens when a structure is damaged.",
+                        "Use evidence from the labels, passage, or model. Separate an observation (what the diagram shows) from an explanation (what that structure does). For cause and effect, trace the chain: damaged structure → changed function → possible effect on the cell. A model or historical observation supports a scientific explanation, but a simplified diagram does not show every detail of a real cell."
+                    ]
+                },
+                {
+                    title: "6. Key Terms",
+                    bullets: [
+                        "Cell: the smallest unit that can carry out the basic jobs of life.",
+                        "Organelle: a cell structure with a specific job.",
+                        "Cell membrane: the boundary that controls what enters and leaves a cell.",
+                        "DNA: molecule that carries instructions used in building and running cells.",
+                        "Cell theory: the explanation that living things are made of cells, cells are life's basic unit, and new cells come from existing cells."
+                    ]
+                },
+                {
+                    title: "7. Review Questions",
+                    bullets: [
+                        "Analytical Reflection: How did microscopes and later comparisons of plant and animal cells change scientists' understanding of life? Which cell-theory idea needed evidence about cell division?",
+                        "Scenario Evaluation: If a plant cell's chloroplasts could not capture light, which job would be affected first? Explain one likely effect on the cell and why the cell wall would not fix the problem.",
+                        "Contextual Application: A diagram shows a cell that builds many proteins for export. Which structure would you expect to be especially active, and what evidence in the scenario supports your choice?"
+                    ]
+                },
+                {
+                    title: "🤖 Part 2: Structural Blueprints Generated",
+                    paragraphs: ["Use this blueprint to connect a cell's parts to the system's purpose."]
+                },
+                {
+                    title: "Formula A: The Structural Conceptual Blueprint",
+                    subsections: [
+                        {
+                            title: "🧬 Core Architecture",
+                            leadParagraph: "Primary Definition: A cell is the smallest unit of life that can carry out the basic activities needed to live.",
+                            paragraphs: ["Systemic Purpose: Cell structures work together to maintain the cell, exchange materials, use energy, and carry out life processes."],
+                            resourceLinks: [
+                                resource("Free OpenStax Biology 2e guide with cell diagrams", `${biology}4-introduction`)
+                            ]
+                        },
+                        {
+                            title: "🧱 Key Anatomical Components",
+                            paragraphs: ["Each structure below is paired with an open, free learning resource."]
+                        },
+                        {
+                            title: "1. Cell Membrane",
+                            paragraphs: ["Mechanical function: Regulates what enters and leaves ➔ Direct impact: helps the cell exchange needed materials and control its internal environment."],
+                            resourceLink: resource("Free OpenStax reading: cell membranes", `${biology}5-1-components-and-structure`)
+                        },
+                        {
+                            title: "2. Nucleus",
+                            paragraphs: ["Mechanical function: Stores most DNA instructions in plant and animal cells ➔ Direct impact: helps guide cell activities and the making of proteins."],
+                            resourceLink: resource("Free OpenStax reading: eukaryotic cell structures", `${biology}4-3-eukaryotic-cells`)
+                        },
+                        {
+                            title: "3. Mitochondria",
+                            paragraphs: ["Mechanical function: Help release usable energy from food ➔ Direct impact: supports energy-requiring cell processes."],
+                            resourceLink: resource("Free OpenStax reading: cellular respiration", `${biology}7-introduction`)
+                        },
+                        {
+                            title: "4. Chloroplast",
+                            paragraphs: ["Mechanical function: Captures light energy for photosynthesis ➔ Direct impact: helps plants and some other organisms make sugar."],
+                            resourceLink: resource("Free OpenStax reading: photosynthesis and chloroplasts", `${biology}8-introduction`)
+                        },
+                        {
+                            title: "🔄 Real-World Analogy",
+                            paragraphs: ["Think of a plant cell like a small town:"],
+                            bullets: [
+                                "The membrane is the guarded town border.",
+                                "The nucleus is the records office holding instructions.",
+                                "Mitochondria are energy equipment that helps power town activities.",
+                                "Chloroplasts are solar workshops that use light to make sugar."
+                            ]
+                        }
+                    ]
+                },
+                {
+                    title: "Formula B: The Mathematical Sentence-Template",
+                    paragraphs: [
+                        "To understand Cell Structures and Functions, one must first look at its foundational element: the cell. When specialized cell structures carry out their jobs, it directly alters the cell's ability to exchange materials, use energy, and stay alive. In an exam setting, this relationship is typically illustrated by a labeled cell diagram or scenario, where the reader must trace the direct path from the initial structure to the final outcome."
+                    ],
+                    resourceLinks: [
+                        resource("Check the cell parts and their functions in this free OpenStax guide", `${biology}4-3-eukaryotic-cells`)
+                    ]
+                }
+            ]
         }),
         "science-5-2": makeGuide({
             title: "Levels of Organization",
@@ -1772,6 +1940,572 @@
             description: `An original step-by-step diagram showing how to think through the example in ${guide.title}.`,
             steps: guide.lessonSections[3].bullets
         };
+    });
+
+    const cellStructuresBeginnerLesson = [
+        {
+            title: "1. Hook and learning goals",
+            paragraphs: [
+                "Imagine opening a door and finding a busy world too small for your eyes to see. Your skin, a leaf, and a drop of pond water are all connected to that hidden world: cells. In this lesson, you will learn how people discovered cells, how evidence led to cell theory, and how a cell's parts work together. You will also practice using a diagram to connect a structure with its job."
+            ]
+        },
+        {
+            title: "2. The history story: seeing the unseen",
+            subsections: [
+                {
+                    title: "Before microscopes: life without a cell picture",
+                    paragraphs: [
+                        "People could observe seeds sprouting and living things growing long before they could see cells. The parts visible to the unaided eye could not explain how a leaf grew or how a tiny organism lived. Scientists needed a tool that could reveal evidence too small to see.",
+                        "In the late 1500s and early 1600s, lens makers began combining lenses in compound microscopes. Images could be dim or blurry, and lenses sometimes distorted them. Still, these tools opened a new window. Scientists could compare observations and ask whether a pattern belonged to the specimen or the lens."
+                    ]
+                },
+                {
+                    title: "Hooke names the small compartments",
+                    paragraphs: [
+                        "In 1665, English scientist Robert Hooke published Micrographia, a book of microscope observations. Looking at thin cork, he saw tiny box-like spaces. The cork was no longer living tissue; Hooke saw mostly the walls left after its cells had died.",
+                        "Hooke called the compartments “cells,” comparing them to small rooms in a monastery. He had not watched a living cell work. His contribution was to describe and draw a repeated pattern in plant material so others could examine his observation."
+                    ]
+                },
+                {
+                    title: "Leeuwenhoek finds living microscopic worlds",
+                    paragraphs: [
+                        "The Dutch observer Antonie van Leeuwenhoek built powerful single-lens microscopes. He examined water, material from teeth, and other samples. In the 1670s, he reported seeing living microscopic organisms, which he called “animalcules.” Some could move—something Hooke's dead cork could not show.",
+                        "These reports described life invisible without magnification. Observers at the Royal Society in London considered his accounts and repeated some observations. Replication mattered: when others could see similar things, a report became stronger evidence. Improved lenses, descriptions, drawings, and repeated viewing made the microscopic world a subject for shared investigation."
+                    ]
+                },
+                {
+                    title: "From individual observations to a shared explanation",
+                    paragraphs: [
+                        "As microscopes improved, scientists compared tissues rather than treating each picture as an isolated curiosity. In 1831, botanist Robert Brown described a structure inside many plant cells, later known as the nucleus. This added detail but did not yet explain what living things shared.",
+                        "In 1838, botanist Matthias Schleiden argued that plants are made of cells. In 1839, zoologist Theodor Schwann concluded the same about animals. Their comparisons helped establish cells as fundamental units of plants and animals; later researchers refined the explanation.",
+                        "Scientists also asked where new cells come from. In the 1850s, Rudolf Virchow popularized the principle that cells arise from existing cells. This was supported by cell-division evidence; earlier researchers, including Robert Remak, had observed cell division. The principle connected cell theory to an observable process: a cell divides to produce new cells."
+                    ]
+                }
+            ],
+            paragraphsAfterSubsections: [
+                "No single person made one sudden discovery. Hooke named cork compartments; Leeuwenhoek observed living microscopic organisms; later scientists compared plant and animal tissues and investigated cell division. Better tools enabled observations, while comparison and repeated evidence tested explanations."
+            ],
+            visualAid: {
+                title: "A timeline of the cell story",
+                description: "Different observations accumulated over time and helped shape cell theory.",
+                steps: [
+                    "Late 1500s–early 1600s: Compound microscopes develop.",
+                    "1665: Hooke names compartments in cork cells.",
+                    "1670s: Leeuwenhoek reports living microscopic organisms.",
+                    "1831: Brown describes the plant-cell nucleus.",
+                    "1838–1839: Schleiden and Schwann compare plant and animal cells.",
+                    "1850s: Cell-division evidence supports cells coming from existing cells."
+                ]
+            }
+        },
+        {
+            title: "3. Discovery: what the evidence changed",
+            paragraphs: [
+                "Each discovery answered a different question. Dead cork showed repeated structure, not living cell activity. Leeuwenhoek observed living microscopic organisms, but that alone did not prove that plants and animals were made of cells. Schleiden's and Schwann's comparisons connected evidence across organisms, while observations of division helped explain where new cells come from.",
+                "Together, this evidence formed the foundation of cell theory: living things consist of one or more cells; the cell is a basic unit of structure and function; and cells come from pre-existing cells. Modern tools reveal more detail, but these central ideas still explain the shared organization of life."
+            ]
+        },
+        {
+            title: "4. The concept: cell structures and their jobs",
+            paragraphs: [
+                "A cell is the smallest unit that can carry out the basic activities of life. Some organisms, such as many bacteria, consist of one cell. Plants, animals, and many other organisms consist of many cells. A cell is not just a tiny bag: its boundary, internal material, genetic information, and specialized structures work together.",
+                "The cell membrane is a thin boundary around every cell. It helps control what enters and leaves, including water, nutrients, and waste. Inside the membrane is cytoplasm, the material where many cell activities occur. Cytoplasm includes a watery fluid and, in cells with them, structures called organelles. An organelle is a cell structure with a particular job.",
+                "In plant and animal cells, the nucleus contains most of the cell's DNA. DNA carries instructions that help cells build molecules and perform their activities. Ribosomes use those instructions to build proteins. Proteins have many roles: some form structures, while others help chemical reactions happen. The nucleus does not personally perform every cell task; it stores information that cells use.",
+                "Mitochondria help release usable energy from food molecules through cellular respiration. Plant cells also have mitochondria. In plants and some other organisms, chloroplasts capture light energy for photosynthesis, a process that stores energy in sugar. A plant cell wall outside the membrane provides extra support and protection. Animal cells do not have a cell wall or chloroplasts.",
+                "Cells are not all alike. Bacteria have membranes, cytoplasm, DNA, and ribosomes, but no nucleus. Mature human red blood cells also lack a nucleus. Use the cell type and labels in a question rather than assuming every cell has every structure. An analogy such as “the nucleus is like an office” can help, but a cell is not literally a factory."
+            ],
+            imagePlaceholder: {
+                src: "assets/cell-structure-function.png",
+                altText: "Cell structure and function infographic showing an animal cell with labeled parts, cell functions, and examples of animal, plant, bacterial, and specialized cells.",
+                caption: "Cell structures work together to support the functions of living things."
+            },
+            table: {
+                headers: ["Structure", "Beginner-friendly job"],
+                rows: [
+                    ["Cell membrane", "Forms the boundary and controls exchange with the surroundings."],
+                    ["Cytoplasm", "Holds cell material and is where many activities take place."],
+                    ["Nucleus", "Contains most DNA in plant and animal cells."],
+                    ["Ribosomes", "Build proteins using genetic instructions."],
+                    ["Mitochondria", "Help release usable energy from food."],
+                    ["Chloroplasts", "Capture light energy for photosynthesis in plants and some other organisms."],
+                    ["Cell wall", "Provides extra support outside the membrane in plants, fungi, and some other organisms."]
+                ]
+            },
+            paragraphsAfterTable: [
+                "A helpful rule is to connect structure to function: identify the job in the question, find the structure that performs that job, and then explain the likely result. A cell diagram is a simplified model. Its labels help you focus, but the drawing may not show every structure or represent its actual size."
+            ]
+        },
+        {
+            title: "5. Example: follow a leaf cell's work",
+            paragraphs: [
+                "A plant sits in sunlight. Its leaf cells have water and receive carbon dioxide from the air. How do cell structures help the plant make and use sugar?",
+                "Photosynthesis uses light energy, water, and carbon dioxide to make sugar and release oxygen. Chloroplasts capture light for this process. The sugar stores chemical energy the plant can use or build into other materials.",
+                "The membrane regulates exchange. The nucleus contains most of the cell's DNA, and ribosomes build proteins from instructions. Mitochondria help release usable energy from sugar. These structures have different jobs, but the cell depends on their combined work."
+            ],
+            bullets: [
+                "Question clue: the cell is capturing light to make sugar → chloroplast.",
+                "Question clue: the cell is controlling what enters and leaves → cell membrane.",
+                "Question clue: the cell is building a protein → ribosome."
+            ],
+            paragraphsAfterBullets: [
+                "Do not say that the chloroplast and mitochondrion do the same job. Chloroplasts capture light energy to make sugar; mitochondria help release usable energy from food molecules. Both are part of how a plant cell manages energy."
+            ]
+        },
+        {
+            title: "6. Practice",
+            paragraphs: [
+                "Try each question before reading the answer. Use the structure's job—not just a memorized label—to explain your choice."
+            ],
+            bullets: [
+                "1. A diagram shows a cell part that controls which materials cross the cell boundary. Which part is it?",
+                "2. A scientist examines a cork sample and sees tiny box-like compartments. What did Hooke call these spaces, and what important limitation applied to what he observed?",
+                "3. A plant cell can no longer capture light for photosynthesis. Which structure is most directly affected, and why would the cell wall not solve the problem?"
+            ],
+            paragraphsAfterBullets: [
+                "Answers: 1. Cell membrane; it regulates exchange. 2. Hooke called them cells; the cork cells were dead, so they did not show living cell activity. 3. Chloroplasts capture light for photosynthesis; the cell wall supports and protects."
+            ]
+        },
+        {
+            title: "7. Recap and comprehension check",
+            paragraphs: [
+                "Microscopes revealed a world unseen by the naked eye. Hooke named cork compartments, Leeuwenhoek reported living microorganisms, and later researchers connected evidence into cell theory. Cell structures have different jobs: the membrane regulates exchange, DNA carries instructions, ribosomes build proteins, mitochondria help release usable energy, and chloroplasts capture light for photosynthesis. Cell types differ, so follow the evidence in a diagram or passage."
+            ],
+            bullets: [
+                "Can you describe one observation that helped build cell theory and what it showed?",
+                "Can you name the cell structure that matches a stated job and explain your evidence?",
+                "Can you explain why a simple cell diagram is a model rather than a complete picture?"
+            ],
+            paragraphsAfterBullets: [
+                "For further reading, explore the free OpenStax Biology 2e guide to cell structures."
+            ],
+            resourceLink: resource("OpenStax Biology 2e: Eukaryotic cell structures", `${biology}4-3-eukaryotic-cells`)
+        }
+    ];
+
+    Object.assign(guides["science-5-1"], {
+        intro: "Discover how microscopes revealed cells, how scientists built cell theory from evidence, and how cell structures work together.",
+        example: "A leaf cell uses chloroplasts to capture light for photosynthesis, while other structures support exchange, instructions, protein building, and energy use.",
+        formula: "",
+        rules: "Connect each structure to its job, use evidence from the cell type shown, and explain how a change to that structure could affect the cell.",
+        lessonSections: cellStructuresBeginnerLesson
+    });
+
+    Object.assign(guides["science-5-2"], {
+        intro: "Follow how living things are organized from cells to tissues, organs, organ systems, and organisms, then learn how organisms relate to populations and ecosystems.",
+        example: "Trace how heart muscle cells form tissue, the tissue contributes to the heart, and the heart works with other organs in the circulatory system.",
+        formula: "",
+        rules: "For multicellular organisms, follow cell → tissue → organ → organ system → organism. Then describe ecological groupings separately: population → community → ecosystem.",
+        lessonSections: [
+            {
+                title: "1. Hook and learning goals",
+                paragraphs: [
+                    "Imagine zooming in on a person until you can see a single cell, then zooming back out to a heart, a whole person, and the living community around them. Each view helps answer a different question. In this lesson, you will learn the levels from cells to organisms, distinguish those body structures from ecological groupings, and follow evidence in a diagram without assuming every living thing has the same organization."
+                ]
+            },
+            {
+                title: "2. History story: how scientists organized life",
+                subsections: [
+                    {
+                        title: "From visible body parts to tissues",
+                        paragraphs: [
+                            "People have studied the visible parts of plants and animals for thousands of years. Ancient Greek thinkers such as Aristotle described and grouped living things using features they could observe. These early systems were not the modern science of cells, tissues, and ecosystems; microscopes did not yet reveal cells. But observing similarities and differences raised a lasting question: how can many kinds of living things be described in an orderly way?",
+                            "For a long time, anatomy focused on organs that could be seen and examined directly. In the late 1700s and early 1800s, French physician Xavier Bichat helped make the idea of tissues central to anatomy. He compared the body's organs and described them as being made of different kinds of tissue. His work relied largely on examining body structures rather than on modern microscopes. It helped scientists look for a level between an organ and its smaller parts: tissues with shared characteristics and roles."
+                        ]
+                    },
+                    {
+                        title: "Microscopes reveal cells beneath tissues",
+                        paragraphs: [
+                            "Improved microscopes made it possible to investigate what tissues were made of. In 1665, Robert Hooke described box-like compartments in cork and gave them the name “cells.” In the 1670s, Antonie van Leeuwenhoek reported seeing living microscopic organisms. These observations opened a new scale of study, but they did not immediately create a complete map of how cells fit into bodies.",
+                            "In 1838, Matthias Schleiden argued that plants are made of cells. In 1839, Theodor Schwann extended the idea to animals. Their work supported the view that cells are basic units of living things. Scientists could now connect a smaller level—cells—with larger structures already studied by anatomists. Later research refined cell theory and showed that cells arise from existing cells."
+                        ]
+                    },
+                    {
+                        title: "Classification and organization answer different questions",
+                        paragraphs: [
+                            "Scientists also developed systems for naming and classifying organisms. In the 1700s, Swedish naturalist Carl Linnaeus helped standardize a nested classification system, including the two-part scientific names still used for species. A classification hierarchy groups organisms by shared traits and relationships. It is not the same as the structural hierarchy inside one organism. For example, “mammal” is a classification group, while “organ system” describes parts working together inside a body.",
+                            "Keeping those questions separate matters. Structural biology asks how parts make a working organism: cells, tissues, organs, and organ systems. Classification asks how organisms are named and grouped. The word “level” can appear in both contexts, but the levels do different jobs."
+                        ]
+                    },
+                    {
+                        title: "Ecology adds populations and ecosystems",
+                        paragraphs: [
+                            "As naturalists studied organisms in their environments, another kind of organization became important. A population is members of the same species living in an area. A community includes populations of different species that live and interact in that area. An ecosystem includes the community and nonliving surroundings—such as water, soil, air, and light—and the interactions among them.",
+                            "In 1935, British ecologist Arthur Tansley introduced the term “ecosystem” to emphasize that organisms and their physical environment should be studied together. This added a system-level view beyond an individual organism. A forest, for example, is not just a collection of trees: it includes many populations, interactions among organisms, and physical conditions that affect life.",
+                            "Today, microscopes, imaging, field studies, and measurements let scientists move between scales. A researcher might study cells in a leaf, the tissues that form it, the plant as an organism, its population, and the ecosystem around it. Each scale reveals patterns that may be hard to see at another scale. The history is not a single ladder invented by one scientist; it is a set of connected ways of organizing evidence to answer different questions."
+                        ]
+                    }
+                ],
+                visualAid: {
+                    title: "How the levels of organization developed",
+                    description: "A brief timeline of ideas and tools that helped scientists study life at different scales.",
+                    steps: [
+                        "Ancient naturalists describe and group visible living things.",
+                        "Late 1700s–early 1800s: Bichat emphasizes tissues in anatomy.",
+                        "1600s–1800s: Microscopes and cell observations connect cells to tissues.",
+                        "1700s: Linnaeus helps standardize organism classification.",
+                        "1935: Tansley introduces the term ecosystem for organisms and their physical environment."
+                    ]
+                }
+            },
+            {
+                title: "3. Discovery: what the levels help us see",
+                paragraphs: [
+                    "The levels are useful because they help scientists describe a complex living system at a scale that fits the question. If the question is how a heart pumps blood, look at the organ and the organ system. If it asks how heart muscle contracts, look at cells and tissue. If it asks how a forest changes, look at populations, the community, and environmental conditions.",
+                    "The body-structure sequence for a multicellular organism is cell → tissue → organ → organ system → organism. Ecological organization continues in a related but distinct way: organisms of one species can form a population; interacting populations form a community; and a community together with its nonliving surroundings forms an ecosystem. These categories describe relationships and scale, not a guarantee that every example forms one simple chain."
+                ]
+            },
+            {
+                title: "4. The concept: from cell to ecosystem",
+                paragraphs: [
+                    "A cell is a basic living unit. In a multicellular organism, cells with similar structures and jobs may work together in a tissue. For example, muscle cells work together in muscle tissue. Tissues combine with other tissues to make an organ. The heart contains muscle tissue, connective tissue, and other kinds of tissue that work together to pump blood.",
+                    "Organs work with other organs in an organ system. The heart and blood vessels are parts of the circulatory system, which moves blood around the body. Several organ systems work together to keep one organism alive. A human is an organism: one complete living individual.",
+                    "This sequence is most useful for multicellular organisms. A single-celled organism carries out life processes within one cell; it does not have tissues, organs, or organ systems. Also, not every cell becomes part of a tissue: many organisms are unicellular, and specialized cells can have different forms and jobs.",
+                    "Ecological levels begin with organisms in places and relationships. A population is one species in an area, such as all the frogs of one species in a pond. A community is the populations of different species living and interacting there, such as frogs, insects, plants, and microorganisms. The ecosystem includes that community plus nonliving factors such as water temperature, sunlight, and nutrients.",
+                    "The image below is a simplified overview. It combines “population, community, and ecosystem” in one panel to save space; those are three distinct ecological ideas, not one level with a single definition. The arrows show an increasing scale, but real living systems have many connections, and not every level is a neat box inside the next."
+                ],
+                imagePlaceholder: {
+                    src: "assets/cell-levels-of-organization.png",
+                    altText: "Infographic showing a sequence from cell to tissue, organ, organ system, and organism, followed by a forest ecosystem example.",
+                    caption: "The image simplifies biological organization. Population, community, and ecosystem are distinct ecological levels; see the explanation above."
+                },
+                table: {
+                    headers: ["Level", "What it means", "Example"],
+                    rows: [
+                        ["Cell", "A basic living unit.", "Heart muscle cell"],
+                        ["Tissue", "Similar cells working together.", "Heart muscle tissue"],
+                        ["Organ", "Different tissues working together.", "Heart"],
+                        ["Organ system", "Organs working together for a major job.", "Circulatory system"],
+                        ["Organism", "One complete living thing.", "One person"],
+                        ["Population", "Members of one species in an area.", "Frogs of one species in a pond"],
+                        ["Community", "Populations of different species interacting.", "Pond plants, frogs, insects, and microbes"],
+                        ["Ecosystem", "A community and its nonliving environment.", "The pond community, water, soil, and light"]
+                    ]
+                }
+            },
+            {
+                title: "5. Example: follow a heart from cell to system",
+                paragraphs: [
+                    "A question asks how a heart muscle cell is related to the circulatory system. Start at the smallest level: many heart muscle cells work together as heart muscle tissue. That tissue combines with other tissues to form the heart, an organ. The heart works with blood vessels as part of the circulatory system. The system belongs to one organism, such as a person.",
+                    "The order is cell → tissue → organ → organ system → organism. Each step adds organization and cooperation, but the levels are not interchangeable. One cell is not a tissue, and an organ system is not the whole organism. If the question instead asks about frogs and plants sharing a pond, switch to ecological levels: populations → community → ecosystem, including nonliving conditions."
+                ],
+                bullets: [
+                    "Heart muscle cell: one specialized cell.",
+                    "Heart muscle tissue: many similar cells working together.",
+                    "Heart: an organ made from different tissues.",
+                    "Circulatory system: heart and blood vessels working together."
+                ]
+            },
+            {
+                title: "6. Practice",
+                paragraphs: [
+                    "Try these before checking the answers. Decide whether each example is a body structure level or an ecological level."
+                ],
+                bullets: [
+                    "1. Put these in order: organ, cell, organism, tissue, organ system.",
+                    "2. All the frogs of one species living in a pond are an example of which level?",
+                    "3. A forest community plus its soil, water, and sunlight is what level?",
+                    "4. Why is the image's final panel a simplified summary rather than a precise definition?"
+                ],
+                paragraphsAfterBullets: [
+                    "Answers: 1. Cell → tissue → organ → organ system → organism. 2. A population. 3. An ecosystem. 4. It groups population, community, and ecosystem together, but each has a different meaning; the ecosystem also includes nonliving surroundings."
+                ]
+            },
+            {
+                title: "7. Recap and comprehension check",
+                paragraphs: [
+                    "For multicellular organisms, cells can form tissues, tissues form organs, organs work in organ systems, and all the systems belong to an organism. Ecology describes organisms in groups and surroundings: a population is one species in an area, a community is interacting populations, and an ecosystem includes a community and nonliving conditions. These levels help scientists choose the right scale for a question. Not all living things have every level, and the diagram is a simplified model."
+                ],
+                bullets: [
+                    "Can you explain the difference between a tissue and an organ?",
+                    "Can you distinguish a population, a community, and an ecosystem?",
+                    "Which scale would help answer a question about how the heart moves blood?"
+                ]
+            }
+        ]
+    });
+
+    Object.assign(guides["science-5-3"], {
+        intro: "Learn how materials cross cell membranes, how scientists uncovered these processes, and how to identify each transport method from evidence.",
+        example: "Follow oxygen, water, glucose, and sodium as they cross or move in relation to a cell membrane.",
+        formula: "",
+        rules: "Passive transport moves down a concentration or electrochemical gradient without direct cellular energy use. Active transport requires energy directly or indirectly to move materials against a gradient or move bulk cargo in vesicles.",
+        lessonSections: [
+            {
+                title: "1. Hook and learning goals",
+                paragraphs: [
+                    "Imagine a cell as a tiny room with a boundary that is not a solid wall. Oxygen, water, nutrients, and waste must move through or around that boundary for the cell to function. In this lesson, you will learn how materials cross cell membranes, how scientists developed explanations for this movement, and how to recognize diffusion, osmosis, facilitated diffusion, active transport, endocytosis, and exocytosis."
+                ]
+            },
+            {
+                title: "2. History story: discovering how substances cross boundaries",
+                subsections: [
+                    {
+                        title: "A question about water and barriers",
+                        paragraphs: [
+                            "Long before cell membranes were visible, people studied water passing through barriers. Animal bladder or plant tissue could separate liquids while allowing some material through. Scientists needed experiments to distinguish the barrier's effects from mixing and pressure.",
+                            "In 1748, French physicist Jean-Antoine Nollet reported water moving across animal bladder. The experiment showed that a membrane could let water through while restricting some dissolved substances. It made selective passage a question scientists could test."
+                        ]
+                    },
+                    {
+                        title: "Osmosis becomes a scientific subject",
+                        paragraphs: [
+                            "In the early 1800s, French physician Henri Dutrochet studied water movement through membranes and helped develop the science of osmosis. He used the terms endosmosis and exosmosis for flows into and out of a confined space. Experiments showed that water movement could change volume or pressure on either side.",
+                            "Researchers could place solutions on each side, observe net flow, and vary the materials. Membranes were not simply open or closed: their properties affected which particles passed and how quickly.",
+                            "This shift toward controlled comparisons was important. If one side contained more dissolved material, a researcher could ask whether water moved differently than it did when both sides contained similar solutions. Repeating the setup with different barriers and substances helped separate a general pattern from an unusual result. The experiments did not yet show the molecular structure of a living cell membrane, but they established questions that later cell biologists could investigate: what crosses, what is blocked, and how does the surrounding solution affect a cell?"
+                        ]
+                    },
+                    {
+                        title: "Better measurements connect osmosis to cells",
+                        paragraphs: [
+                            "During the nineteenth century, scientists found ways to measure osmotic pressure. In the 1870s, botanist Wilhelm Pfeffer used semipermeable membranes to study this pressure, linking laboratory measurements to water balance in plant cells.",
+                            "Biologists also investigated cell boundaries. Charles Ernest Overton's late-nineteenth-century studies supported the idea that cell surfaces had fat-like properties. In 1925, Evert Gorter and François Grendel used red blood cell measurements to propose a lipid bilayer. Their measurements were imperfect, but later evidence supported the model.",
+                            "A model of the membrane had to explain more than water. Researchers examined how different chemicals entered cells, then compared those observations with what was known about fat-like substances. The bilayer proposal offered a physical explanation for why some materials could pass more readily than others. Its early measurements had limitations, so scientists did not treat the proposal as final proof; they tested and improved it with new methods."
+                        ]
+                    },
+                    {
+                        title: "The membrane model keeps changing",
+                        paragraphs: [
+                            "By the mid-twentieth century, evidence showed that membranes were not featureless sheets of fat. Some substances crossed easily; others used proteins. In 1972, S. J. Singer and Garth Nicolson proposed the fluid mosaic model: a flexible lipid bilayer with proteins within and on its surfaces. Later evidence refined it.",
+                            "In 1957, Jens Christian Skou reported a nerve-cell membrane enzyme that moves sodium and potassium using ATP. This sodium-potassium pump became a major example of active transport. Researchers also identified channels, carriers, and vesicles that move other materials.",
+                            "Modern imaging reveals membrane processes in greater detail. Transport categories summarize many studies: scientists test explanations, measure results, and revise models as evidence grows. The present-day picture therefore combines physics, chemistry, and biology: water movement can be measured, membrane composition can be studied, and the work of a particular protein can be tested in cells."
+                        ]
+                    }
+                ],
+                visualAid: {
+                    title: "A timeline of membrane transport discoveries",
+                    description: "Experiments and improved models gradually explained how substances cross cell boundaries.",
+                    steps: [
+                        "1748: Nollet reports water crossing animal bladder.",
+                        "Early 1800s: Dutrochet studies osmosis.",
+                        "1870s: Pfeffer measures osmotic pressure.",
+                        "Late 1800s–1920s: Evidence supports lipid membranes.",
+                        "1950s: Skou studies the sodium-potassium pump.",
+                        "1972: Singer and Nicolson propose the fluid mosaic model."
+                    ]
+                }
+            },
+            {
+                title: "3. Discovery: what the evidence revealed",
+                paragraphs: [
+                    "Different experiments answered different questions. Membrane experiments showed that water and dissolved substances do not all cross in the same way. Measurements of osmotic pressure showed that water movement could produce measurable effects. Chemical and cell studies supported a membrane made largely of lipids, while later evidence showed that proteins provide specific routes and pumps. Observing energy use helped distinguish passive movement from active transport.",
+                    "A key discovery was that a cell membrane is selectively permeable: it allows some substances to cross more readily than others. Its behavior depends on molecule size, charge, concentration differences, membrane composition, and available proteins. The membrane is dynamic, not a simple sieve with identical holes."
+                ]
+            },
+            {
+                title: "4. The concept: six ways materials move",
+                paragraphs: [
+                    "A cell membrane is a flexible boundary made mainly of a double layer of lipid molecules with proteins embedded in or attached to it. Some molecules pass through the lipid portion; others use membrane proteins; very large materials may travel in membrane-wrapped vesicles. A concentration is the amount of a substance in a certain volume. When concentrations differ across a membrane, particles have a concentration gradient. Particles move randomly, but their net movement can follow that gradient.",
+                    "Simple diffusion is the net movement of particles from an area of higher concentration to an area of lower concentration. Oxygen and carbon dioxide can cross many cell membranes this way. Diffusion does not require the cell to spend energy. Individual particles still move randomly in both directions; “net movement” describes the overall result when more particles move one way than the other.",
+                    "Osmosis is the net movement of water across a selectively permeable membrane. In a basic example, water moves from the side with more available water and fewer dissolved particles toward the side with less available water and more dissolved particles. The exact direction depends on the substances that can and cannot cross, along with pressure and other conditions. Osmosis is passive transport.",
+                    "Facilitated diffusion also moves substances down their concentration gradient without the cell directly using ATP, but it requires a membrane protein. Channel proteins create selective passageways; carrier proteins bind a substance and change shape to move it. Glucose, for example, can enter many cells through carrier proteins. It is too large and polar to cross the lipid part of the membrane quickly on its own.",
+                    "Active transport moves a substance against its concentration gradient or electrochemical gradient, from lower to higher concentration in the relevant direction. A protein pump uses energy to do this. Some pumps use ATP directly; other transport systems use energy stored in a gradient made by a different pump. The sodium-potassium pump is one example: it uses ATP to move sodium and potassium ions in opposite directions across the membrane.",
+                    "For bulk transport, the cell uses vesicles—small membrane-bound packages. In endocytosis, the membrane folds around material and brings it into the cell. In exocytosis, a vesicle joins the membrane and releases its contents outside. Cells use these processes for large particles or amounts of material that cannot pass through an ordinary channel. The cell spends energy to manage vesicle transport."
+                ],
+                imagePlaceholder: {
+                    src: "assets/cell-movement-of-materials.png",
+                    altText: "Infographic comparing simple diffusion, osmosis, facilitated diffusion, active transport, endocytosis, and exocytosis across a cell membrane.",
+                    caption: "Use the diagram as a quick guide. Its arrows simplify net movement; actual transport depends on the membrane, gradients, and available proteins."
+                },
+                table: {
+                    headers: ["Process", "Direction or route", "Energy use"],
+                    rows: [
+                        ["Simple diffusion", "Down a concentration gradient through the membrane.", "No direct ATP use"],
+                        ["Osmosis", "Water crosses a selectively permeable membrane.", "No direct ATP use"],
+                        ["Facilitated diffusion", "Down a gradient through a channel or carrier protein.", "No direct ATP use"],
+                        ["Active transport", "Often against a concentration or electrochemical gradient through a pump or coupled transporter.", "Energy required"],
+                        ["Endocytosis / exocytosis", "Vesicles bring material in or release it out.", "Energy required"]
+                    ]
+                },
+                paragraphsAfterTable: [
+                    "The image's oxygen example suits simple diffusion, but not every small molecule crosses unaided. Glucose generally needs a transporter. Its water illustration is a simplified way to show osmosis: scientifically, focus on net water movement across a selectively permeable membrane and the relative concentration of substances that cannot cross."
+                ]
+            },
+            {
+                title: "5. Example: identify transport from evidence",
+                paragraphs: [
+                    "Suppose a cell is placed in a solution with more dissolved salt outside than inside, and the salt cannot cross the membrane. Water is more available on the side with less dissolved salt. The net movement of water is out of the cell by osmosis. The cell may shrink, though the exact effect depends on the cell type and the surrounding solution.",
+                    "Now consider glucose entering a cell where glucose concentration is already higher inside. If a carrier protein helps glucose move into the cell against that difference, the process requires energy, directly or indirectly, and is active transport. If glucose instead moves from higher concentration outside to lower concentration inside through a carrier without ATP use, that is facilitated diffusion.",
+                    "To classify a diagram, identify the material, check its direction relative to the relevant gradient, look for a channel, carrier, pump, or vesicle, and note whether energy is used. Do not decide from the molecule alone: the same substance can move by different routes depending on conditions."
+                ],
+                bullets: [
+                    "Down a gradient with no protein shown: likely simple diffusion.",
+                    "Water crossing a selectively permeable membrane: osmosis.",
+                    "Down a gradient through a channel or carrier: facilitated diffusion.",
+                    "Against a gradient using an energy-powered protein: active transport."
+                ]
+            },
+            {
+                title: "6. Practice",
+                paragraphs: [
+                    "Read each clue and name the most likely transport process."
+                ],
+                bullets: [
+                    "1. Oxygen moves into a cell from an area where oxygen concentration is higher.",
+                    "2. Water crosses a membrane that blocks a dissolved salt.",
+                    "3. A charged ion moves through a membrane channel down its gradient.",
+                    "4. A membrane pouch surrounds a large particle and carries it into the cell."
+                ],
+                paragraphsAfterBullets: [
+                    "Answers: 1. Simple diffusion. 2. Osmosis. 3. Facilitated diffusion. 4. Endocytosis."
+                ]
+            },
+            {
+                title: "7. Recap and comprehension check",
+                paragraphs: [
+                    "Cell membranes control exchange. Diffusion moves particles down a concentration gradient; osmosis is net water movement across a selectively permeable membrane; and facilitated diffusion uses a protein pathway without direct ATP use. Active transport uses energy to move substances against a gradient or to support coupled transport. Endocytosis brings bulk material in, and exocytosis releases it. Scientific explanations of these processes grew from membrane experiments, measurements, and changing models."
+                ],
+                bullets: [
+                    "Which two clues distinguish facilitated diffusion from active transport?",
+                    "What is moving during osmosis, and what kind of boundary must it cross?",
+                    "What evidence in a diagram would suggest endocytosis?"
+                ],
+                paragraphsAfterBullets: [
+                    "For further reading, explore the free OpenStax Biology 2e chapter on membranes and transport."
+                ],
+                resourceLink: resource("OpenStax Biology 2e: Membranes and transport", `${biology}5-introduction`)
+            }
+        ]
+    });
+
+    Object.assign(guides["science-5-4"], {
+        intro: "Learn how cells divide for growth and repair, how scientists discovered the stages of mitosis, and how to read a cell-division diagram.",
+        example: "Follow one body cell as it copies its DNA, separates matching chromosome copies, and divides into two daughter cells.",
+        formula: "",
+        rules: "DNA is copied during interphase before mitosis. Mitosis separates the copied chromosomes into two nuclei; cytokinesis divides the cell's cytoplasm. The result is usually two genetically similar daughter cells.",
+        lessonSections: [
+            {
+                title: "1. Hook and learning goals",
+                paragraphs: [
+                    "Your body replaces worn-out cells and heals small injuries, yet most cells do not simply split their contents at random. Before dividing, a cell copies its DNA and carefully separates the copies. In this lesson, you will learn why cells divide, how mitosis works, what scientists discovered about the process, and how to follow the stages in a diagram. You will also distinguish mitosis from meiosis, which makes reproductive cells."
+                ]
+            },
+            {
+                title: "2. History story: discovering how cells divide",
+                subsections: [
+                    {
+                        title: "Microscopes make cell division observable",
+                        paragraphs: [
+                            "For centuries, people could see living things grow, wounds heal, and plants produce new shoots, but they could not see what individual cells were doing. Early microscopes changed that. In 1665, Robert Hooke published drawings of cork compartments, and in the 1670s Antonie van Leeuwenhoek described living microscopic organisms. These observations revealed a world of small structures, although early microscopes could not resolve the fine details of chromosomes.",
+                            "As microscopes improved, scientists began watching living tissues and preserved samples at different times. They saw that cells could change shape, that material inside the nucleus seemed to reorganize, and that one cell could become two. A single still image could not show the order of events. Researchers needed to compare many cells caught at different moments and infer the sequence that produced them."
+                        ]
+                    },
+                    {
+                        title: "Cell theory raises a new question",
+                        paragraphs: [
+                            "In the nineteenth century, Matthias Schleiden and Theodor Schwann helped establish that plants and animals are made of cells. That idea made a new question unavoidable: if living things are made of cells, where do new cells come from? Rudolf Virchow popularized the principle that cells arise from existing cells. Researchers including Robert Remak had observed cells dividing, adding evidence that new cells came from earlier ones rather than appearing spontaneously.",
+                            "This principle was important for explaining growth and repair, but it did not yet describe the machinery of division. Scientists needed to see what happened to the nucleus and its contents as a cell divided. The challenge was technical: the relevant structures were tiny, transparent, and changed quickly. Stains and improved optics helped make them easier to see."
+                        ]
+                    },
+                    {
+                        title: "Flemming follows the changing chromosomes",
+                        paragraphs: [
+                            "German anatomist Walther Flemming carefully studied dividing animal cells using dyes that made nuclear material easier to distinguish. In the 1870s and early 1880s, he documented a sequence of changes: material in the nucleus condensed into visible threads, arranged across the cell, separated, and became enclosed in two new nuclei. By comparing cells at different moments, he reconstructed an ordered process rather than treating each image as a separate event.",
+                            "Flemming published detailed work on cell division in 1882 and used the term “mitosis,” from a Greek word referring to thread, because the hereditary material appeared as thread-like structures. His illustrations made the stages understandable to other researchers. The drawings were not photographs, but they recorded what he saw through the microscope and helped readers compare observations.",
+                            "Flemming's work did not happen in isolation. Other scientists studied dividing cells in plants and animals, and improvements in staining and microscopes allowed researchers to test whether similar patterns appeared in different tissues. They found that the details could vary by organism and cell type, while the general task—separating copied genetic material—was shared."
+                        ]
+                    },
+                    {
+                        title: "Chromosomes connect division to inheritance",
+                        paragraphs: [
+                            "By the late nineteenth and early twentieth centuries, scientists increasingly connected the visible structures in dividing nuclei with inheritance. The term chromosome was introduced in the 1880s for structures that took up certain stains. Later work linked chromosomes with inherited traits and showed that chromosomes carry genes. Researchers studying meiosis, the special division that makes eggs and sperm, noticed that chromosome number is reduced in those cells. This helped explain how fertilization could restore the usual number.",
+                            "As genetics advanced, scientists learned that chromosomes are made of DNA and proteins. Experiments in the twentieth century established DNA as the molecule that carries genetic information. This changed the meaning of the old microscope drawings: the structures Flemming saw were not merely threads changing shape; they were part of the system that copies and distributes genetic instructions.",
+                            "Modern microscopes, fluorescent labels, and molecular tools allow scientists to observe proteins that move chromosomes, check whether DNA has been copied, and identify errors in separation. The story is still developing. Today's account of mitosis combines careful observation across centuries with experiments on DNA and the cell machinery. It is an explanation built from evidence, not a discovery made by one observer in one moment."
+                        ]
+                    }
+                ],
+                visualAid: {
+                    title: "A timeline of cell-division research",
+                    description: "Microscope observations led to a clearer account of cell division and chromosomes.",
+                    steps: [
+                        "1600s: Early microscopes reveal cells and microscopic life.",
+                        "1800s: Cell theory and observations support cells coming from existing cells.",
+                        "1870s–1880s: Walther Flemming documents dividing chromosomes.",
+                        "1882: Flemming publishes detailed work and uses the term mitosis.",
+                        "1900s: Genetics and DNA research connect chromosomes with inherited information.",
+                        "Today: Imaging and molecular tools reveal the machinery that moves chromosomes."
+                    ]
+                }
+            },
+            {
+                title: "3. Discovery: what scientists learned",
+                paragraphs: [
+                    "Observations showed that division has an order. The cell prepares and copies its DNA before the chromosomes separate. During mitosis, the copied chromosomes are organized and pulled into two groups, and new nuclei form around them. Cytokinesis then divides the rest of the cell. This sequence helps each new cell receive a set of genetic instructions.",
+                    "Scientists also learned that mitosis is not the same as all cell division. Mitosis describes division of the nucleus in eukaryotic cells. Cytokinesis is division of the cytoplasm. Bacteria do not undergo mitosis because they lack a nucleus; they reproduce through a different process called binary fission."
+                ]
+            },
+            {
+                title: "4. The concept: mitosis step by step",
+                paragraphs: [
+                    "The cell cycle is the repeating sequence in which a cell grows, copies its DNA, and divides. Interphase is the long preparation period before mitosis. During its S phase, the cell copies its DNA. The chromosomes are copied, but they may not look like the familiar X shapes yet because the DNA is loosely arranged. Interphase is part of the cell cycle, not one of mitosis's four main stages.",
+                    "During prophase, the copied DNA coils into visible chromosomes. Each duplicated chromosome consists of two matching sister chromatids joined at a region called the centromere. Structures that organize spindle fibers move toward opposite sides of the cell, and the spindle begins to form. In many cells, the nuclear envelope breaks down so the spindle can reach the chromosomes.",
+                    "During metaphase, spindle fibers attach to the chromosomes and line them up near the middle of the cell. This alignment helps prepare for an even division. In anaphase, sister chromatids separate and move toward opposite poles. Once separated, each chromatid is counted as an individual chromosome. In telophase, the chromosomes arrive at the poles, loosen, and new nuclear envelopes form around the two sets.",
+                    "Cytokinesis divides the cytoplasm and separates the cell into two daughter cells. Animal cells commonly pinch inward to form a cleavage furrow. Plant cells build a cell plate that develops into a new wall between the daughter cells. The details differ, but both processes partition the cell's contents.",
+                    "Mitosis usually produces two daughter cells with the same chromosome number and nearly identical DNA to the original cell. “Identical” is a useful expectation, not an absolute guarantee: copying errors or DNA damage can create differences. Mitosis supports growth, replacement, and repair in many organisms. Meiosis is different: it involves two rounds of division and produces reproductive cells with half the usual chromosome number."
+                ],
+                imagePlaceholder: {
+                    src: "assets/cell-division-mitosis.png",
+                    altText: "Diagram of cell division showing interphase, prophase, metaphase, anaphase, telophase, and cytokinesis, ending with two daughter cells.",
+                    caption: "The diagram shows the usual sequence. Interphase prepares and copies DNA before mitosis; cytokinesis divides the cytoplasm after the nuclei separate."
+                },
+                table: {
+                    headers: ["Stage", "What to look for"],
+                    rows: [
+                        ["Interphase", "Cell grows and copies DNA; preparation before mitosis."],
+                        ["Prophase", "Chromosomes condense and the spindle begins to form."],
+                        ["Metaphase", "Duplicated chromosomes line up near the cell's middle."],
+                        ["Anaphase", "Sister chromatids separate toward opposite poles."],
+                        ["Telophase", "New nuclei form around the separated chromosomes."],
+                        ["Cytokinesis", "Cytoplasm divides, producing two daughter cells."]
+                    ]
+                },
+                paragraphsAfterTable: [
+                    "The image is a simplified model: it does not show every molecule or every variation in cell division. It places interphase in the sequence for context, although interphase occurs before mitosis, and shows cytokinesis after the stages of nuclear division.",
+                    "When reading any diagram, follow the arrows and check what is being counted. Before separation, one duplicated chromosome has two sister chromatids joined together. After separation, each chromatid is counted as a chromosome. This explains why chromosome counts in a drawing can appear to change even though the genetic copies are being divided between the two new nuclei."
+                ]
+            },
+            {
+                title: "5. Example: follow a skin cell dividing",
+                paragraphs: [
+                    "A skin cell near a small cut is replaced. Before dividing, it grows and copies its DNA during interphase. In prophase, its copied chromosomes become visible and the spindle forms. In metaphase, the chromosomes line up in the middle. In anaphase, sister chromatids move apart. In telophase, two nuclei form, and cytokinesis separates the cell.",
+                    "The result is usually two daughter cells with the same chromosome number as the original skin cell. The new cells can take part in replacing damaged tissue. The key reasoning is to follow both the DNA and the cell: copying happens before mitosis, chromosome separation happens during mitosis, and the cytoplasm divides during cytokinesis. Each daughter cell then grows and carries out its own jobs."
+                ],
+                bullets: [
+                    "If chromosomes are lined up in the middle, identify metaphase.",
+                    "If sister chromatids are moving apart, identify anaphase.",
+                    "If the cell is pinching or building a cell plate, identify cytokinesis."
+                ]
+            },
+            {
+                title: "6. Practice",
+                paragraphs: [
+                    "Use the stage descriptions and identify what happens before, during, and after mitosis."
+                ],
+                bullets: [
+                    "1. In which part of the cell cycle is DNA copied?",
+                    "2. A diagram shows chromosomes lined up at the cell's center. Which stage is shown?",
+                    "3. What separates during anaphase?",
+                    "4. How is mitosis different from meiosis?"
+                ],
+                paragraphsAfterBullets: [
+                    "Answers: 1. Interphase, specifically S phase. 2. Metaphase. 3. Sister chromatids separate and move toward opposite poles. 4. Mitosis divides a nucleus to support growth and repair and usually yields two similar cells; meiosis uses two divisions to make reproductive cells with half the chromosome number."
+                ]
+            },
+            {
+                title: "7. Recap and comprehension check",
+                paragraphs: [
+                    "Mitosis separates copied chromosomes into two nuclei; cytokinesis divides the cytoplasm. DNA is copied earlier in interphase. In order, the main mitosis stages are prophase, metaphase, anaphase, and telophase. Mitosis supports growth and repair and usually produces two genetically similar cells. Meiosis is a separate process that makes reproductive cells."
+                ],
+                bullets: [
+                    "Can you explain why DNA must be copied before mitosis?",
+                    "Which stage has chromosomes lined up in the middle?",
+                    "What is the difference between mitosis and cytokinesis?"
+                ],
+                paragraphsAfterBullets: [
+                    "For further reading, explore the free OpenStax Biology 2e chapter on the cell cycle and mitosis."
+                ],
+                resourceLink: resource("OpenStax Biology 2e: The cell cycle", `${biology}10-2-the-cell-cycle`)
+            }
+        ]
     });
 
     window.scienceLessonGuides = guides;
