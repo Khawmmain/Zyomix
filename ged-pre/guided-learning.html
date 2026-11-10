@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guided GED Lessons | Zyomix</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="course-ui.css">
+    <link rel="stylesheet" href="guided-learning.css">
+    <link rel="stylesheet" href="theme.css">
+    <script src="auth.js" defer></script>
+    <script src="mobile-nav.js" defer></script>
+    <script src="account-header.js" defer></script>
+    <script src="guided-learning.js" defer></script>
+</head>
+<body class="guided-learning-page">
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="index.html" class="brand-group" style="text-decoration: none;">
+                <img src="assets/logo.jpg" alt="Zyomix Owl Logo" class="brand-logo">
+                <h1 class="logo">Zyomix</h1>
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" class="nav-btn">Home</a>
+                <a href="dashboard.html" class="nav-btn">Dashboard</a>
+                <a href="modules.html" class="nav-btn">Modules</a>
+                <a href="concept.html" class="nav-btn">Concept</a>
+                <a href="guided-learning.html" class="nav-btn active" aria-current="page">Guided Lessons</a>
+                <a href="practice.html" class="nav-btn">Practice</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="guided-main">
+        <section class="guided-hero">
+            <div class="container">
+                <p class="guided-eyebrow">GED study, one small step at a time</p>
+                <h2>Learn a concept. See it worked. Try it yourself.</h2>
+                <p>Choose a subject and follow short, original lessons with practice questions and clear explanations.</p>
+                <div id="guidedSubjectTabs" class="guided-subject-tabs" role="group" aria-label="Choose a subject"></div>
+            </div>
+        </section>
+
+        <section class="guided-layout container" aria-label="Guided lesson">
+            <aside class="guided-topic-panel" aria-labelledby="guidedTopicHeading">
+                <div class="guided-panel-heading">
+                    <span class="guided-eyebrow">Your study path</span>
+                    <h2 id="guidedTopicHeading">Choose a lesson</h2>
+                </div>
+                <div id="guidedTopicList" class="guided-topic-list"></div>
+            </aside>
+
+            <article id="guidedLesson" class="guided-lesson-card" aria-live="polite">
+                <div class="guided-loading">Loading your lesson…</div>
+            </article>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p class="legal-disclaimer">GED® is a registered trademark of the American Council on Education (ACE) and administered exclusively by GED Testing Service LLC under license. Independent educational project.</p>
+            <p class="copyright">&copy; 2026 Zyomix. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

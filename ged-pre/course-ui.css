@@ -243,6 +243,34 @@ body.practice-page .practice-mode-links a:last-child {
     color: #ffffff;
 }
 
+.guided-entry-link {
+    align-items: center;
+    background: #ecfdf5;
+    border: 1px solid #86efac;
+    border-radius: 999px;
+    color: #166534;
+    display: inline-flex;
+    font-weight: 800;
+    gap: 0.35rem;
+    margin-top: 0.9rem;
+    padding: 0.6rem 0.95rem;
+    text-decoration: none;
+}
+
+.guided-entry-link:hover {
+    background: #dcfce7;
+    border-color: #4ade80;
+}
+
+.guided-entry-link:focus-visible {
+    outline: 3px solid #2563eb;
+    outline-offset: 3px;
+}
+
+body.practice-page .practice-mode-group .guided-entry-link {
+    margin-top: 0;
+}
+
 body.quiz-page .timer-display {
     color: #047857;
     font-size: 1rem;
