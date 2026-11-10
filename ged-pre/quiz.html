@@ -39,6 +39,7 @@
             border: 1px solid var(--border-color);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
             padding: 2.5rem;
+            overflow-anchor: none;
         }
 
         .quiz-header {
@@ -224,7 +225,7 @@
                 </section>
 
                 <div id="questionContainer">
-                    <h3 id="questionTitle" class="question-title">Loading practice question...</h3>
+                    <h3 id="questionTitle" class="question-title" tabindex="-1">Loading practice question...</h3>
                     <div id="optionsList" class="options-list"></div>
                 </div>
 
@@ -812,7 +813,7 @@
                     if (index === currentIndex || finished) return;
                     recordQuestionTime();
                     currentIndex = index;
-                    loadQuestion();
+                    loadQuestion(true);
                 });
                 return button;
             }));
@@ -845,7 +846,21 @@
             timerInterval = setInterval(updateTimer, 1000);
         }
 
-        function loadQuestion() {
+        function focusCurrentQuestion() {
+            const heading = document.getElementById('questionTitle');
+            heading.focus({ preventScroll: true });
+            setTimeout(() => {
+                const header = document.querySelector('.site-header');
+                const headerHeight = header?.getBoundingClientRect().height || 0;
+                const top = window.scrollY + heading.getBoundingClientRect().top - headerHeight - 16;
+                window.scrollTo({
+                    top: Math.max(0, top),
+                    behavior: 'auto'
+                });
+            }, 0);
+        }
+
+        function loadQuestion(focusQuestion = false) {
             answered = Boolean(submittedAnswers[currentIndex]);
             const q = questions[currentIndex];
             document.getElementById('progressIndicator').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
@@ -907,6 +922,7 @@
             skipButton.textContent = currentIndex === questions.length - 1 ? 'Finish Practice →' : 'Next Question →';
             renderQuestionNavigator();
             currentQuestionStartedAt = Date.now();
+            if (focusQuestion) focusCurrentQuestion();
         }
 
         function handleQuizAction() {
@@ -925,7 +941,7 @@
                     finishQuiz();
                 } else {
                     currentIndex++;
-                    loadQuestion();
+                    loadQuestion(true);
                 }
                 return;
             }
@@ -956,7 +972,7 @@
                 recordQuestionTime();
                 if (currentIndex < questions.length - 1) {
                     currentIndex++;
-                    loadQuestion();
+                    loadQuestion(true);
                 } else {
                     finishQuiz();
                 }
@@ -980,7 +996,7 @@
                 return;
             }
             currentIndex++;
-            loadQuestion();
+            loadQuestion(true);
         });
 
         document.getElementById('closeScoreDialog').addEventListener('click', () => {

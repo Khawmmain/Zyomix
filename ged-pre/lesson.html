@@ -228,19 +228,6 @@
             font-size: 0.9rem;
         }
         .btn-practice:hover { background: #2b6cb0; }
-        #lessonContent.lesson-sections-only > #lessonIntroHeading,
-        #lessonContent.lesson-sections-only > #lessonIntro,
-        #lessonContent.lesson-sections-only > #lessonConceptHeading,
-        #lessonContent.lesson-sections-only > #lessonTheory,
-        #lessonContent.lesson-sections-only > #workedExampleHeading,
-        #lessonContent.lesson-sections-only > .example-box,
-        #lessonContent.lesson-sections-only > #workedSteps,
-        #lessonContent.lesson-sections-only > #lessonGlossary,
-        #lessonContent.lesson-sections-only > #commonPitfall,
-        #lessonContent.lesson-sections-only > #keyRulesHeading,
-        #lessonContent.lesson-sections-only > #lessonRules,
-        #lessonContent.lesson-sections-only > #formulaSection,
-        #lessonContent.lesson-sections-only > #gedConnectionSection { display: none !important; }
         .lesson-section-subtitle {
             margin: 1.25rem 0 0.6rem;
             color: #1e293b;
@@ -264,18 +251,6 @@
             background: transparent;
             color: inherit;
             font-weight: 700;
-        }
-        #lessonContent.science-beginner-guide #lessonDetails > section {
-            margin: 1.25rem 0;
-            padding: 1.1rem 1.2rem;
-            border: 1px solid #dbeafe;
-            border-radius: 14px;
-            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
-            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.04);
-        }
-        #lessonContent.science-beginner-guide #lessonDetails > section > .lesson-section-title {
-            margin-top: 0;
-            color: #14532d;
         }
         #lessonContent.science-beginner-guide .lesson-resource-link {
             padding: 0.65rem 0.9rem;
@@ -449,6 +424,7 @@
             border: 1px solid #dbe4ee;
             border-radius: 18px;
             box-shadow: 0 8px 26px rgba(15, 23, 42, 0.06);
+            overflow-anchor: none;
         }
         .lesson-page .lesson-header {
             display: grid;
@@ -475,20 +451,159 @@
         .lesson-page #lessonContent {
             max-width: 76ch;
             margin-inline: auto;
+            counter-reset: lesson-step;
+        }
+        .lesson-page .lesson-step-progress {
+            display: grid;
+            gap: 0.6rem;
+            max-width: 76ch;
+            margin: 0 auto 1.25rem;
+            padding: 0.9rem 1rem;
+            border: 1px solid #dbe4ee;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+        .lesson-page .lesson-step-progress[hidden],
+        .lesson-page .lesson-step-navigation[hidden] {
+            display: none;
+        }
+        .lesson-page .lesson-step-navigation [hidden] {
+            display: none !important;
+        }
+        .lesson-page .lesson-step-progress-copy {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .lesson-page .lesson-step-progress-copy p {
+            margin: 0;
+            color: #475569;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+        .lesson-page #lessonStepProgressBar {
+            display: block;
+            width: 100%;
+            height: 0.55rem;
+            accent-color: #15803d;
+        }
+        .lesson-page .lesson-step-screen {
+            min-width: 0;
+            scroll-margin-top: 1rem;
+        }
+        .lesson-page .lesson-step-screen[hidden] {
+            display: none !important;
+        }
+        .lesson-page .lesson-step-navigation {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            margin: 1.25rem 0 0;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .lesson-page .lesson-step-navigation button,
+        .lesson-page .lesson-step-navigation a {
+            display: inline-flex;
+            min-height: 44px;
+            align-items: center;
+            justify-content: center;
+            padding: 0.65rem 1rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 9px;
+            background: #ffffff;
+            color: #1e293b;
+            font: inherit;
+            font-weight: 750;
+            text-decoration: none;
+        }
+        .lesson-page .lesson-step-navigation button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+        .lesson-page .lesson-step-navigation #practiceLinkBtn {
+            border-color: #0369a1;
+            background: #0369a1;
+            color: #ffffff;
+        }
+        .lesson-page .lesson-step-navigation button:focus-visible,
+        .lesson-page .lesson-step-navigation a:focus-visible {
+            outline: 3px solid #2563eb;
+            outline-offset: 3px;
+        }
+        .lesson-page #lessonConceptHeading {
+            margin: 1.75rem 0 0;
+            padding: 1.1rem 1.25rem 0.35rem;
+            border: 1px solid #bbf7d0;
+            border-bottom: 0;
+            border-radius: 16px 16px 0 0;
+            background: linear-gradient(135deg, #f0fdf4, #ffffff);
+            color: #14532d;
+        }
+        .lesson-page #lessonConceptHeading + #lessonTheory {
+            margin: 0 0 1.5rem;
+            padding: 0 1.25rem 1.25rem;
+            border: 1px solid #bbf7d0;
+            border-top: 0;
+            border-radius: 0 0 16px 16px;
+            background: linear-gradient(135deg, #f0fdf4, #ffffff);
+            color: #334155;
         }
         .lesson-page .lesson-text {
             color: #334155;
             font-size: 1.02rem;
             line-height: 1.75;
         }
-        .lesson-page #lessonDetails > section {
+        .lesson-page .lesson-detail-step {
+            counter-increment: lesson-step;
+            position: relative;
             margin: 1.25rem 0;
-            padding: clamp(1rem, 2.6vw, 1.5rem);
-            border: 1px solid #e2e8f0;
-            border-radius: 14px;
+            padding: 1.25rem 1.4rem 1.4rem 4.25rem;
+            border: 1px solid #dbe4ee;
+            border-left: 4px solid #16a34a;
+            border-radius: 16px;
+            background: linear-gradient(145deg, #ffffff, #f8fafc);
+            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.04);
+        }
+        .lesson-page #lessonContent.science-beginner-guide .lesson-detail-step {
+            margin: 1.25rem 0;
+            padding: 1.25rem 1.4rem 1.4rem 4.25rem;
+            border-left: 4px solid #16a34a;
+        }
+        .lesson-page .lesson-detail-step::before {
+            content: counter(lesson-step, decimal-leading-zero);
+            position: absolute;
+            top: 1.15rem;
+            left: 1.1rem;
+            display: grid;
+            width: 2.45rem;
+            height: 2.45rem;
+            place-items: center;
+            border: 1px solid #bbf7d0;
+            border-radius: 12px;
+            background: #ecfdf5;
+            color: #166534;
+            font-size: 0.82rem;
+            font-variant-numeric: tabular-nums;
+            font-weight: 800;
+        }
+        .lesson-page .lesson-detail-step.lesson-step-heading-numbered::before {
+            content: "";
+            top: 1.45rem;
+            left: 1.45rem;
+            width: 0.85rem;
+            height: 0.85rem;
+            border: 3px solid #16a34a;
+            border-radius: 50%;
             background: #ffffff;
         }
-        .lesson-page #lessonDetails > section > .lesson-section-title {
+        .lesson-page .lesson-detail-group {
+            display: grid;
+            gap: 0.25rem;
+        }
+        .lesson-page .lesson-detail-step > .lesson-section-title {
             margin: 0 0 0.9rem;
             padding-bottom: 0.65rem;
             border-bottom: 1px solid #e8eef5;
@@ -496,14 +611,14 @@
             font-size: clamp(1.1rem, 2.5vw, 1.25rem);
             line-height: 1.35;
         }
-        .lesson-page #lessonDetails p:last-child,
-        .lesson-page #lessonDetails ul:last-child {
+        .lesson-page .lesson-detail-step p:last-child,
+        .lesson-page .lesson-detail-step ul:last-child {
             margin-bottom: 0;
         }
-        .lesson-page #lessonDetails ul {
+        .lesson-page .lesson-detail-step ul {
             padding-left: 1.4rem;
         }
-        .lesson-page #lessonDetails li {
+        .lesson-page .lesson-detail-step li {
             padding-left: 0.2rem;
             margin: 0.45rem 0;
             color: #334155;
@@ -559,8 +674,24 @@
             .lesson-page .bookmark-button {
                 justify-self: start;
             }
-            .lesson-page #lessonDetails > section {
-                padding: 1rem;
+            .lesson-page .lesson-detail-step {
+                padding: 1rem 1rem 1rem 3.5rem;
+                border-radius: 12px;
+            }
+            .lesson-page #lessonContent.science-beginner-guide .lesson-detail-step {
+                padding: 1rem 1rem 1rem 3.5rem;
+            }
+            .lesson-page .lesson-detail-step::before {
+                top: 1rem;
+                left: 0.8rem;
+                width: 2.1rem;
+                height: 2.1rem;
+            }
+            .lesson-page .lesson-detail-step.lesson-step-heading-numbered::before {
+                top: 1.25rem;
+                left: 1.15rem;
+                width: 0.75rem;
+                height: 0.75rem;
             }
             .lesson-page .lesson-actions {
                 align-items: stretch;
@@ -603,17 +734,25 @@
                     <button type="button" class="bookmark-button" id="bookmarkButton" aria-pressed="false">☆ Save topic</button>
                 </div>
 
+                <section class="lesson-step-progress" id="lessonStepProgress" aria-label="Lesson progress" hidden>
+                    <div class="lesson-step-progress-copy">
+                        <p>Concept lesson</p>
+                        <p id="lessonStepStatus" role="status" aria-live="polite"></p>
+                    </div>
+                    <progress id="lessonStepProgressBar" value="1" max="1" aria-label="Lesson steps completed"></progress>
+                </section>
+
                 <div id="lessonContent">
-                    <div class="lesson-section-title" id="lessonIntroHeading">📖 Introduction</div>
+                    <h3 class="lesson-section-title" id="lessonIntroHeading">📖 Introduction</h3>
                     <p class="lesson-text" id="lessonIntroQuestion" hidden></p>
                     <p class="lesson-text" id="lessonIntro">A simple situation will introduce the topic.</p>
 
-                    <div class="lesson-section-title" id="lessonConceptHeading">🧠 Concept</div>
+                    <h3 class="lesson-section-title" id="lessonConceptHeading">🧠 Concept</h3>
                     <p class="lesson-text" id="lessonTheory">Please wait while the lesson loads...</p>
 
                     <div id="lessonDetails"></div>
 
-                    <div class="lesson-section-title" id="workedExampleHeading">💡 Worked Example</div>
+                    <h3 class="lesson-section-title" id="workedExampleHeading">💡 Worked Example</h3>
                     <div class="example-box">
                         <p class="lesson-text" id="lessonExample" style="margin: 0;">Example explanation goes here.</p>
                     </div>
@@ -666,22 +805,27 @@
                         <p id="confidenceStatus" class="confidence-status" role="status" aria-live="polite"></p>
                     </section>
 
-                    <div class="lesson-section-title" id="keyRulesHeading">⚠️ Key Rules to Remember</div>
+                    <h3 class="lesson-section-title" id="keyRulesHeading">⚠️ Key Rules to Remember</h3>
                     <p class="lesson-text" id="lessonRules">Important test-taking shortcuts and definitions.</p>
                     <section id="formulaSection" hidden>
-                        <div class="lesson-section-title">➗ Formula</div>
+                        <h3 class="lesson-section-title">➗ Formula</h3>
                         <p class="lesson-text" id="lessonFormula"></p>
                     </section>
                     <section id="gedConnectionSection" hidden>
-                        <div class="lesson-section-title">🎓 GED Connection</div>
+                        <h3 class="lesson-section-title">🎓 GED Connection</h3>
                         <p class="lesson-text" id="lessonGedConnection"></p>
                     </section>
                 </div>
 
+                <nav class="lesson-step-navigation" id="lessonStepNavigation" aria-label="Lesson steps" hidden>
+                    <button type="button" id="lessonStepPrevious" disabled>&larr; Previous</button>
+                    <button type="button" id="lessonStepNext">Next &rarr;</button>
+                    <a href="practice.html" id="practiceLinkBtn" class="btn-practice" hidden>Practice This Topic &rarr;</a>
+                </nav>
+
                 <div class="lesson-actions">
                     <a href="concept.html" id="backToConceptsLink" class="btn-back">&larr; Back to Concepts</a>
                     <div class="lesson-actions-next">
-                        <a href="practice.html" id="practiceLinkBtn" class="btn-practice">Practice This Topic &rarr;</a>
                         <a class="btn-practice" id="continueNextSectionLink" href="#" aria-label="Continue to the next section" hidden>Next Section &rarr;</a>
                     </div>
                 </div>
@@ -4699,6 +4843,7 @@
         }
         lessonDetails.replaceChildren(...[...lessonSections, ...criticalThinkingSections].map(section => {
             const container = document.createElement('section');
+            container.classList.toggle('lesson-step-heading-numbered', /^\s*\d+\./.test(section.title || ''));
             const heading = document.createElement('h3');
             heading.className = 'lesson-section-title';
             heading.textContent = section.title;
@@ -5164,7 +5309,7 @@
         const confidenceKey = 'zyomix_concept_confidence';
         const lessonTitle = currentLesson.title;
         const practiceLink = document.getElementById('practiceLinkBtn');
-        practiceLink.href = `quiz.html?step=${encodeURIComponent(stepId)}`;
+        practiceLink.href = `practice.html?subject=${encodeURIComponent(subject)}&step=${encodeURIComponent(stepId)}`;
         document.getElementById('backToConceptsLink').href = `concept.html?subject=${encodeURIComponent(subject)}`;
 
         document.getElementById('workedStepsList').replaceChildren(
@@ -5334,6 +5479,184 @@
         updateConfidenceStatus();
         updateBookmarkButton();
         renderSavedTopics();
+
+        const lessonContent = document.getElementById('lessonContent');
+        const detailSections = [...lessonDetails.children];
+        const originalContent = [...lessonContent.children];
+        const usedContent = new Set([lessonDetails]);
+        const lessonSteps = [];
+
+        function addLessonStep(elements, isDetail = false, titleOverride = '', isStepElement = false) {
+            if (!elements.length) return;
+            const step = isDetail || isStepElement ? elements[0] : document.createElement('section');
+            step.classList.add('lesson-step-screen');
+            if (isDetail) step.classList.add('lesson-detail-step');
+
+            if (!isDetail && !isStepElement) {
+                elements.forEach(element => {
+                    usedContent.add(element);
+                    step.append(element);
+                });
+            } else if (isStepElement) {
+                elements.forEach(element => {
+                    usedContent.add(element);
+                    element.querySelectorAll('*').forEach(child => usedContent.add(child));
+                });
+            } else {
+                usedContent.add(step);
+            }
+
+            const heading = step.querySelector('h3, .lesson-section-title');
+            if (!heading) return;
+            if (!heading.id) heading.id = `lesson-step-heading-${lessonSteps.length + 1}`;
+            step.setAttribute('aria-labelledby', heading.id);
+            step.tabIndex = -1;
+            step.hidden = true;
+            lessonSteps.push({
+                element: step,
+                title: titleOverride || heading.textContent.replace(/\s+/g, ' ').trim()
+            });
+        }
+
+        addLessonStep([
+            document.getElementById('lessonIntroHeading'),
+            document.getElementById('lessonIntroQuestion'),
+            document.getElementById('lessonIntro'),
+            document.getElementById('lessonConceptHeading'),
+            document.getElementById('lessonTheory')
+        ], false, '📖 Introduction and 🧠 Concept');
+        const detailGroups = [];
+        for (let index = 0; index < detailSections.length;) {
+            const section = detailSections[index];
+            const sectionTextLength = section.textContent.replace(/\s+/g, ' ').trim().length;
+            const isShortTextSection = candidate => {
+                const textLength = candidate.textContent.replace(/\s+/g, ' ').trim().length;
+                const hasRichContent = candidate.querySelector('table, figure, img, audio, video, input, button, .lesson-cause-flow');
+                return textLength <= 560 && !hasRichContent;
+            };
+            const group = [section];
+            let groupTextLength = sectionTextLength;
+            index++;
+            while (isShortTextSection(section) && groupTextLength < 900 && index < detailSections.length) {
+                const nextSection = detailSections[index];
+                if (!isShortTextSection(nextSection)) break;
+                const nextLength = nextSection.textContent.replace(/\s+/g, ' ').trim().length;
+                if (groupTextLength + nextLength > 1000) break;
+                group.push(nextSection);
+                groupTextLength += nextLength;
+                index++;
+            }
+            detailGroups.push(group);
+        }
+        detailGroups.forEach(group => {
+            if (group.length === 1) {
+                addLessonStep(group, true);
+                return;
+            }
+            const groupedStep = document.createElement('section');
+            groupedStep.className = 'lesson-detail-group';
+            groupedStep.setAttribute('role', 'group');
+            groupedStep.append(...group);
+            const headings = group.map(section => section.querySelector('h3')?.textContent.trim()).filter(Boolean);
+            addLessonStep([groupedStep], false, headings.join(' + '), true);
+        });
+
+        addLessonStep([
+            document.getElementById('workedExampleHeading'),
+            document.querySelector('#lessonContent > .example-box'),
+            document.getElementById('workedSteps')
+        ]);
+
+        const learningActivities = [];
+        [
+            'activeRecallBox',
+            'visualAid',
+            'lessonGlossary',
+            'commonPitfall',
+            'confidenceCheck'
+        ].forEach(id => {
+            const element = document.getElementById(id);
+            if (!element.hidden) learningActivities.push(element);
+        });
+        const reviewStep = document.createElement('section');
+        reviewStep.className = 'lesson-detail-group';
+        let reviewStepTitle = 'Key Rules to Remember';
+        if (learningActivities.length) {
+            const activityHeading = document.createElement('h3');
+            activityHeading.className = 'lesson-section-title';
+            activityHeading.textContent = 'Practice and Review';
+            reviewStep.append(activityHeading, ...learningActivities);
+            reviewStepTitle = 'Practice and Key Takeaways';
+        }
+        reviewStep.append(
+            document.getElementById('keyRulesHeading'),
+            document.getElementById('lessonRules')
+        );
+        ['formulaSection', 'gedConnectionSection'].forEach(id => {
+            const element = document.getElementById(id);
+            if (!element.hidden) reviewStep.append(element);
+        });
+        addLessonStep([reviewStep], false, reviewStepTitle, true);
+
+        const unusedContent = originalContent.filter(element => !usedContent.has(element));
+        const preservedHiddenContent = document.createElement('div');
+        preservedHiddenContent.hidden = true;
+        preservedHiddenContent.append(...unusedContent);
+        lessonContent.replaceChildren(...lessonSteps.map(step => step.element), preservedHiddenContent);
+
+        const stepProgress = document.getElementById('lessonStepProgress');
+        const stepProgressBar = document.getElementById('lessonStepProgressBar');
+        const stepStatus = document.getElementById('lessonStepStatus');
+        const stepNavigation = document.getElementById('lessonStepNavigation');
+        const previousButton = document.getElementById('lessonStepPrevious');
+        const nextButton = document.getElementById('lessonStepNext');
+        let currentLessonStep = 0;
+
+        function showLessonStep(index, moveFocus = false) {
+            currentLessonStep = Math.max(0, Math.min(index, lessonSteps.length - 1));
+            lessonSteps.forEach(({ element }, stepIndex) => {
+                element.hidden = stepIndex !== currentLessonStep;
+                if (stepIndex === currentLessonStep) {
+                    element.setAttribute('aria-current', 'step');
+                } else {
+                    element.removeAttribute('aria-current');
+                }
+            });
+            const isLastStep = currentLessonStep === lessonSteps.length - 1;
+            stepProgressBar.max = lessonSteps.length;
+            stepProgressBar.value = currentLessonStep + 1;
+            stepStatus.textContent = `Step ${currentLessonStep + 1} of ${lessonSteps.length}: ${lessonSteps[currentLessonStep].title}`;
+            previousButton.disabled = currentLessonStep === 0;
+            nextButton.hidden = isLastStep;
+            practiceLink.hidden = !isLastStep;
+            const markLessonCompleteButton = document.getElementById('markLessonCompleteButton');
+            markLessonCompleteButton.dataset.lessonStepsComplete = String(isLastStep);
+            markLessonCompleteButton.dispatchEvent(new CustomEvent('lesson-step-flow-change', {
+                detail: { complete: isLastStep }
+            }));
+            if (moveFocus) {
+                const activeStep = lessonSteps[currentLessonStep].element;
+                const heading = activeStep.querySelector('h3, .lesson-section-title');
+                heading.tabIndex = -1;
+                heading.focus({ preventScroll: true });
+                setTimeout(() => {
+                    const header = document.querySelector('.site-header');
+                    const lessonContainer = document.querySelector('.lesson-container');
+                    const headerHeight = header?.getBoundingClientRect().height || 0;
+                    const top = window.scrollY + lessonContainer.getBoundingClientRect().top - headerHeight - 16;
+                    window.scrollTo({
+                        top: Math.max(0, top),
+                        behavior: 'auto'
+                    });
+                }, 0);
+            }
+        }
+
+        previousButton.addEventListener('click', () => showLessonStep(currentLessonStep - 1, true));
+        nextButton.addEventListener('click', () => showLessonStep(currentLessonStep + 1, true));
+        stepProgress.hidden = false;
+        stepNavigation.hidden = false;
+        showLessonStep(0);
     </script>
 </body>
 </html>

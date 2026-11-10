@@ -234,7 +234,19 @@
         }
 
         markButton.hidden = false;
+        markButton.disabled = !completed.has(step) && markButton.dataset.lessonStepsComplete !== 'true';
+        if (!completed.has(step) && markButton.disabled) {
+            status.textContent = 'Continue through each lesson step to unlock section completion.';
+        }
+        markButton.addEventListener('lesson-step-flow-change', event => {
+            if (completed.has(step)) return;
+            markButton.disabled = event.detail?.complete !== true;
+            status.textContent = markButton.disabled
+                ? 'Continue through each lesson step to unlock section completion.'
+                : 'You reached the end of the lesson. Mark this section complete to continue.';
+        });
         if (completed.has(step)) {
+            markButton.dataset.lessonCompleted = 'true';
             markButton.textContent = '✓ Lesson completed';
             markButton.disabled = true;
             showNextSection();
@@ -250,6 +262,7 @@
                 status.textContent = 'Could not save completion. Please check browser storage and try again.';
                 return;
             }
+            markButton.dataset.lessonCompleted = 'true';
             markButton.textContent = '✓ Lesson completed';
             markButton.disabled = true;
             showNextSection();

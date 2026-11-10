@@ -1406,6 +1406,13 @@ body.lesson-page #markLessonCompleteButton:disabled {
     cursor: default;
 }
 
+body.lesson-page #markLessonCompleteButton:disabled[data-lesson-steps-complete="false"]:not([data-lesson-completed="true"]) {
+    border-color: #94a3b8;
+    background: #94a3b8;
+    color: #ffffff;
+    cursor: not-allowed;
+}
+
 @media (max-width: 640px) {
     body.concept-page .chapter-learning-path {
         grid-template-columns: 1fr auto;
