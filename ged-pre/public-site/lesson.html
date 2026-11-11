@@ -4657,7 +4657,7 @@
         const sectionIndex = Number(scienceStep?.[2] || socialStep?.[2]) - 1;
         const chapterSections = scienceChapter?.sections || socialChapter?.sections || [];
         const relatedSection = chapterSections[sectionIndex + 1] || chapterSections[sectionIndex - 1];
-        let criticalThinkingSections = catalogSectionTitle && !rlaLesson
+        let criticalThinkingSections = catalogSectionTitle && !rlaLesson && stepId !== 'science-7-1'
             ? window.createCriticalThinkingSections({
                 subject: scienceSection ? 'science' : 'social',
                 title: catalogSectionTitle,
@@ -4680,7 +4680,7 @@
                 title: section.title.replace(/^\d+\.\s*/, `${nextSectionNumber++}. `)
             }));
         }
-        if (scienceSection || socialSection) {
+        if ((scienceSection || socialSection) && stepId !== 'science-7-1') {
             const resourceSections = lessonSections.filter(section => section.resourceLink);
             if (resourceSections.length) {
                 for (let index = lessonSections.length - 1; index >= 0; index--) {

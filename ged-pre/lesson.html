@@ -4801,7 +4801,7 @@
         const sectionIndex = Number(scienceStep?.[2] || socialStep?.[2]) - 1;
         const chapterSections = scienceChapter?.sections || socialChapter?.sections || [];
         const relatedSection = chapterSections[sectionIndex + 1] || chapterSections[sectionIndex - 1];
-        let criticalThinkingSections = catalogSectionTitle && !rlaLesson
+        let criticalThinkingSections = catalogSectionTitle && !rlaLesson && stepId !== 'science-7-1'
             ? window.createCriticalThinkingSections({
                 subject: scienceSection ? 'science' : 'social',
                 title: catalogSectionTitle,
@@ -4824,7 +4824,7 @@
                 title: section.title.replace(/^\d+\.\s*/, `${nextSectionNumber++}. `)
             }));
         }
-        if (scienceSection || socialSection) {
+        if ((scienceSection || socialSection) && stepId !== 'science-7-1') {
             const resourceSections = lessonSections.filter(section => section.resourceLink);
             if (resourceSections.length) {
                 for (let index = lessonSections.length - 1; index >= 0; index--) {
@@ -5485,6 +5485,7 @@
         const originalContent = [...lessonContent.children];
         const usedContent = new Set([lessonDetails]);
         const lessonSteps = [];
+        const isStructuredGeneticsLesson = stepId === 'science-7-1';
 
         function addLessonStep(elements, isDetail = false, titleOverride = '', isStepElement = false) {
             if (!elements.length) return;
@@ -5518,13 +5519,15 @@
             });
         }
 
-        addLessonStep([
-            document.getElementById('lessonIntroHeading'),
-            document.getElementById('lessonIntroQuestion'),
-            document.getElementById('lessonIntro'),
-            document.getElementById('lessonConceptHeading'),
-            document.getElementById('lessonTheory')
-        ], false, '📖 Introduction and 🧠 Concept');
+        if (!isStructuredGeneticsLesson) {
+            addLessonStep([
+                document.getElementById('lessonIntroHeading'),
+                document.getElementById('lessonIntroQuestion'),
+                document.getElementById('lessonIntro'),
+                document.getElementById('lessonConceptHeading'),
+                document.getElementById('lessonTheory')
+            ], false, '📖 Introduction and 🧠 Concept');
+        }
         const detailGroups = [];
         for (let index = 0; index < detailSections.length;) {
             const section = detailSections[index];
@@ -5561,42 +5564,44 @@
             addLessonStep([groupedStep], false, headings.join(' + '), true);
         });
 
-        addLessonStep([
-            document.getElementById('workedExampleHeading'),
-            document.querySelector('#lessonContent > .example-box'),
-            document.getElementById('workedSteps')
-        ]);
+        if (!isStructuredGeneticsLesson) {
+            addLessonStep([
+                document.getElementById('workedExampleHeading'),
+                document.querySelector('#lessonContent > .example-box'),
+                document.getElementById('workedSteps')
+            ]);
 
-        const learningActivities = [];
-        [
-            'activeRecallBox',
-            'visualAid',
-            'lessonGlossary',
-            'commonPitfall',
-            'confidenceCheck'
-        ].forEach(id => {
-            const element = document.getElementById(id);
-            if (!element.hidden) learningActivities.push(element);
-        });
-        const reviewStep = document.createElement('section');
-        reviewStep.className = 'lesson-detail-group';
-        let reviewStepTitle = 'Key Rules to Remember';
-        if (learningActivities.length) {
-            const activityHeading = document.createElement('h3');
-            activityHeading.className = 'lesson-section-title';
-            activityHeading.textContent = 'Practice and Review';
-            reviewStep.append(activityHeading, ...learningActivities);
-            reviewStepTitle = 'Practice and Key Takeaways';
+            const learningActivities = [];
+            [
+                'activeRecallBox',
+                'visualAid',
+                'lessonGlossary',
+                'commonPitfall',
+                'confidenceCheck'
+            ].forEach(id => {
+                const element = document.getElementById(id);
+                if (!element.hidden) learningActivities.push(element);
+            });
+            const reviewStep = document.createElement('section');
+            reviewStep.className = 'lesson-detail-group';
+            let reviewStepTitle = 'Key Rules to Remember';
+            if (learningActivities.length) {
+                const activityHeading = document.createElement('h3');
+                activityHeading.className = 'lesson-section-title';
+                activityHeading.textContent = 'Practice and Review';
+                reviewStep.append(activityHeading, ...learningActivities);
+                reviewStepTitle = 'Practice and Key Takeaways';
+            }
+            reviewStep.append(
+                document.getElementById('keyRulesHeading'),
+                document.getElementById('lessonRules')
+            );
+            ['formulaSection', 'gedConnectionSection'].forEach(id => {
+                const element = document.getElementById(id);
+                if (!element.hidden) reviewStep.append(element);
+            });
+            addLessonStep([reviewStep], false, reviewStepTitle, true);
         }
-        reviewStep.append(
-            document.getElementById('keyRulesHeading'),
-            document.getElementById('lessonRules')
-        );
-        ['formulaSection', 'gedConnectionSection'].forEach(id => {
-            const element = document.getElementById(id);
-            if (!element.hidden) reviewStep.append(element);
-        });
-        addLessonStep([reviewStep], false, reviewStepTitle, true);
 
         const unusedContent = originalContent.filter(element => !usedContent.has(element));
         const preservedHiddenContent = document.createElement('div');

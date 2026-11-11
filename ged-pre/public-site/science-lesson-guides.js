@@ -650,7 +650,97 @@
                 answer: "A chromosome contains many genes."
             },
             resource: resource("OpenStax Biology 2e: DNA structure and heredity (free reading)", `${biology}14-introduction`),
-            flow: { label: "How genetic information is organized", steps: ["Chromosome contains DNA", "DNA includes genes", "Genes help influence traits"] }
+            flow: { label: "How genetic information is organized", steps: ["Chromosome contains DNA", "DNA includes genes", "Genes help influence traits"] },
+            customLessonSections: [
+                {
+                    title: "Hook and learning goals",
+                    paragraphs: [
+                        "Imagine a library so small it fits inside a cell. It must store instructions, keep them organized, and make selected directions available when the cell needs them. DNA, genes, and chromosomes are three connected parts of this information system.",
+                        "By the end, you can define DNA, gene, and chromosome; explain how they fit together; describe how scientists worked out that DNA carries inherited information; and read a simple genetic-information diagram without mistaking a model for the whole story."
+                    ]
+                },
+                {
+                    title: "History: How scientists traced inheritance",
+                    paragraphs: [
+                        "People noticed for centuries that offspring often resemble their parents, but resemblance alone did not reveal what was passed on. In the 1850s and 1860s, Augustinian monk and teacher Gregor Mendel grew pea plants and carefully counted traits such as flower color and seed shape. He crossed plants with contrasting traits, recorded results across generations, and found repeatable patterns. His 1866 paper proposed that inherited characteristics were passed as separate factors. Mendel did not know about genes or DNA, and most scientists of his time did not recognize how important his work would become.",
+                        "Some of Mendel's crosses produced an approximately three-to-one ratio in a later generation. Such numerical patterns hinted that inherited information could be hidden in one generation and appear in another. His results were rediscovered around 1900, and later researchers connected the patterns to chromosomes. That link helped turn inheritance from a description of resemblance into a testable scientific explanation.",
+                        "In 1869, Swiss physician Friedrich Miescher isolated a substance from cell nuclei that he called nuclein. It was later identified as DNA, but its role was unknown. Around 1900, several scientists independently brought Mendel's overlooked results back to attention. At about the same time, Walter Sutton and Theodor Boveri connected the behavior of chromosomes during cell division with Mendel's patterns. Their chromosome theory suggested that hereditary factors were carried on chromosomes. In the early twentieth century, Thomas Hunt Morgan and colleagues studied fruit flies and found that some traits were inherited together, supporting the idea that hereditary factors lie along chromosomes.",
+                        "The next question was what chromosomes were made of and which part carried information. In 1928, Frederick Griffith found that material from heat-killed disease-causing bacteria could change harmless bacteria. In 1944, Oswald Avery, Colin MacLeod, and Maclyn McCarty provided evidence that DNA was the transforming material. In 1952, experiments by Alfred Hershey and Martha Chase offered further evidence that DNA, rather than protein, carried hereditary instructions in the viruses they studied. Each experiment narrowed the possibilities; no single result answered every question about inheritance.",
+                        "Other clues helped reveal DNA's structure. Erwin Chargaff measured DNA in different organisms and found patterns in its chemical building blocks. Rosalind Franklin and Raymond Gosling produced important X-ray diffraction images of DNA, including the image known as Photo 51, which showed evidence of a helix. Maurice Wilkins also studied DNA using X-ray methods. In 1953, James Watson and Francis Crick proposed a double-helix model that fit the available evidence, including findings from Franklin and other researchers. The model explained how DNA's two strands could separate and guide the copying of matching strands. Franklin died in 1958; the 1962 Nobel Prize for this work was awarded to Watson, Crick, and Wilkins.",
+                        "Later research showed how DNA is arranged into genes and chromosomes and how cells use genetic instructions. The Human Genome Project, completed in 2003, produced a reference sequence for much of human DNA and helped researchers study genes on a large scale. The history is not a story of one person discovering everything: it is a chain of observations, experiments, images, and models. Scientists improved their explanations as evidence accumulated, just as a map becomes clearer when more reliable landmarks are added."
+                    ]
+                },
+                {
+                    title: "Discovery: Evidence identified DNA as hereditary material",
+                    paragraphs: [
+                        "Scientists did not identify DNA's role from its shape alone. They asked what material could transfer a biological characteristic, then designed experiments to separate competing explanations. Griffith's bacteria suggested that a transferable substance existed; Avery, MacLeod, and McCarty tested which substance it was; Hershey and Chase used viruses to compare the roles of DNA and protein. Meanwhile, chemical measurements and X-ray diffraction helped constrain models of DNA's structure. Each result answered a narrower question, and together they made the DNA explanation much stronger than any one clue by itself."
+                    ],
+                    visualAid: {
+                        title: "Evidence leading to the DNA model",
+                        description: "Experiments and observations built evidence for DNA's role and structure.",
+                        steps: [
+                            "Griffith observes a transferable trait in bacteria.",
+                            "Avery, MacLeod, and McCarty identify DNA as the transforming material.",
+                            "Hershey and Chase find evidence that viruses use DNA to carry instructions.",
+                            "Chargaff's measurements and Franklin's X-ray images inform the double-helix model."
+                        ]
+                    }
+                },
+                {
+                    title: "Concept: DNA, genes, and chromosomes",
+                    paragraphs: [
+                        "DNA, or deoxyribonucleic acid, is a molecule that stores genetic information in most living things. It is built from smaller units called nucleotides. The order of four DNA bases—usually represented by the letters A, T, C, and G—forms a sequence that cells can copy and use. DNA is shaped like a twisted ladder, or double helix: the sides are made of alternating sugar and phosphate, and the bases pair across the middle. A pairs with T, and C pairs with G.",
+                        "A gene is a particular stretch of DNA whose sequence contributes information for making a functional product. Many genes provide instructions for proteins; other genes produce functional RNA. A gene is not always a simple recipe for one visible feature. Some genes affect several processes, and many traits depend on multiple genes working together. Cells also control when and where a gene is active.",
+                        "A chromosome is a long DNA molecule organized with proteins. This packaging helps fit DNA into a cell and helps manage access to it. In a human body cell, DNA is arranged in 46 chromosomes, usually described as 23 pairs. One chromosome in each pair came from the egg and the other from the sperm. Eggs and sperm normally contain 23 chromosomes each. Numbers differ among species, so 46 is not a universal chromosome count.",
+                        "The relationship is a scale: chromosomes contain DNA; DNA includes genes; and genes can help influence how an organism develops and functions. A chromosome contains many genes and also DNA regions that do not code for proteins. During cell division, DNA is copied so new cells can receive genetic instructions. Inherited versions of genes can differ, contributing to variation among individuals.",
+                        "Packaging is essential because DNA is extremely long: a single set of human chromosomes contains roughly three billion DNA base pairs. DNA and its associated proteins form chromatin, which can be further compacted into visible chromosomes during cell division.",
+                        "Cells read active genes through gene expression: DNA information is copied into RNA, and many RNA messages help guide protein production. Different cell types can use different genes, even though nearly all their cells contain the same DNA.",
+                        "Traits are features such as blood type, flower color, or certain aspects of height. Genes can influence traits, but environment matters too: nutrition, sunlight, temperature, and many other conditions can affect how a trait develops. Some traits are strongly influenced by one gene; many are more complex. A diagram that shows one gene leading to one trait is a useful starting model, not a complete explanation of every real trait."
+                    ]
+                },
+                {
+                    title: "Example: Walk through the diagram",
+                    paragraphs: [
+                        "Use the supplied picture as a zooming-in and zooming-out map. Start at DNA, shown as a double helix. Move to the highlighted gene: it is a small section of that DNA, not a different kind of molecule. Then move outward to the chromosome, which is DNA packed with proteins and carries many genes. The arrows show the organizing relationship, not a process in which DNA turns into a gene and then turns into a chromosome.",
+                        "Suppose a diagram labels a gene on one chromosome and asks what the label means. First, identify the chromosome as the larger packaged structure. Next, trace the label to the DNA segment. Finally, explain that the segment has information that can contribute to a trait. Do not conclude that the gene guarantees the trait: other genes and environmental conditions may also matter."
+                    ],
+                    imagePlaceholder: {
+                        src: "assets/dna-gene-chromosome.png",
+                        altText: "Infographic comparing DNA as genetic code, a gene as a small section of DNA, and a chromosome as tightly packed DNA containing many genes.",
+                        caption: "DNA is the information molecule; a gene is a section of DNA; a chromosome packages a long DNA molecule and carries many genes."
+                    }
+                },
+                {
+                    title: "Practice: Apply what you learned",
+                    paragraphs: [
+                        "A cell diagram shows a chromosome with many labels along its DNA. One label points to a short segment called Gene A. Explain how DNA, Gene A, and the chromosome are related."
+                    ],
+                    bullets: [
+                        "Name the largest packaged structure first.",
+                        "Describe the gene as a section of DNA inside that structure.",
+                        "Connect the gene to information that may influence a trait, without claiming it determines the trait alone."
+                    ],
+                    paragraphsAfterBullets: [
+                        "Check: the chromosome packages a long DNA molecule; Gene A is one section of that DNA and may contribute to a trait."
+                    ]
+                },
+                {
+                    title: "Recap: Key ideas and comprehension questions",
+                    paragraphs: [
+                        "DNA stores genetic information; genes are particular sections of DNA; chromosomes package DNA with proteins. Genes can influence traits alongside other genes and environmental conditions. Scientists established DNA's role through evidence from many experiments and observations, not one discovery by one person."
+                    ],
+                    bullets: [
+                        "1. What is a gene in relation to DNA?",
+                        "2. What does a chromosome package?",
+                        "3. Which structure is the “big package” in the picture?",
+                        "4. Why might several genes and the environment affect one trait?"
+                    ],
+                    paragraphsAfterBullets: [
+                        "Check: a gene is a DNA segment; a chromosome packages DNA and contains many genes. A trait may reflect genes and environmental conditions."
+                    ],
+                    resourceLink: resource("OpenStax Biology 2e: Historical basis of modern genetics", `${biology}14-1-historical-basis-of-modern-understanding`)
+                }
+            ]
         }),
         "science-7-2": makeGuide({
             title: "Traits and Alleles",
@@ -1932,6 +2022,7 @@
     };
 
     Object.entries(guides).forEach(([id, guide]) => {
+        if (guide.lessonSections[0]?.title === "Hook and learning goals") return;
         guide.lessonSections[0].paragraphs.push(
             pictureThis[id] || "Connect this idea to a familiar situation. A real example can make a new science concept easier to understand."
         );
