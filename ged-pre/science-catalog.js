@@ -49,7 +49,7 @@
             title: 'Tables, graphs, diagrams, and data',
             sections: [
                 ['Read data tables', ['Read titles, headings, and units.', 'Locate values, compare entries, and identify patterns.']],
-                ['Interpret graphs', ['Read bar, line, circle, and scatterplot graphs.', 'Interpret axes, scales, intervals, comparisons, and trends.']],
+                ['Traits and alleles', ['Distinguish genes, alleles, genotype, and phenotype.', 'Interpret dominant and recessive models while recognizing that many real traits are more complex.']],
                 ['Interpret relationships', ['Identify positive, negative, or absent relationships.', 'Use numerical evidence and remember that correlation alone does not establish cause.']],
                 ['Make predictions', ['Estimate between known data points and predict beyond them cautiously.', 'Choose supported predictions and recognize when information is insufficient.']],
                 ['Connect representations', ['Match graphs, tables, diagrams, and passages.', 'Choose an appropriate graph and translate written relationships into numbers.']]
