@@ -228,6 +228,19 @@
             font-size: 0.9rem;
         }
         .btn-practice:hover { background: #2b6cb0; }
+        #lessonContent.lesson-sections-only > #lessonIntroHeading,
+        #lessonContent.lesson-sections-only > #lessonIntro,
+        #lessonContent.lesson-sections-only > #lessonConceptHeading,
+        #lessonContent.lesson-sections-only > #lessonTheory,
+        #lessonContent.lesson-sections-only > #workedExampleHeading,
+        #lessonContent.lesson-sections-only > .example-box,
+        #lessonContent.lesson-sections-only > #workedSteps,
+        #lessonContent.lesson-sections-only > #lessonGlossary,
+        #lessonContent.lesson-sections-only > #commonPitfall,
+        #lessonContent.lesson-sections-only > #keyRulesHeading,
+        #lessonContent.lesson-sections-only > #lessonRules,
+        #lessonContent.lesson-sections-only > #formulaSection,
+        #lessonContent.lesson-sections-only > #gedConnectionSection { display: none !important; }
         .lesson-section-subtitle {
             margin: 1.25rem 0 0.6rem;
             color: #1e293b;
@@ -251,6 +264,18 @@
             background: transparent;
             color: inherit;
             font-weight: 700;
+        }
+        #lessonContent.science-beginner-guide #lessonDetails > section {
+            margin: 1.25rem 0;
+            padding: 1.1rem 1.2rem;
+            border: 1px solid #dbeafe;
+            border-radius: 14px;
+            background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.04);
+        }
+        #lessonContent.science-beginner-guide #lessonDetails > section > .lesson-section-title {
+            margin-top: 0;
+            color: #14532d;
         }
         #lessonContent.science-beginner-guide .lesson-resource-link {
             padding: 0.65rem 0.9rem;
@@ -279,30 +304,6 @@
             margin-top: 0.65rem;
             color: #475569;
             font-size: 0.9rem;
-        }
-        .lesson-image-placeholder {
-            margin: 1rem 0;
-            padding: 1rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 12px;
-            background: #ffffff;
-        }
-        .lesson-image-placeholder-frame {
-            display: block;
-            width: 100%;
-            height: auto;
-            border-radius: 8px;
-            background: #f8fafc;
-        }
-        .lesson-image-placeholder figcaption {
-            margin-top: 0.65rem;
-            color: #475569;
-            font-size: 0.9rem;
-        }
-        .lesson-image-placeholder figcaption strong {
-            display: block;
-            margin-bottom: 0.35rem;
-            color: #1e293b;
         }
         .lesson-relationship-charts {
             display: grid;
@@ -424,7 +425,6 @@
             border: 1px solid #dbe4ee;
             border-radius: 18px;
             box-shadow: 0 8px 26px rgba(15, 23, 42, 0.06);
-            overflow-anchor: none;
         }
         .lesson-page .lesson-header {
             display: grid;
@@ -451,159 +451,20 @@
         .lesson-page #lessonContent {
             max-width: 76ch;
             margin-inline: auto;
-            counter-reset: lesson-step;
-        }
-        .lesson-page .lesson-step-progress {
-            display: grid;
-            gap: 0.6rem;
-            max-width: 76ch;
-            margin: 0 auto 1.25rem;
-            padding: 0.9rem 1rem;
-            border: 1px solid #dbe4ee;
-            border-radius: 12px;
-            background: #f8fafc;
-        }
-        .lesson-page .lesson-step-progress[hidden],
-        .lesson-page .lesson-step-navigation[hidden] {
-            display: none;
-        }
-        .lesson-page .lesson-step-navigation [hidden] {
-            display: none !important;
-        }
-        .lesson-page .lesson-step-progress-copy {
-            display: flex;
-            align-items: baseline;
-            justify-content: space-between;
-            gap: 0.75rem;
-        }
-        .lesson-page .lesson-step-progress-copy p {
-            margin: 0;
-            color: #475569;
-            font-size: 0.85rem;
-            font-weight: 700;
-        }
-        .lesson-page #lessonStepProgressBar {
-            display: block;
-            width: 100%;
-            height: 0.55rem;
-            accent-color: #15803d;
-        }
-        .lesson-page .lesson-step-screen {
-            min-width: 0;
-            scroll-margin-top: 1rem;
-        }
-        .lesson-page .lesson-step-screen[hidden] {
-            display: none !important;
-        }
-        .lesson-page .lesson-step-navigation {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.75rem;
-            margin: 1.25rem 0 0;
-            padding-top: 1rem;
-            border-top: 1px solid #e2e8f0;
-        }
-        .lesson-page .lesson-step-navigation button,
-        .lesson-page .lesson-step-navigation a {
-            display: inline-flex;
-            min-height: 44px;
-            align-items: center;
-            justify-content: center;
-            padding: 0.65rem 1rem;
-            border: 1px solid #cbd5e1;
-            border-radius: 9px;
-            background: #ffffff;
-            color: #1e293b;
-            font: inherit;
-            font-weight: 750;
-            text-decoration: none;
-        }
-        .lesson-page .lesson-step-navigation button:disabled {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-        .lesson-page .lesson-step-navigation #practiceLinkBtn {
-            border-color: #0369a1;
-            background: #0369a1;
-            color: #ffffff;
-        }
-        .lesson-page .lesson-step-navigation button:focus-visible,
-        .lesson-page .lesson-step-navigation a:focus-visible {
-            outline: 3px solid #2563eb;
-            outline-offset: 3px;
-        }
-        .lesson-page #lessonConceptHeading {
-            margin: 1.75rem 0 0;
-            padding: 1.1rem 1.25rem 0.35rem;
-            border: 1px solid #bbf7d0;
-            border-bottom: 0;
-            border-radius: 16px 16px 0 0;
-            background: linear-gradient(135deg, #f0fdf4, #ffffff);
-            color: #14532d;
-        }
-        .lesson-page #lessonConceptHeading + #lessonTheory {
-            margin: 0 0 1.5rem;
-            padding: 0 1.25rem 1.25rem;
-            border: 1px solid #bbf7d0;
-            border-top: 0;
-            border-radius: 0 0 16px 16px;
-            background: linear-gradient(135deg, #f0fdf4, #ffffff);
-            color: #334155;
         }
         .lesson-page .lesson-text {
             color: #334155;
             font-size: 1.02rem;
             line-height: 1.75;
         }
-        .lesson-page .lesson-detail-step {
-            counter-increment: lesson-step;
-            position: relative;
+        .lesson-page #lessonDetails > section {
             margin: 1.25rem 0;
-            padding: 1.25rem 1.4rem 1.4rem 4.25rem;
-            border: 1px solid #dbe4ee;
-            border-left: 4px solid #16a34a;
-            border-radius: 16px;
-            background: linear-gradient(145deg, #ffffff, #f8fafc);
-            box-shadow: 0 5px 16px rgba(15, 23, 42, 0.04);
-        }
-        .lesson-page #lessonContent.science-beginner-guide .lesson-detail-step {
-            margin: 1.25rem 0;
-            padding: 1.25rem 1.4rem 1.4rem 4.25rem;
-            border-left: 4px solid #16a34a;
-        }
-        .lesson-page .lesson-detail-step::before {
-            content: counter(lesson-step, decimal-leading-zero);
-            position: absolute;
-            top: 1.15rem;
-            left: 1.1rem;
-            display: grid;
-            width: 2.45rem;
-            height: 2.45rem;
-            place-items: center;
-            border: 1px solid #bbf7d0;
-            border-radius: 12px;
-            background: #ecfdf5;
-            color: #166534;
-            font-size: 0.82rem;
-            font-variant-numeric: tabular-nums;
-            font-weight: 800;
-        }
-        .lesson-page .lesson-detail-step.lesson-step-heading-numbered::before {
-            content: "";
-            top: 1.45rem;
-            left: 1.45rem;
-            width: 0.85rem;
-            height: 0.85rem;
-            border: 3px solid #16a34a;
-            border-radius: 50%;
+            padding: clamp(1rem, 2.6vw, 1.5rem);
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
             background: #ffffff;
         }
-        .lesson-page .lesson-detail-group {
-            display: grid;
-            gap: 0.25rem;
-        }
-        .lesson-page .lesson-detail-step > .lesson-section-title {
+        .lesson-page #lessonDetails > section > .lesson-section-title {
             margin: 0 0 0.9rem;
             padding-bottom: 0.65rem;
             border-bottom: 1px solid #e8eef5;
@@ -611,14 +472,14 @@
             font-size: clamp(1.1rem, 2.5vw, 1.25rem);
             line-height: 1.35;
         }
-        .lesson-page .lesson-detail-step p:last-child,
-        .lesson-page .lesson-detail-step ul:last-child {
+        .lesson-page #lessonDetails p:last-child,
+        .lesson-page #lessonDetails ul:last-child {
             margin-bottom: 0;
         }
-        .lesson-page .lesson-detail-step ul {
+        .lesson-page #lessonDetails ul {
             padding-left: 1.4rem;
         }
-        .lesson-page .lesson-detail-step li {
+        .lesson-page #lessonDetails li {
             padding-left: 0.2rem;
             margin: 0.45rem 0;
             color: #334155;
@@ -674,24 +535,8 @@
             .lesson-page .bookmark-button {
                 justify-self: start;
             }
-            .lesson-page .lesson-detail-step {
-                padding: 1rem 1rem 1rem 3.5rem;
-                border-radius: 12px;
-            }
-            .lesson-page #lessonContent.science-beginner-guide .lesson-detail-step {
-                padding: 1rem 1rem 1rem 3.5rem;
-            }
-            .lesson-page .lesson-detail-step::before {
-                top: 1rem;
-                left: 0.8rem;
-                width: 2.1rem;
-                height: 2.1rem;
-            }
-            .lesson-page .lesson-detail-step.lesson-step-heading-numbered::before {
-                top: 1.25rem;
-                left: 1.15rem;
-                width: 0.75rem;
-                height: 0.75rem;
+            .lesson-page #lessonDetails > section {
+                padding: 1rem;
             }
             .lesson-page .lesson-actions {
                 align-items: stretch;
@@ -734,25 +579,17 @@
                     <button type="button" class="bookmark-button" id="bookmarkButton" aria-pressed="false">☆ Save topic</button>
                 </div>
 
-                <section class="lesson-step-progress" id="lessonStepProgress" aria-label="Lesson progress" hidden>
-                    <div class="lesson-step-progress-copy">
-                        <p>Concept lesson</p>
-                        <p id="lessonStepStatus" role="status" aria-live="polite"></p>
-                    </div>
-                    <progress id="lessonStepProgressBar" value="1" max="1" aria-label="Lesson steps completed"></progress>
-                </section>
-
                 <div id="lessonContent">
-                    <h3 class="lesson-section-title" id="lessonIntroHeading">📖 Introduction</h3>
+                    <div class="lesson-section-title" id="lessonIntroHeading">📖 Introduction</div>
                     <p class="lesson-text" id="lessonIntroQuestion" hidden></p>
                     <p class="lesson-text" id="lessonIntro">A simple situation will introduce the topic.</p>
 
-                    <h3 class="lesson-section-title" id="lessonConceptHeading">🧠 Concept</h3>
+                    <div class="lesson-section-title" id="lessonConceptHeading">🧠 Concept</div>
                     <p class="lesson-text" id="lessonTheory">Please wait while the lesson loads...</p>
 
                     <div id="lessonDetails"></div>
 
-                    <h3 class="lesson-section-title" id="workedExampleHeading">💡 Worked Example</h3>
+                    <div class="lesson-section-title" id="workedExampleHeading">💡 Worked Example</div>
                     <div class="example-box">
                         <p class="lesson-text" id="lessonExample" style="margin: 0;">Example explanation goes here.</p>
                     </div>
@@ -805,27 +642,22 @@
                         <p id="confidenceStatus" class="confidence-status" role="status" aria-live="polite"></p>
                     </section>
 
-                    <h3 class="lesson-section-title" id="keyRulesHeading">⚠️ Key Rules to Remember</h3>
+                    <div class="lesson-section-title" id="keyRulesHeading">⚠️ Key Rules to Remember</div>
                     <p class="lesson-text" id="lessonRules">Important test-taking shortcuts and definitions.</p>
                     <section id="formulaSection" hidden>
-                        <h3 class="lesson-section-title">➗ Formula</h3>
+                        <div class="lesson-section-title">➗ Formula</div>
                         <p class="lesson-text" id="lessonFormula"></p>
                     </section>
                     <section id="gedConnectionSection" hidden>
-                        <h3 class="lesson-section-title">🎓 GED Connection</h3>
+                        <div class="lesson-section-title">🎓 GED Connection</div>
                         <p class="lesson-text" id="lessonGedConnection"></p>
                     </section>
                 </div>
 
-                <nav class="lesson-step-navigation" id="lessonStepNavigation" aria-label="Lesson steps" hidden>
-                    <button type="button" id="lessonStepPrevious" disabled>&larr; Previous</button>
-                    <button type="button" id="lessonStepNext">Next &rarr;</button>
-                    <a href="practice.html" id="practiceLinkBtn" class="btn-practice" hidden>Practice This Topic &rarr;</a>
-                </nav>
-
                 <div class="lesson-actions">
                     <a href="concept.html" id="backToConceptsLink" class="btn-back">&larr; Back to Concepts</a>
                     <div class="lesson-actions-next">
+                        <a href="practice.html" id="practiceLinkBtn" class="btn-practice">Practice This Topic &rarr;</a>
                         <a class="btn-practice" id="continueNextSectionLink" href="#" aria-label="Continue to the next section" hidden>Next Section &rarr;</a>
                     </div>
                 </div>
@@ -2265,104 +2097,105 @@
             },
             "science-3-2": {
                 badge: "Science · Chapter 3 · Section 3.2",
-                title: "Traits and Alleles",
-                intro: "Why do siblings sometimes share a feature but show different versions of it? Genes carry inherited information, and alleles are different versions of a gene. Learn how scientists uncovered inheritance and how to read a simple allele model.",
-                theory: "A gene is a section of DNA associated with information that can influence a characteristic. Alleles are versions of a gene. Genotype is an organism’s allele combination, while phenotype is an observable characteristic shaped by genes and often by the environment.",
-                example: "In a simplified model, B is a dominant allele for brown eyes and b is a recessive allele for blue eyes. BB and Bb are predicted to show brown eyes, while bb is predicted to show blue eyes. Real eye color is influenced by many genes, so this is a teaching model rather than a complete account.",
-                formula: "Genotype (allele combination) + inheritance model → predicted phenotype.",
-                rules: "Name the alleles and inheritance rule given; identify the genotype; apply the model to predict the phenotype. Dominant does not mean stronger, and a recessive allele is not erased.",
-                gedConnection: "GED Science Scientific Reasoning: interpret biological diagrams and models, use evidence to explain inherited variation, and distinguish a model’s prediction from a guarantee about an individual.",
+                title: "Interpret Graphs",
+                intro: "Graphs turn data into a picture, helping you notice comparisons and changes. Read the axes and scale first; then describe the pattern using the plotted values.",
+                theory: "A graph displays data visually. Bar graphs compare categories, line graphs show change across an ordered scale such as time, scatterplots show paired numerical values, and circle graphs show parts of a whole.",
+                example: "A line graph of temperature during a day can show when temperature rose, fell, or stayed steady. The horizontal axis gives time, and the vertical axis gives temperature in degrees.",
+                formula: "Graph reading = title + x-axis + y-axis + units + scale + plotted data.",
+                rules: "Read both axis labels and units, inspect the scale intervals, then trace the bar, line, point, or slice. Do not assume an axis starts at zero unless the graph shows it.",
+                gedConnection: "GED Science High Impact Indicator — Scientific Reasoning: interpret data visualizations, read scales and axes, compare values, and use graph patterns as evidence.",
                 lessonSectionsOnly: true,
                 lessonSections: [
                     {
-                        title: "Hook and learning goals",
+                        title: "Introduction: Why Graphs Matter",
                         paragraphs: [
-                            "Why might two children in one family have the same eye color, while another sibling has a different shade? Inheritance helps explain family resemblances and variation. A gene is a DNA segment connected to a characteristic; an allele is one version of a gene. By the end, you can distinguish gene, allele, trait, genotype, and phenotype; read a simple dominant-recessive model; and explain why real traits are often more complicated than a classroom diagram."
+                            "A graph is a visual shortcut: instead of reading many measurements one by one, you can often see a pattern at a glance. But a picture can mislead if you skip the labels or misread the scale.",
+                            "Treat the axes like a map legend. They tell you what the graph measures, which units it uses, and how far apart the values are."
                         ]
                     },
                     {
-                        title: "1. History story: How inheritance became a science",
+                        title: "1. Concept: Choose the Graph Clue",
                         paragraphs: [
-                            "For centuries, people noticed that children often resemble their parents, but resemblance alone could not show how inheritance worked. In the 1800s, many people imagined that parental features simply blended in offspring, like two colors of paint. That idea struggled to explain why a feature could disappear in one generation and appear again later. A careful experiment would need to count patterns across many offspring, not rely on a memorable family story.",
-                            "In the 1850s and 1860s, Gregor Mendel, an Augustinian monk and teacher in the Austrian Empire, studied garden pea plants. Peas were useful because they grew quickly, produced many seeds, and had clear alternative forms, such as purple or white flowers. Mendel could also control which plants pollinated one another. He began with plants that reliably produced the same form over generations, then crossed plants with contrasting forms. This gave him a way to ask a focused question: what patterns appear when parents with different inherited forms are crossed?",
-                            "Mendel recorded the results rather than judging them by appearance alone. In one well-known flower-color cross, all first-generation offspring showed purple flowers. If inheritance were simple blending, he might have expected an intermediate color. Instead, the white form was not visible in that generation. When the first-generation plants were allowed to self-pollinate, white flowers reappeared among the next generation. Across many plants, the visible forms were close to a three-to-one ratio: about three purple-flowered plants for every one white-flowered plant.",
-                            "Mendel proposed that each plant carried paired units for a characteristic and passed one unit to each seed. Today we call a gene a stretch of DNA associated with a biological function or characteristic, and different forms of a gene are called alleles. In a simple model, an organism receives one allele from each parent. A dominant allele can affect the visible outcome when paired with a different recessive allele, while the recessive form can be masked in that combination and appear when two recessive copies are together. Mendel did not know about DNA, genes, or chromosomes; those terms and mechanisms were discovered later.",
-                            "Mendel published his results in 1866, but they received little attention at first. Around 1900, researchers including Hugo de Vries, Carl Correns, and Erich von Tschermak independently reported similar inheritance patterns and brought Mendel’s work to wider notice. In the early twentieth century, experiments with fruit flies helped connect inherited factors to chromosomes, structures made of DNA and proteins. Later work showed that DNA carries genetic information. No single experiment explained every trait: scientists built the modern picture from repeated tests, new tools, and evidence from many organisms.",
-                            "Mendel’s work matters because it made inheritance measurable and testable. It introduced patterns that scientists could compare with new evidence, and it helped establish that inherited forms can remain distinct rather than blending away. The story is also a reminder that a powerful model has limits. Pea traits were especially useful for discovering basic patterns, but many human characteristics involve several genes, interactions among genes, and environmental influences. Modern genetics grew by extending and revising early models, not by assuming every trait behaves like a pea flower."
-                        ]
-                    },
-                    {
-                        title: "2. Explain the science: Genes, alleles, and traits",
-                        paragraphs: [
-                            "A trait is a characteristic of an organism, such as a flower’s color, a blood group, or the ability to taste a particular chemical. Traits are not all inherited in the same way: some are strongly influenced by genes, some are shaped by both genes and environment, and some are mostly affected by conditions or experiences. Height reflects many genes as well as environment, and hair texture is also influenced by multiple genetic factors.",
-                            "A gene is a specific section of DNA that carries information used by cells, often by helping make a protein or regulating when another gene is active. An allele is a version of a gene. For example, a simplified plant-flower model might use P for one flower-color allele and p for another. The letters are labels in a model; they are not the genes themselves. A chromosome is a long DNA molecule packaged with proteins and can contain many genes.",
-                            "For many genes in humans and other organisms, a person typically inherits one allele from each biological parent. The pair is the genotype. PP, Pp, and pp are different genotypes. When the two alleles match, the genotype is homozygous; when they differ, it is heterozygous. The observable form of a characteristic is the phenotype. A phenotype may be described in words, measured, or placed in a category, depending on the trait.",
-                            "In a simple dominant-recessive model, an uppercase letter often represents the dominant allele and a lowercase version represents the recessive allele. If P is dominant for purple flowers and p is recessive for white flowers, PP and Pp are predicted to have purple flowers, while pp is predicted to have white flowers. Dominant does not mean better, more common, stronger, or more likely to be passed on. It only describes how an allele affects the phenotype in a stated model. A recessive allele remains in the genotype when it is hidden from view; it has not disappeared.",
-                            "A Punnett square organizes the possible allele combinations in offspring. Each parent contributes one allele, so a square lists combinations that could result. The squares show possible outcomes and their expected proportions under the model, not a promise for any particular child or seed. If the alleles combine randomly and the model assumptions hold, a 1-in-4 probability means one quarter of outcomes across many similar cases, not that exactly one of four siblings must have that trait.",
-                            "Simple dominant-recessive models are useful for learning, but many traits are more complex. Some involve multiple genes, incomplete dominance, codominance, or gene interactions. Environment can matter too: nutrition and growing conditions can affect height in plants and people. Eye color, used in many elementary diagrams, is influenced by multiple genes. Therefore, a B/b eye-color square is best treated as a simplified classroom example, not a complete explanation or a reliable way to predict an individual’s eye color."
+                            "A bar graph compares separate categories. A line graph connects values in an ordered sequence, often time. A scatterplot places pairs of numerical measurements as points to show whether they vary together. A circle or pie graph divides a whole into categories, often as fractions or percentages.",
+                            "The horizontal axis is usually called the x-axis, and the vertical axis is the y-axis. The title, axis labels, units, scale intervals, and key all contribute to the graph’s meaning."
                         ],
                         table: {
-                            headers: ["Term", "Meaning", "Example"],
+                            headers: ["Graph type", "Useful for", "What to inspect"],
                             rows: [
-                                ["Gene", "A section of DNA associated with biological information", "A gene that influences a characteristic"],
-                                ["Allele", "A version of a gene", "B or b in a simple model"],
-                                ["Genotype", "The allele combination", "BB, Bb, or bb"],
-                                ["Phenotype", "The observable characteristic", "The flower color shown"]
-                            ]
-                        }
-                    },
-                    {
-                        title: "3. Example: Walk through an allele diagram",
-                        paragraphs: [
-                            "Use a deliberately simple example: B represents a dominant brown-eye allele and b a recessive blue-eye allele. A parent with genotype Bb can pass either B or b. If both parents are Bb, put one parent’s possible alleles across the top and the other parent’s down the side. Combine the letter at the start of each row with the letter at the top of its column:"
-                        ],
-                        table: {
-                            headers: ["", "B", "b"],
-                            rows: [
-                                ["B", "BB", "Bb"],
-                                ["b", "Bb", "bb"]
+                                ["Bar", "Comparing categories", "Bar height and category labels"],
+                                ["Line", "Change over ordered values or time", "Direction, slope, and time intervals"],
+                                ["Scatterplot", "Relationship between two numerical variables", "Overall point pattern and outliers"],
+                                ["Circle/pie", "Parts of one whole", "Categories, percentages, and whether shares add to 100%"]
                             ]
                         },
-                        bullets: [
-                            "There is one BB box, two Bb boxes, and one bb box: the genotype ratio is 1:2:1.",
-                            "If the stated model says B is dominant, BB and both Bb boxes are predicted to show brown eyes; only bb is predicted to show blue eyes.",
-                            "That is a 3-in-4 versus 1-in-4 probability within this simplified model—not a guarantee for four actual children."
-                        ],
-                        paragraphsAfterBullets: [
-                            "Read a diagram in order: identify the parents’ genotypes, list the allele each can pass, combine one from each parent, then apply the stated rule to predict phenotype. Real eye color does not follow this one-gene model; use it to practice the logic, not to make a real-world prediction."
+                        subsections: [
+                            {
+                                title: "Scales and intervals",
+                                paragraphs: ["A scale shows how values map to positions. Count the interval carefully: grid lines might increase by 1, 5, 10, or another amount. A vertical axis that begins above zero can make a small difference look large, so check the starting value."]
+                            }
                         ]
                     },
                     {
-                        title: "4. Practice: Apply the model",
-                        paragraphs: [
-                            "In a simple plant model, P is dominant for purple flowers and p is recessive for white flowers. Two heterozygous plants (Pp) are crossed. What genotypes can their offspring have, and what fraction are predicted to have white flowers?"
-                        ],
-                        bullets: [
-                            "List each parent’s possible alleles: P or p.",
-                            "Combine one allele from each parent to make PP, Pp, Pp, and pp.",
-                            "Apply the rule: white flowers appear only with pp in this model."
-                        ],
-                        paragraphsAfterBullets: [
-                            "Check: possible genotypes are PP, Pp, and pp. One of four boxes is pp, so the model predicts a 1/4 (25%) chance of white flowers for each offspring. It does not guarantee a particular outcome."
+                        title: "2. Real Science Example: Comparing Plant Growth",
+                        paragraphs: ["This bar graph shows mean seedling heights after 14 days:"],
+                        blockquote: "A science class measures seedlings grown with three daily light schedules. The mean height is 6 cm after 4 hours of light, 10 cm after 8 hours, and 11 cm after 12 hours. The bar graph uses daily light hours on the horizontal axis and mean height in centimeters on the vertical axis.",
+                        dataGraph: {
+                            type: "bar",
+                            title: "Mean Seedling Height",
+                            description: "Compare the average height for each daily light schedule.",
+                            ariaLabel: "Bar graph: mean seedling heights are 6 centimeters at 4 hours of light, 10 centimeters at 8 hours, and 11 centimeters at 12 hours.",
+                            xLabel: "Daily light (hours)",
+                            yLabel: "Mean height (cm)",
+                            points: [
+                                { label: "4 h", value: 6 },
+                                { label: "8 h", value: 10 },
+                                { label: "12 h", value: 11 }
+                            ]
+                        },
+                        subsections: [
+                            {
+                                title: "Read the graph step by step",
+                                bullets: [
+                                    "The title says the measured outcome is mean seedling height.",
+                                    "The x-axis shows daily light hours; the y-axis shows mean height in centimeters.",
+                                    "The 8-hour bar reaches 10 cm, while the 4-hour bar reaches 6 cm.",
+                                    "The 12-hour group has the highest plotted average, 11 cm.",
+                                    "The graph shows a comparison, not proof by itself that light caused all height differences."
+                                ]
+                            }
                         ]
                     },
                     {
-                        title: "5. Recap and comprehension questions",
-                        paragraphs: [
-                            "Genes are sections of DNA, and alleles are versions of a gene. Genotype is an organism’s allele combination; phenotype is its observable characteristic. In a simple dominant-recessive model, a recessive allele remains in a heterozygote even when the dominant allele affects the phenotype. Punnett squares show possible combinations and probabilities, not guarantees. Mendel’s pea experiments revealed inheritance patterns; later research connected them to chromosomes and DNA. Many traits, including eye color, involve multiple genes."
-                        ],
+                        title: "3. Step-by-Step Technique for Beginners",
                         bullets: [
-                            "1. How do a gene and an allele differ?",
-                            "2. What do genotype and phenotype describe?",
-                            "3. In Bb, which allele is masked in this model?",
-                            "4. Does 25% mean exactly one of four offspring?"
+                            "1. Read the title and identify the question. Notice trigger words such as highest, lowest, increase, decrease, difference, and between.",
+                            "2. Read both axes and their units. Identify which variable is on the x-axis and which is on the y-axis.",
+                            "3. Check the scale before estimating. Count intervals from the labeled values; do not assume each grid line equals one unit or that zero is shown.",
+                            "4. Read the bars, line, points, or slices and answer with evidence. State the value and unit, then describe only the pattern shown."
                         ],
-                        paragraphsAfterBullets: [
-                            "Check: an allele is a gene version; genotype is the allele pair, phenotype the observed trait. The b allele remains in Bb. Probability describes chances, not a fixed sequence."
+                        subsections: [
+                            {
+                                title: "Pro tip: the axis sentence",
+                                paragraphs: ["Before answering, say: “The horizontal axis is ___; the vertical axis is ___; each interval is ___.” This catches many graph-reading errors."]
+                            }
+                        ]
+                    },
+                    {
+                        title: "4. GED Connection",
+                        bullets: [
+                            "Read and compare values from bar and line graphs.",
+                            "Interpret axes, units, scales, and intervals, including nonzero starting points.",
+                            "Identify trends, peaks, decreases, and categories with the greatest or least values.",
+                            "Use a graph together with a passage or table to choose the best-supported claim."
                         ],
+                        paragraphsAfterBullets: ["GED Science Scientific Reasoning questions ask what the visual data show. Check scale and labels before interpreting the shape."]
+                    },
+                    {
+                        title: "5. Learn More and Practice",
+                        paragraphs: ["Khan Academy’s free high school biology course pairs explanations with scientific visuals and data. Practice describing a graph out loud by naming its axes, units, scale, and one supported comparison."],
                         resourceLink: {
-                            label: "OpenStax Biology 2e: Mendelian Inheritance",
-                            href: "https://openstax.org/books/biology-2e/pages/12-introduction"
+                            label: "Khan Academy: High School Biology",
+                            href: "https://www.khanacademy.org/science/high-school-biology"
                         }
                     }
                 ]
@@ -4462,17 +4295,12 @@
         };
 
         const scienceStep = stepId.match(/^science-(\d+)-(\d+)$/);
-        const scienceChapter = scienceStep && window.scienceCourseChapters?.find(
-            chapter => chapter.stepChapter === Number(scienceStep[1])
-        );
-        const scienceDisplayChapter = scienceChapter
-            ? window.scienceCourseChapters.indexOf(scienceChapter) + 1
-            : Number(scienceStep?.[1]);
+        const scienceChapter = scienceStep && window.scienceCourseChapters?.[Number(scienceStep[1]) - 1];
         const scienceSection = scienceChapter?.sections[Number(scienceStep[2]) - 1];
         const scienceLesson = scienceSection ? {
-            badge: `Science · Chapter ${scienceDisplayChapter} · Section ${scienceDisplayChapter}.${scienceStep[2]}`,
+            badge: `Science · Chapter ${scienceStep[1]} · Section ${scienceStep[1]}.${scienceStep[2]}`,
             title: scienceSection[0],
-            intro: `This section is part of Chapter ${scienceDisplayChapter}: ${scienceChapter.title}.`,
+            intro: `This section is part of Chapter ${scienceStep[1]}: ${scienceChapter.title}.`,
             theory: `Work through each skill in order. Use the passage, data, diagram, or other information provided in a question to support your reasoning.`,
             example: `Apply the steps below to a science question about ${scienceSection[0].toLowerCase()}.`,
             rules: "Base each answer on the information provided. Check units, variables, and evidence before choosing a conclusion.",
@@ -4758,9 +4586,7 @@
         const probabilitySection = stepId.match(/^math-12-(\d+)$/);
         document.getElementById('lessonBadge').innerText = probabilitySection
             ? `Mathematics · Chapter 12 · Section 1.${probabilitySection[1]}`
-            : scienceSection
-                ? `Science · Chapter ${scienceDisplayChapter} · Section ${scienceDisplayChapter}.${scienceStep[2]}`
-                : currentLesson.badge;
+            : currentLesson.badge;
         document.getElementById('lessonTitle').innerText = currentLesson.title;
         document.getElementById('lessonIntro').innerText = currentLesson.intro || currentLesson.theory;
         const introQuestion = document.getElementById('lessonIntroQuestion');
@@ -4800,7 +4626,7 @@
         const sectionIndex = Number(scienceStep?.[2] || socialStep?.[2]) - 1;
         const chapterSections = scienceChapter?.sections || socialChapter?.sections || [];
         const relatedSection = chapterSections[sectionIndex + 1] || chapterSections[sectionIndex - 1];
-        let criticalThinkingSections = catalogSectionTitle && !rlaLesson && stepId !== 'science-7-1'
+        const criticalThinkingSections = catalogSectionTitle && !rlaLesson
             ? window.createCriticalThinkingSections({
                 subject: scienceSection ? 'science' : 'social',
                 title: catalogSectionTitle,
@@ -4811,19 +4637,7 @@
             })
             : [];
         const lessonSections = [...(currentLesson.lessonSections || [])];
-        if (scienceSection) {
-            criticalThinkingSections = criticalThinkingSections
-                .filter(section => !['7. Compare & Contrast', '9. Ask “Why?”'].includes(section.title));
-            let nextSectionNumber = lessonSections.reduce((highest, section) => {
-                const number = Number(section.title.match(/^\s*(\d+)\./)?.[1] || 0);
-                return Math.max(highest, number);
-            }, 0) + 1;
-            criticalThinkingSections = criticalThinkingSections.map(section => ({
-                ...section,
-                title: section.title.replace(/^\d+\.\s*/, `${nextSectionNumber++}. `)
-            }));
-        }
-        if ((scienceSection || socialSection) && stepId !== 'science-7-1') {
+        if (scienceSection || socialSection) {
             const resourceSections = lessonSections.filter(section => section.resourceLink);
             if (resourceSections.length) {
                 for (let index = lessonSections.length - 1; index >= 0; index--) {
@@ -4842,7 +4656,6 @@
         }
         lessonDetails.replaceChildren(...[...lessonSections, ...criticalThinkingSections].map(section => {
             const container = document.createElement('section');
-            container.classList.toggle('lesson-step-heading-numbered', /^\s*\d+\./.test(section.title || ''));
             const heading = document.createElement('h3');
             heading.className = 'lesson-section-title';
             heading.textContent = section.title;
@@ -5234,29 +5047,7 @@
             }
 
             function appendContent(parent, content) {
-                if (content.leadParagraph) {
-                    const paragraph = document.createElement('p');
-                    paragraph.className = 'lesson-text';
-                    const strong = document.createElement('strong');
-                    strong.textContent = content.leadParagraph;
-                    paragraph.append(strong);
-                    parent.append(paragraph);
-                }
                 appendParagraphs(parent, content.paragraphs, content.highlights, content.preserveLineBreaks);
-                if (content.imagePlaceholder) {
-                    const figure = document.createElement('figure');
-                    figure.className = 'lesson-image-placeholder';
-                    const frame = document.createElement('img');
-                    frame.className = 'lesson-image-placeholder-frame';
-                    frame.src = content.imagePlaceholder.src;
-                    frame.alt = content.imagePlaceholder.altText;
-                    frame.loading = 'lazy';
-                    frame.decoding = 'async';
-                    const caption = document.createElement('figcaption');
-                    caption.textContent = content.imagePlaceholder.caption;
-                    figure.append(frame, caption);
-                    parent.append(figure);
-                }
                 if (content.blockquote) {
                     const quote = document.createElement('blockquote');
                     quote.className = 'lesson-science-passage';
@@ -5308,7 +5099,7 @@
         const confidenceKey = 'zyomix_concept_confidence';
         const lessonTitle = currentLesson.title;
         const practiceLink = document.getElementById('practiceLinkBtn');
-        practiceLink.href = `practice.html?subject=${encodeURIComponent(subject)}&step=${encodeURIComponent(stepId)}`;
+        practiceLink.href = `quiz.html?step=${encodeURIComponent(stepId)}`;
         document.getElementById('backToConceptsLink').href = `concept.html?subject=${encodeURIComponent(subject)}`;
 
         document.getElementById('workedStepsList').replaceChildren(
@@ -5478,189 +5269,6 @@
         updateConfidenceStatus();
         updateBookmarkButton();
         renderSavedTopics();
-
-        const lessonContent = document.getElementById('lessonContent');
-        const detailSections = [...lessonDetails.children];
-        const originalContent = [...lessonContent.children];
-        const usedContent = new Set([lessonDetails]);
-        const lessonSteps = [];
-        const isStructuredGeneticsLesson = stepId === 'science-7-1';
-
-        function addLessonStep(elements, isDetail = false, titleOverride = '', isStepElement = false) {
-            if (!elements.length) return;
-            const step = isDetail || isStepElement ? elements[0] : document.createElement('section');
-            step.classList.add('lesson-step-screen');
-            if (isDetail) step.classList.add('lesson-detail-step');
-
-            if (!isDetail && !isStepElement) {
-                elements.forEach(element => {
-                    usedContent.add(element);
-                    step.append(element);
-                });
-            } else if (isStepElement) {
-                elements.forEach(element => {
-                    usedContent.add(element);
-                    element.querySelectorAll('*').forEach(child => usedContent.add(child));
-                });
-            } else {
-                usedContent.add(step);
-            }
-
-            const heading = step.querySelector('h3, .lesson-section-title');
-            if (!heading) return;
-            if (!heading.id) heading.id = `lesson-step-heading-${lessonSteps.length + 1}`;
-            step.setAttribute('aria-labelledby', heading.id);
-            step.tabIndex = -1;
-            step.hidden = true;
-            lessonSteps.push({
-                element: step,
-                title: titleOverride || heading.textContent.replace(/\s+/g, ' ').trim()
-            });
-        }
-
-        if (!isStructuredGeneticsLesson) {
-            addLessonStep([
-                document.getElementById('lessonIntroHeading'),
-                document.getElementById('lessonIntroQuestion'),
-                document.getElementById('lessonIntro'),
-                document.getElementById('lessonConceptHeading'),
-                document.getElementById('lessonTheory')
-            ], false, '📖 Introduction and 🧠 Concept');
-        }
-        const detailGroups = [];
-        for (let index = 0; index < detailSections.length;) {
-            const section = detailSections[index];
-            const sectionTextLength = section.textContent.replace(/\s+/g, ' ').trim().length;
-            const isShortTextSection = candidate => {
-                const textLength = candidate.textContent.replace(/\s+/g, ' ').trim().length;
-                const hasRichContent = candidate.querySelector('table, figure, img, audio, video, input, button, .lesson-cause-flow');
-                return textLength <= 560 && !hasRichContent;
-            };
-            const group = [section];
-            let groupTextLength = sectionTextLength;
-            index++;
-            while (isShortTextSection(section) && groupTextLength < 900 && index < detailSections.length) {
-                const nextSection = detailSections[index];
-                if (!isShortTextSection(nextSection)) break;
-                const nextLength = nextSection.textContent.replace(/\s+/g, ' ').trim().length;
-                if (groupTextLength + nextLength > 1000) break;
-                group.push(nextSection);
-                groupTextLength += nextLength;
-                index++;
-            }
-            detailGroups.push(group);
-        }
-        detailGroups.forEach(group => {
-            if (group.length === 1) {
-                addLessonStep(group, true);
-                return;
-            }
-            const groupedStep = document.createElement('section');
-            groupedStep.className = 'lesson-detail-group';
-            groupedStep.setAttribute('role', 'group');
-            groupedStep.append(...group);
-            const headings = group.map(section => section.querySelector('h3')?.textContent.trim()).filter(Boolean);
-            addLessonStep([groupedStep], false, headings.join(' + '), true);
-        });
-
-        if (!isStructuredGeneticsLesson) {
-            addLessonStep([
-                document.getElementById('workedExampleHeading'),
-                document.querySelector('#lessonContent > .example-box'),
-                document.getElementById('workedSteps')
-            ]);
-
-            const learningActivities = [];
-            [
-                'activeRecallBox',
-                'visualAid',
-                'lessonGlossary',
-                'commonPitfall',
-                'confidenceCheck'
-            ].forEach(id => {
-                const element = document.getElementById(id);
-                if (!element.hidden) learningActivities.push(element);
-            });
-            const reviewStep = document.createElement('section');
-            reviewStep.className = 'lesson-detail-group';
-            let reviewStepTitle = 'Key Rules to Remember';
-            if (learningActivities.length) {
-                const activityHeading = document.createElement('h3');
-                activityHeading.className = 'lesson-section-title';
-                activityHeading.textContent = 'Practice and Review';
-                reviewStep.append(activityHeading, ...learningActivities);
-                reviewStepTitle = 'Practice and Key Takeaways';
-            }
-            reviewStep.append(
-                document.getElementById('keyRulesHeading'),
-                document.getElementById('lessonRules')
-            );
-            ['formulaSection', 'gedConnectionSection'].forEach(id => {
-                const element = document.getElementById(id);
-                if (!element.hidden) reviewStep.append(element);
-            });
-            addLessonStep([reviewStep], false, reviewStepTitle, true);
-        }
-
-        const unusedContent = originalContent.filter(element => !usedContent.has(element));
-        const preservedHiddenContent = document.createElement('div');
-        preservedHiddenContent.hidden = true;
-        preservedHiddenContent.append(...unusedContent);
-        lessonContent.replaceChildren(...lessonSteps.map(step => step.element), preservedHiddenContent);
-
-        const stepProgress = document.getElementById('lessonStepProgress');
-        const stepProgressBar = document.getElementById('lessonStepProgressBar');
-        const stepStatus = document.getElementById('lessonStepStatus');
-        const stepNavigation = document.getElementById('lessonStepNavigation');
-        const previousButton = document.getElementById('lessonStepPrevious');
-        const nextButton = document.getElementById('lessonStepNext');
-        let currentLessonStep = 0;
-
-        function showLessonStep(index, moveFocus = false) {
-            currentLessonStep = Math.max(0, Math.min(index, lessonSteps.length - 1));
-            lessonSteps.forEach(({ element }, stepIndex) => {
-                element.hidden = stepIndex !== currentLessonStep;
-                if (stepIndex === currentLessonStep) {
-                    element.setAttribute('aria-current', 'step');
-                } else {
-                    element.removeAttribute('aria-current');
-                }
-            });
-            const isLastStep = currentLessonStep === lessonSteps.length - 1;
-            stepProgressBar.max = lessonSteps.length;
-            stepProgressBar.value = currentLessonStep + 1;
-            stepStatus.textContent = `Step ${currentLessonStep + 1} of ${lessonSteps.length}: ${lessonSteps[currentLessonStep].title}`;
-            previousButton.disabled = currentLessonStep === 0;
-            nextButton.hidden = isLastStep;
-            practiceLink.hidden = !isLastStep;
-            const markLessonCompleteButton = document.getElementById('markLessonCompleteButton');
-            markLessonCompleteButton.dataset.lessonStepsComplete = String(isLastStep);
-            markLessonCompleteButton.dispatchEvent(new CustomEvent('lesson-step-flow-change', {
-                detail: { complete: isLastStep }
-            }));
-            if (moveFocus) {
-                const activeStep = lessonSteps[currentLessonStep].element;
-                const heading = activeStep.querySelector('h3, .lesson-section-title');
-                heading.tabIndex = -1;
-                heading.focus({ preventScroll: true });
-                setTimeout(() => {
-                    const header = document.querySelector('.site-header');
-                    const lessonContainer = document.querySelector('.lesson-container');
-                    const headerHeight = header?.getBoundingClientRect().height || 0;
-                    const top = window.scrollY + lessonContainer.getBoundingClientRect().top - headerHeight - 16;
-                    window.scrollTo({
-                        top: Math.max(0, top),
-                        behavior: 'auto'
-                    });
-                }, 0);
-            }
-        }
-
-        previousButton.addEventListener('click', () => showLessonStep(currentLessonStep - 1, true));
-        nextButton.addEventListener('click', () => showLessonStep(currentLessonStep + 1, true));
-        stepProgress.hidden = false;
-        stepNavigation.hidden = false;
-        showLessonStep(0);
     </script>
 </body>
 </html>

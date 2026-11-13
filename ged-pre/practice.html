@@ -329,10 +329,6 @@
             transform: translateY(-2px);
             box-shadow: 0 8px 22px rgba(2, 132, 199, 0.1);
         }
-        body.practice-page .step-practice-card.is-target-topic {
-            border-color: #047857 !important;
-            box-shadow: 0 0 0 3px rgba(4, 120, 87, 0.2);
-        }
 
         .step-header-tag {
             align-self: flex-start;
@@ -491,7 +487,6 @@
                 <a href="modules.html" class="nav-btn">Modules</a>
                 <a href="account.html" class="nav-btn">Account</a>
                 <a href="concept.html" class="nav-btn">Concept</a>
-                <a href="guided-learning.html" class="nav-btn">Guided Lessons</a>
                 <a href="practice.html" class="nav-btn active">Practice</a>
             </nav>
         </div>
@@ -527,7 +522,6 @@
                     <a href="quiz.html?mode=timed-practice">Timed practice · 5 minutes</a>
                     <a href="quiz.html?mode=exam">Exam simulator · 20 minutes</a>
                 </div>
-                <a class="guided-entry-link" href="guided-learning.html">Learn a concept step by step &rarr;</a>
             </div>
         </div>
     </section>
@@ -1012,23 +1006,9 @@
                 }
             });
 
-            const practiceParams = new URLSearchParams(window.location.search);
-            const requestedStep = practiceParams.get('step');
-            const requestedSubject = practiceParams.get('subject') || requestedStep?.split('-')[0];
-            const subject = ['math', 'science', 'rla', 'social'].includes(requestedSubject) ? requestedSubject : null;
+            const subject = new URLSearchParams(window.location.search).get('subject');
             const subjectButton = subject && document.querySelector(`.tab-${subject}`);
             if (subjectButton) filterPractice(subject, subjectButton);
-
-            if (requestedStep) {
-                requestAnimationFrame(() => {
-                    const targetCard = [...document.querySelectorAll('.step-practice-card')]
-                        .find(card => new URL(card.href, window.location.href).searchParams.get('step') === requestedStep);
-                    if (!targetCard) return;
-                    targetCard.classList.add('is-target-topic');
-                    targetCard.scrollIntoView({ block: 'center' });
-                    targetCard.focus({ preventScroll: true });
-                });
-            }
 
             const chapterAssignment = window.location.hash.match(/^#chapter-assignment-[a-z]+-\d+$/i);
             if (chapterAssignment) {
